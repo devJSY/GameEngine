@@ -7,3 +7,4 @@
 
 #include "define.h"
 #include "Math.h"
+#include "CRoot.h"

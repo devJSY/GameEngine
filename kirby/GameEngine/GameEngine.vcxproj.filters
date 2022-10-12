@@ -22,6 +22,12 @@
     <Filter Include="소스 파일\02. Core">
       <UniqueIdentifier>{b59161a6-1118-4a4c-aae8-feb12e002a5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03. Manager">
+      <UniqueIdentifier>{9ac411fe-5ff0-4cd9-ab60-85c7d27439df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\CTimeMgr">
+      <UniqueIdentifier>{5bee7ad1-979d-42b7-a7ac-073c8e448554}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,6 +54,12 @@
     <ClInclude Include="global.h">
       <Filter>소스 파일\01. Define</Filter>
     </ClInclude>
+    <ClInclude Include="CRoot.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeMgr.h">
+      <Filter>소스 파일\03. Manager\CTimeMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -55,6 +67,12 @@
     </ClCompile>
     <ClCompile Include="CCore.cpp">
       <Filter>소스 파일\02. Core</Filter>
+    </ClCompile>
+    <ClCompile Include="CRoot.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeMgr.cpp">
+      <Filter>소스 파일\03. Manager\CTimeMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
