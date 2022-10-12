@@ -13,24 +13,48 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\default">
+      <UniqueIdentifier>{ea162030-fb17-40b7-bd9d-af238d8fdfa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\01. Define">
+      <UniqueIdentifier>{1e1c08e0-fe1a-4614-b009-77df9faee682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\02. Core">
+      <UniqueIdentifier>{b59161a6-1118-4a4c-aae8-feb12e002a5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\default</Filter>
     </ClInclude>
     <ClInclude Include="GameEngine.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>소스 파일\default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>소스 파일\default</Filter>
+    </ClInclude>
+    <ClInclude Include="CCore.h">
+      <Filter>소스 파일\02. Core</Filter>
+    </ClInclude>
+    <ClInclude Include="define.h">
+      <Filter>소스 파일\01. Define</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>소스 파일\01. Define</Filter>
+    </ClInclude>
+    <ClInclude Include="global.h">
+      <Filter>소스 파일\01. Define</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CCore.cpp">
+      <Filter>소스 파일\02. Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
