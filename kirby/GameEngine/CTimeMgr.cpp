@@ -69,6 +69,6 @@ void CTimeMgr::render(HDC _dc)
 
 		wchar_t szBuffer[255] = {};
 		swprintf_s(szBuffer, L"%s FPS : %d, DT : %lf", strBuffer, m_iFPS, m_dDT);
-		SetWindowText(CCore::GetInst()->GetMainHwnd(), szBuffer);
+		SetWindowText(MainHwnd, szBuffer);
 	}
 }

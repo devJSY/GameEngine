@@ -20,6 +20,7 @@ public:
 public:
 	HWND GetMainHwnd() { return m_hWnd; }
 	HDC GetMainDC() { return m_hDC; }
+	HDC GetMemoryDC() { return m_memDC; }
 
 private:
 	virtual void Root() {};

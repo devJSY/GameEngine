@@ -5,16 +5,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="소스 파일\default">
-      <UniqueIdentifier>{ea162030-fb17-40b7-bd9d-af238d8fdfa0}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\01. Define">
       <UniqueIdentifier>{1e1c08e0-fe1a-4614-b009-77df9faee682}</UniqueIdentifier>
@@ -24,6 +17,15 @@
     </Filter>
     <Filter Include="소스 파일\03. Manager">
       <UniqueIdentifier>{9ac411fe-5ff0-4cd9-ab60-85c7d27439df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object">
+      <UniqueIdentifier>{0aa28ead-1fdf-47d0-94a3-7458f178c79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\CKeyMgr">
+      <UniqueIdentifier>{40077e71-8679-4ca2-9dc6-f11024741a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\default">
+      <UniqueIdentifier>{ea162030-fb17-40b7-bd9d-af238d8fdfa0}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\03. Manager\CTimeMgr">
       <UniqueIdentifier>{5bee7ad1-979d-42b7-a7ac-073c8e448554}</UniqueIdentifier>
@@ -60,6 +62,15 @@
     <ClInclude Include="CTimeMgr.h">
       <Filter>소스 파일\03. Manager\CTimeMgr</Filter>
     </ClInclude>
+    <ClInclude Include="struct.h">
+      <Filter>소스 파일\01. Define</Filter>
+    </ClInclude>
+    <ClInclude Include="CObject.h">
+      <Filter>소스 파일\04. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyMgr.h">
+      <Filter>소스 파일\03. Manager\CKeyMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -73,6 +84,12 @@
     </ClCompile>
     <ClCompile Include="CTimeMgr.cpp">
       <Filter>소스 파일\03. Manager\CTimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CObject.cpp">
+      <Filter>소스 파일\04. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyMgr.cpp">
+      <Filter>소스 파일\03. Manager\CKeyMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

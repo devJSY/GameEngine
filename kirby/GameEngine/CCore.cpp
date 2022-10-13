@@ -1,7 +1,12 @@
 #include "global.h"
 #include "CCore.h"
 
+#include "CObject.h"
+
 #include "CTimeMgr.h"
+#include "CKeyMgr.h"
+
+static CObject* gObj = new CObject;
 
 CCore::CCore()
 	: m_hWnd(nullptr)
@@ -9,8 +14,7 @@ CCore::CCore()
 	, m_ptResolution{}
 	, m_hBit(nullptr)
 	, m_memDC(nullptr)
-{
-
+{	
 }
 
 CCore::~CCore()
@@ -47,7 +51,10 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 
 	// 매니저 초기화
 	CTimeMgr::GetInst()->init();
+	CKeyMgr::GetInst()->init();
 
+	gObj->SetPos(Vec2(m_ptResolution.x / 2.f, m_ptResolution.y / 2.f));
+	gObj->SetScale(Vec2(100.f , 100.f));
 
 	return S_OK;
 }
@@ -56,21 +63,24 @@ void CCore::progress()
 {
 	// 화면 Clear
 	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
-
-
-	Rectangle(m_memDC, 0, 0, 50, 50);
-
-	// m_hDC 에 m_memDC에 그려진 비트맵을 옮겨 담는다
-	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y
-		, m_memDC, 0, 0, SRCCOPY);	
-
-
 	
+
 	// Manager upate
 	CTimeMgr::GetInst()->update();
+	CKeyMgr::GetInst()->update();
 
+	gObj->update();
 
 
 	// Manager render
 	CTimeMgr::GetInst()->render(m_hDC);
+	gObj->render(m_hDC);
+
+
+	// m_hDC 에 m_memDC에 그려진 비트맵을 옮겨 담는다
+	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y
+		, m_memDC, 0, 0, SRCCOPY);
+
+
+
 }

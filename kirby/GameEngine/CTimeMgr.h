@@ -20,8 +20,11 @@ public:
     void update();
     void render(HDC _dc);
 
+public:
+    double GetDT() { return m_dDT; }
+    float GetfDT() { return (float)m_dDT; }
+
 private:
     virtual void Root() {};
-
 };
 

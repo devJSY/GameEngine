@@ -2,6 +2,9 @@
 
 // Singleton
 
+
+
+
 #define SINGLE(type) public: \
 				static type* GetInst()\
 				{\
@@ -12,3 +15,18 @@
 					type();\
 					~type();\
 
+#define DT CTimeMgr::GetInst()->GetDT()
+#define fDT CTimeMgr::GetInst()->GetfDT()
+
+#define MainHwnd CCore::GetInst()->GetMainHwnd()
+#define MainDC CCore::GetInst()->GetMainDC()
+#define MemoryDC CCore::GetInst()->GetMemoryDC()
+#define MOUSE_POS CKeyMgr::GetInst()->GetMousePos()
+
+
+
+#define KEY_CHECK(key, state) CKeyMgr::GetInst()->GetKeyState(key) == state 
+#define KEY_TAP(key) KEY_CHECK(key, KEY_STATE::TAP)
+#define KEY_HOLD(key) KEY_CHECK(key, KEY_STATE::HOLD)
+#define KEY_AWAY(key) KEY_CHECK(key, KEY_STATE::AWAY)
+#define KEY_NONE(key) KEY_CHECK(key, KEY_STATE::NONE)
