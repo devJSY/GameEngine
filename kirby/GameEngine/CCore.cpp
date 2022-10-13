@@ -1,6 +1,7 @@
 #include "global.h"
 #include "CCore.h"
 
+#include "CTimeMgr.h"
 
 CCore::CCore()
 	: m_hWnd(nullptr)
@@ -14,10 +15,10 @@ CCore::CCore()
 
 CCore::~CCore()
 {
-	// 윈도우핸들, DC 삭데
+	// 윈도우핸들, DC 삭제
 	ReleaseDC(m_hWnd, m_hDC);
 
-	// 더블 더퍼링용 비트맵, DC 삭제
+	// 더블 버퍼링용 비트맵, DC 삭제
 	DeleteDC(m_memDC);
 	DeleteObject(m_hBit);
 
@@ -43,6 +44,11 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 	HBITMAP hOldBit = (HBITMAP)SelectObject(m_memDC, m_hBit);
 	DeleteObject(hOldBit);
 
+
+	// 매니저 초기화
+	CTimeMgr::GetInst()->init();
+
+
 	return S_OK;
 }
 
@@ -51,9 +57,20 @@ void CCore::progress()
 	// 화면 Clear
 	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
 
+
 	Rectangle(m_memDC, 0, 0, 50, 50);
 
 	// m_hDC 에 m_memDC에 그려진 비트맵을 옮겨 담는다
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y
 		, m_memDC, 0, 0, SRCCOPY);	
+
+
+	
+	// Manager upate
+	CTimeMgr::GetInst()->update();
+
+
+
+	// Manager render
+	CTimeMgr::GetInst()->render(m_hDC);
 }

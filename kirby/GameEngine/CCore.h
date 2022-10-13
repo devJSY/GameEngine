@@ -17,9 +17,11 @@ public:
 	int init(HWND _hWnd, POINT _ptResloution);
 	void progress();
 
-private:
-	virtual void Enter() {};
-
 public:
+	HWND GetMainHwnd() { return m_hWnd; }
+	HDC GetMainDC() { return m_hDC; }
+
+private:
+	virtual void Root() {};
 };
 
