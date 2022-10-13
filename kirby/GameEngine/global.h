@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <Windows.h>
-
+#include "Resource.h"
 
 
 #include "define.h"

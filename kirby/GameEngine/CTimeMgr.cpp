@@ -63,8 +63,12 @@ void CTimeMgr::render(HDC _dc)
 		m_dAcc = 0;
 		m_iCallCount = 0;
 
+		// 윈도우 이름 값 받아오기
+		wchar_t strBuffer[255] = {};
+		LoadString(nullptr, IDC_GAMEENGINE, strBuffer, 255);
+
 		wchar_t szBuffer[255] = {};
-		swprintf_s(szBuffer, L"FPS : %d, DT : %lf", m_iFPS, m_dDT);
+		swprintf_s(szBuffer, L"%s FPS : %d, DT : %lf", strBuffer, m_iFPS, m_dDT);
 		SetWindowText(CCore::GetInst()->GetMainHwnd(), szBuffer);
 	}
 }
