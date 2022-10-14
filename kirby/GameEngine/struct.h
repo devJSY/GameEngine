@@ -18,6 +18,11 @@ public:
 		, y(_y)
 	{}
 
+	Vec2(POINT _pt)
+		: x((float)_pt.x)
+		, y((float)_pt.y)
+	{}
+
 public:
 	Vec2& operator = (Vec2 _v)
 	{

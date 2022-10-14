@@ -22,6 +22,8 @@ public:
 	HDC GetMainDC() { return m_hDC; }
 	HDC GetMemoryDC() { return m_memDC; }
 
+	POINT GetResolution() { return m_ptResolution; }
+
 private:
 	virtual void Root() {};
 };

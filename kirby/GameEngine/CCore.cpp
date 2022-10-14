@@ -5,8 +5,7 @@
 
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
-
-static CObject* gObj = new CObject;
+#include "CSceneMgr.h"
 
 CCore::CCore()
 	: m_hWnd(nullptr)
@@ -25,7 +24,6 @@ CCore::~CCore()
 	// 더블 버퍼링용 비트맵, DC 삭제
 	DeleteDC(m_memDC);
 	DeleteObject(m_hBit);
-
 }
 
 
@@ -52,9 +50,7 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 	// 매니저 초기화
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
-
-	gObj->SetPos(Vec2(m_ptResolution.x / 2.f, m_ptResolution.y / 2.f));
-	gObj->SetScale(Vec2(100.f , 100.f));
+	CSceneMgr::GetInst()->init();
 
 	return S_OK;
 }
@@ -62,25 +58,18 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 void CCore::progress()
 {
 	// 화면 Clear
-	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
-	
+	Rectangle(m_memDC, -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);	
 
 	// Manager upate
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
-
-	gObj->update();
-
+	CSceneMgr::GetInst()->update();
 
 	// Manager render
-	CTimeMgr::GetInst()->render(m_hDC);
-	gObj->render(m_hDC);
-
+	CTimeMgr::GetInst()->render(m_memDC);
+	CSceneMgr::GetInst()->render(m_memDC);
 
 	// m_hDC 에 m_memDC에 그려진 비트맵을 옮겨 담는다
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y
 		, m_memDC, 0, 0, SRCCOPY);
-
-
-
 }

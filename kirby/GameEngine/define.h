@@ -1,10 +1,6 @@
 #pragma once
 
 // Singleton
-
-
-
-
 #define SINGLE(type) public: \
 				static type* GetInst()\
 				{\
@@ -30,3 +26,23 @@
 #define KEY_HOLD(key) KEY_CHECK(key, KEY_STATE::HOLD)
 #define KEY_AWAY(key) KEY_CHECK(key, KEY_STATE::AWAY)
 #define KEY_NONE(key) KEY_CHECK(key, KEY_STATE::NONE)
+
+
+enum class GROUP_TYPE
+{
+	NON_DEFINE,
+	PLAYER,
+	MONSTER,
+
+	END = 32,
+};
+
+enum class SCENE_TYPE
+{
+	START,
+	STAGE_01,
+	STAGE_02,
+	STAGE_03,
+
+	END,
+};

@@ -19,15 +19,18 @@ void CObject::update()
 	{
 		vPos.x -= 500 * fDT;
 	}
-	else if (KEY_HOLD(KEY::RIGHT))
+	
+	if (KEY_HOLD(KEY::RIGHT))
 	{
 		vPos.x += 500 * fDT;
 	}
-	else if (KEY_HOLD(KEY::DOWN))
+	
+	if (KEY_HOLD(KEY::DOWN))
 	{
 		vPos.y += 500 * fDT;
 	}
-	else if (KEY_HOLD(KEY::UP))
+	
+	if (KEY_HOLD(KEY::UP))
 	{
 		vPos.y -= 500 * fDT;
 	}
