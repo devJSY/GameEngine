@@ -93,6 +93,9 @@
     <Filter Include="소스 파일\03. Manager\CEventMgr">
       <UniqueIdentifier>{79300f37-3116-4dd3-85ac-d9ed637e9d7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03. Manager\CPathMgr">
+      <UniqueIdentifier>{1148bc1b-2aa7-4814-9038-7ffb9c938153}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -155,6 +158,9 @@
     <ClInclude Include="CEventMgr.h">
       <Filter>소스 파일\03. Manager\CEventMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CPathMgr.h">
+      <Filter>소스 파일\03. Manager\CPathMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -195,6 +201,9 @@
     </ClCompile>
     <ClCompile Include="CEventMgr.cpp">
       <Filter>소스 파일\03. Manager\CEventMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CPathMgr.cpp">
+      <Filter>소스 파일\03. Manager\CPathMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

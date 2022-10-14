@@ -14,6 +14,9 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CObject.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CPathMgr.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CRoot.cpp"
 
 

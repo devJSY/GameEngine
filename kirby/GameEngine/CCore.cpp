@@ -7,6 +7,7 @@
 #include "CKeyMgr.h"
 #include "CSceneMgr.h"
 #include "CEventMgr.h"
+#include "CPathMgr.h"
 
 CCore::CCore()
 	: m_hWnd(nullptr)
@@ -52,6 +53,7 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 	CTimeMgr::GetInst()->init();
 	CKeyMgr::GetInst()->init();
 	CSceneMgr::GetInst()->init();
+	CPathMgr::GetInst()->init();
 
 	return S_OK;
 }
