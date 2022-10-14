@@ -46,3 +46,14 @@ enum class SCENE_TYPE
 
 	END,
 };
+
+enum class EVENT_TYPE
+{
+	CREATE_OBJECT,
+	DELETE_OBJECT,
+	CHANGE_SCENE,
+	CHANGE_KIRBY_STATE,
+
+
+	END,
+};

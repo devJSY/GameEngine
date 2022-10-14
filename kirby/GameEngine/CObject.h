@@ -9,6 +9,8 @@ private:
     Vec2        vScale;
     wstring     m_strName;
 
+    bool        m_bAlive; // Dead üũ
+
 public:
     virtual void update();
     virtual void render(HDC _dc);
@@ -23,8 +25,12 @@ public:
     void SetName(const wstring& _strName) { m_strName = _strName; }
     wstring& GetName() { return m_strName; }
 
+    bool IsDead() { return !m_bAlive; }
+
 private:
-    virtual void Root() = 0;
+    void SetDead() { m_bAlive = false; }
+
+    friend class CEventMgr;
 
 public:
     CObject();

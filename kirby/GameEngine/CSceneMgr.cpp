@@ -45,4 +45,7 @@ void CSceneMgr::render(HDC _dc)
 
 void CSceneMgr::ChangeScene(SCENE_TYPE _eNext)
 {
+	m_pCurScene->Exit();
+	m_pCurScene = m_arrScene[(UINT)_eNext];
+	m_pCurScene->Enter();
 }

@@ -20,16 +20,16 @@ public:
     virtual void Enter() = 0;
     virtual void Exit() = 0;
 
+private:
     void AddObject(CObject* _pObj, GROUP_TYPE _GroupType)
     {
         m_arrObj[(UINT)_GroupType].push_back(_pObj);
     }
 
+    friend class CEventMgr;
+
 public:
     CScene();
     virtual ~CScene();
-
-private:
-    virtual void Root() = 0;
 };
 

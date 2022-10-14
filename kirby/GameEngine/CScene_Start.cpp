@@ -33,7 +33,7 @@ void CScene_Start::Enter()
 	gObj->SetName(L"Kirby");
 
 
-	AddObject(gObj, GROUP_TYPE::PLAYER);
+	CreateObject(gObj, GROUP_TYPE::PLAYER);
 	
 }
 

@@ -25,8 +25,6 @@ public:
 private:
     void ChangeScene(SCENE_TYPE _eNext);
 
-
-private:
-    virtual void Root() {};
+    friend class CEventMgr;
 };
 

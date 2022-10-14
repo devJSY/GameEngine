@@ -6,6 +6,7 @@
 #include "CTimeMgr.h"
 #include "CKeyMgr.h"
 #include "CSceneMgr.h"
+#include "CEventMgr.h"
 
 CCore::CCore()
 	: m_hWnd(nullptr)
@@ -72,4 +73,8 @@ void CCore::progress()
 	// m_hDC 에 m_memDC에 그려진 비트맵을 옮겨 담는다
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y
 		, m_memDC, 0, 0, SRCCOPY);
+
+
+	// 이벤트 처리
+	CEventMgr::GetInst()->update();
 }

@@ -82,7 +82,5 @@ public:
 	KEY_STATE GetKeyState(KEY _eKey) { return m_veckey[(int)_eKey].key_state; }
 	Vec2 GetMousePos() { return m_vCurMousePos; }
 
-private:
-    virtual void Root() {};
 };
 

@@ -6,6 +6,7 @@
 #include "CTimeMgr.h"
 
 CObject::CObject()
+	: m_bAlive(true)
 {
 }
 

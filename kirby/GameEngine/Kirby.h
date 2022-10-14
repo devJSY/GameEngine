@@ -12,8 +12,5 @@ public:
 public:
     Kirby();
     ~Kirby();
-
-private:
-    virtual void Root() {};
 };
 

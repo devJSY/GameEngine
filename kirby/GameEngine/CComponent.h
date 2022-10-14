@@ -4,8 +4,5 @@
 class CComponent :
     public CRoot
 {
-
-private:
-    virtual void Root() = 0;
 };
 

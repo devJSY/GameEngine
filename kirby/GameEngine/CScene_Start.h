@@ -13,9 +13,6 @@ public:
     virtual void Enter();
     virtual void Exit();
 
-private:
-    virtual void Root() {};
-
 public:
     CScene_Start();
     ~CScene_Start();
