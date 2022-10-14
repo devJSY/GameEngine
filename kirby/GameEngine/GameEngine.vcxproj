@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CComponent.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CObject.h" />
@@ -154,12 +155,14 @@
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="global_Func.h" />
+    <ClInclude Include="Kirby.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CObject.cpp" />
@@ -170,6 +173,7 @@
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="global_Func.cpp" />
+    <ClCompile Include="Kirby.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc" />

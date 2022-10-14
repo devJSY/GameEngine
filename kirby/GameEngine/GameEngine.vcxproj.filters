@@ -39,6 +39,57 @@
     <Filter Include="소스 파일\01.Header">
       <UniqueIdentifier>{1e1c08e0-fe1a-4614-b009-77df9faee682}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\04. Object\Kirby">
+      <UniqueIdentifier>{af50132d-6316-49c9-82ad-e4d356e5e71b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster">
+      <UniqueIdentifier>{34825b2f-8714-4f85-835f-205dd177b7b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\DDD">
+      <UniqueIdentifier>{258ce5c8-f71d-420d-9d68-d996ce58d182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Normal">
+      <UniqueIdentifier>{bb2c9cae-d6b3-4673-aeba-714e397dc278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Normal\Twizzy">
+      <UniqueIdentifier>{0301a6b8-4565-4430-ba74-038d5e03bf10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Normal\Tookey">
+      <UniqueIdentifier>{158d28bc-bad0-492e-8c21-1f92ec10934e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Normal\Bronto_Burt">
+      <UniqueIdentifier>{bdbf84eb-d79e-432f-9aa5-bfdde452d307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Normal\Gordo">
+      <UniqueIdentifier>{f1ad1a66-fa81-472d-b9f3-fc9434eb4c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Normal\Coconut">
+      <UniqueIdentifier>{9f3fafc9-fd62-4263-820e-4b88a80f4ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Normal\Grizzo">
+      <UniqueIdentifier>{a6a728ef-3f5a-48ea-b9ae-503a75cca3b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Ability">
+      <UniqueIdentifier>{0338281a-7a7b-4b10-ab4c-2dddf64fe867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Door">
+      <UniqueIdentifier>{4c041cf6-1071-44cc-917f-1ae740a1a23a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Ability\Noddy">
+      <UniqueIdentifier>{f800777e-7030-4ca8-8211-c0d6b18e5d4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Ability\Rocky">
+      <UniqueIdentifier>{9ce4ef9d-bc07-4752-a3bb-384986004138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Ability\Blade_Knight">
+      <UniqueIdentifier>{bc57b23a-6721-4030-9715-bc3eb2410704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\Monster\Ability\Walkie">
+      <UniqueIdentifier>{afb21c8a-7700-4fdc-877e-9861c0c362f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\06. Component">
+      <UniqueIdentifier>{35c09d63-c2fc-4260-9933-c484a41e74d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -92,6 +143,12 @@
     <ClInclude Include="CRoot.h">
       <Filter>소스 파일\01.Header</Filter>
     </ClInclude>
+    <ClInclude Include="Kirby.h">
+      <Filter>소스 파일\04. Object\Kirby</Filter>
+    </ClInclude>
+    <ClInclude Include="CComponent.h">
+      <Filter>소스 파일\06. Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -123,6 +180,12 @@
     </ClCompile>
     <ClCompile Include="CRoot.cpp">
       <Filter>소스 파일\01.Header</Filter>
+    </ClCompile>
+    <ClCompile Include="Kirby.cpp">
+      <Filter>소스 파일\04. Object\Kirby</Filter>
+    </ClCompile>
+    <ClCompile Include="CComponent.cpp">
+      <Filter>소스 파일\06. Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

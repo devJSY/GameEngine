@@ -1,4 +1,7 @@
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CComponent.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CCore.cpp"
 
 
@@ -27,4 +30,7 @@
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\global_Func.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\Kirby.cpp"
 

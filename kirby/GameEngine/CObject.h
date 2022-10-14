@@ -10,8 +10,8 @@ private:
     wstring     m_strName;
 
 public:
-    void update();
-    void render(HDC _dc);
+    virtual void update();
+    virtual void render(HDC _dc);
 
 public:
     void SetPos(Vec2 _vPos) { vPos = _vPos; }
@@ -24,7 +24,7 @@ public:
     wstring& GetName() { return m_strName; }
 
 private:
-    virtual void Root() {};
+    virtual void Root() = 0;
 
 public:
     CObject();
