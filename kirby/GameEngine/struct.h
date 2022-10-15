@@ -37,4 +37,50 @@ public:
 		y = (float)_pt.y;
 		return *this;
 	}
+
+	Vec2 operator + (Vec2 _vOther)
+	{
+		return (Vec2(x + _vOther.x, y + _vOther.y));
+	}
+
+	Vec2 operator - (Vec2 _vOther)
+	{
+		return (Vec2(x - _vOther.x, y - _vOther.y));
+	}
+
+	Vec2 operator * (Vec2 _vOther)
+	{
+		return (Vec2(x * _vOther.x, y * _vOther.y));
+	}
+
+	Vec2 operator / (Vec2 _vOther)
+	{
+		assert(!(0.f == _vOther.x || 0.f == _vOther.y) || !(0.f == x || 0.f == y));
+		return (Vec2(x / _vOther.x, y / _vOther.y));
+	}
+
+	void operator += (Vec2 _vOther)
+	{
+		x += _vOther.x;
+		y += _vOther.y;
+	}
+
+	void operator -= (Vec2 _vOther)
+	{
+		x -= _vOther.x;
+		y -= _vOther.y;
+	}
+
+	void operator *= (Vec2 _vOther)
+	{
+		x *= _vOther.x;
+		y *= _vOther.y;
+	}
+
+	void operator /= (Vec2 _vOther)
+	{
+		assert(!(0.f == _vOther.x || 0.f == _vOther.y) || !(0.f == x || 0.f == y));
+		x /= _vOther.x;
+		y /= _vOther.y;
+	}
 };

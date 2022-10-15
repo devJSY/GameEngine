@@ -1,7 +1,7 @@
 #pragma once
 #include "CObject.h"
 
-class Kirby :
+class CMonster :
     public CObject
 {
 
@@ -13,10 +13,10 @@ public:
     virtual void OnCollisionEnter(CCollider* _pOther) {};
     virtual void OnCollisionExit(CCollider* _pOther) {};
 
-    CLONE(Kirby);
+    CLONE(CMonster);
 
 public:
-    Kirby();
-    ~Kirby();
+    CMonster();
+    virtual ~CMonster();
 };
 

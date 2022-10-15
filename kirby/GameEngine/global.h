@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <Windows.h>
+#include <assert.h>
+
 #include "Resource.h"
 
 #include <vector>

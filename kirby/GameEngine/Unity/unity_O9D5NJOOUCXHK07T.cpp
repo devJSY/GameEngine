@@ -1,4 +1,7 @@
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CCollider.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CComponent.cpp"
 
 
@@ -9,6 +12,9 @@
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CKeyMgr.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CMonster.cpp"
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CObject.cpp"

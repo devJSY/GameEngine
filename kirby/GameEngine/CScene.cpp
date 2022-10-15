@@ -29,6 +29,20 @@ void CScene::update()
 	}
 }
 
+void CScene::Component_update()
+{
+	for (int i = 0; i < (int)GROUP_TYPE::END; ++i)
+	{
+		for (size_t j = 0; j < m_arrObj[i].size(); ++j)
+		{
+			if (!m_arrObj[i][j]->IsDead())
+			{
+				m_arrObj[i][j]->Component_update();
+			}
+		}
+	}
+}
+
 void CScene::render(HDC _dc)
 {
 	for (int i = 0; i < (int)GROUP_TYPE::END; ++i)

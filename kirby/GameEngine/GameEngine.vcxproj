@@ -141,10 +141,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CCollider.h" />
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CEventMgr.h" />
     <ClInclude Include="CKeyMgr.h" />
+    <ClInclude Include="CMonster.h" />
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CRoot.h" />
@@ -164,10 +166,12 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCollider.cpp" />
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
+    <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CRoot.cpp" />

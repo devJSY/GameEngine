@@ -14,6 +14,8 @@
 #define DT CTimeMgr::GetInst()->GetDT()
 #define fDT CTimeMgr::GetInst()->GetfDT()
 
+#define CLONE(type) type* Clone() { return new type(*this); }
+
 #define MainHwnd CCore::GetInst()->GetMainHwnd()
 #define MainDC CCore::GetInst()->GetMainDC()
 #define MemoryDC CCore::GetInst()->GetMemoryDC()

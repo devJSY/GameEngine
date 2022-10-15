@@ -38,6 +38,11 @@ void CSceneMgr::update()
 	m_pCurScene->update();
 }
 
+void CSceneMgr::Component_update()
+{
+	m_pCurScene->Component_update();
+}
+
 void CSceneMgr::render(HDC _dc)
 {
 	m_pCurScene->render(_dc);

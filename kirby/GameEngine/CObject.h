@@ -1,19 +1,30 @@
 #pragma once
 #include "CRoot.h"
 
+class CComponent;
+class CCollider;
+
 class CObject :
     public CRoot
 {
 private:
-    Vec2        vPos;
-    Vec2        vScale;
-    wstring     m_strName;
+    Vec2                 vPos;
+    Vec2                 vScale;
+    wstring              m_strName;
 
-    bool        m_bAlive; // Dead üũ
+    vector<CComponent*>  vComponent;
+
+    bool        m_bAlive; // Dead 체크
 
 public:
     virtual void update();
+    virtual void Component_update();
     virtual void render(HDC _dc);
+    virtual void Component_render(HDC _dc);
+
+    virtual void OnCollision(CCollider* _pOther) {};
+    virtual void OnCollisionEnter(CCollider* _pOther) {};
+    virtual void OnCollisionExit(CCollider* _pOther) {};
 
 public:
     void SetPos(Vec2 _vPos) { vPos = _vPos; }
@@ -27,6 +38,9 @@ public:
 
     bool IsDead() { return !m_bAlive; }
 
+public:
+    virtual CObject* Clone() = 0;
+
 private:
     void SetDead() { m_bAlive = false; }
 
@@ -34,6 +48,7 @@ private:
 
 public:
     CObject();
+    CObject(const CObject& _origin);
     ~CObject();
 };
 

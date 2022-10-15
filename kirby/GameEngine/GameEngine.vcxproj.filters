@@ -96,6 +96,9 @@
     <Filter Include="소스 파일\03. Manager\CPathMgr">
       <UniqueIdentifier>{1148bc1b-2aa7-4814-9038-7ffb9c938153}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\06. Component\Collider">
+      <UniqueIdentifier>{9d5f15c7-022e-4a10-a214-3cad5195bd0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -161,6 +164,12 @@
     <ClInclude Include="CPathMgr.h">
       <Filter>소스 파일\03. Manager\CPathMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>소스 파일\04. Object\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollider.h">
+      <Filter>소스 파일\06. Component\Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -204,6 +213,12 @@
     </ClCompile>
     <ClCompile Include="CPathMgr.cpp">
       <Filter>소스 파일\03. Manager\CPathMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>소스 파일\04. Object\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider.cpp">
+      <Filter>소스 파일\06. Component\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

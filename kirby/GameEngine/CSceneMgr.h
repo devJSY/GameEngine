@@ -16,6 +16,7 @@ private:
 public:
     void init();
     void update();
+    void Component_update();
     void render(HDC _dc);
 
 

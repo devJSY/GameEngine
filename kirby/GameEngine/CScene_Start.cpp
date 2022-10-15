@@ -1,9 +1,11 @@
 #include "global.h"
 #include "CScene_Start.h"
 
+#include "CCore.h"
 #include "CObject.h"
 #include "Kirby.h"
-#include "CCore.h"
+#include "CMonster.h"
+
 
 CScene_Start::CScene_Start()
 {
@@ -32,9 +34,14 @@ void CScene_Start::Enter()
 	gObj->SetScale(Vec2(100.f, 100.f));
 	gObj->SetName(L"Kirby");
 
-
 	CreateObject(gObj, GROUP_TYPE::PLAYER);
-	
+
+	CObject* gMonObj = new CMonster;
+	gMonObj->SetPos(Vec2(vResolution.x / 2.f, vResolution.y / 2.f - 300.f));
+	gMonObj->SetScale(Vec2(50.f, 50.f));
+	gMonObj->SetName(L"Monster");
+
+	CreateObject(gMonObj, GROUP_TYPE::MONSTER);
 }
 
 void CScene_Start::Exit()
