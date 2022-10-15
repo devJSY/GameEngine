@@ -21,12 +21,11 @@ CObject::CObject(const CObject& _origin)
 	, m_strName(_origin.m_strName)
 	, m_bAlive(true)
 {
-	map<wstring, CComponent*>::iterator iter = m_Component.begin();
-
-	for (; iter != m_Component.end(); ++iter)
-	{
-		iter->second = iter->second->Clone();
-	}
+	// 예외처리 추가 기존에 콜라이더 갖고있었던 경우에만 콜라이더 생성
+	CreateCollider();
+	GetCollider()->SetScale(Vec2(50.f, 50.f));
+	GetCollider()->SetOffsetPos(Vec2(500.f, 0.f));
+	
 }
 
 CObject::~CObject()
@@ -50,6 +49,7 @@ void CObject::Component_update()
 
 void CObject::render(HDC _dc)
 {
+
 }
 
 void CObject::Component_render(HDC _dc)
@@ -74,5 +74,7 @@ void CObject::CreateCollider()
 CCollider* CObject::GetCollider()
 {
 	map<wstring, CComponent*>::iterator iter = m_Component.find(L"Collider");
+	// 예외처리 추가해야함 못찾을 경우 nullptr
+
 	return (CCollider*)iter->second;
 }

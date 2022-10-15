@@ -15,11 +15,12 @@ public:
     const wstring& GetName() { return m_strName; }
 
     virtual void update();
-    virtual void Component_update();
     virtual void render(HDC _dc);
 
     virtual void Enter() = 0;
     virtual void Exit() = 0;
+
+    const vector<CObject*>& GetGroupObject(GROUP_TYPE _eType) { return m_arrObj[(UINT)_eType]; }
 
 private:
     void AddObject(CObject* _pObj, GROUP_TYPE _GroupType)

@@ -2,12 +2,16 @@
 #include "Kirby.h"
 
 #include "CCore.h"
+#include "CCollider.h"
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
 
 Kirby::Kirby()
 {
+	CreateCollider();
+	GetCollider()->SetScale(Vec2(50.f, 50.f));
+	GetCollider()->SetOffsetPos(Vec2(500.f, 0.f));
 }
 
 Kirby::~Kirby()
@@ -52,4 +56,6 @@ void Kirby::render(HDC _dc)
 		, int(vPos.x + vScale.x / 2.f)
 		, int(vPos.y + vScale.y / 2.f)
 	);
+
+	Component_render(_dc);
 }

@@ -18,9 +18,9 @@ private:
 
 public:
     virtual void update();
-    virtual void Component_update();
+    virtual void Component_update() final;
     virtual void render(HDC _dc);
-    virtual void Component_render(HDC _dc);
+    virtual void Component_render(HDC _dc) final;
 
     virtual void OnCollision(CCollider* _pOther) {};
     virtual void OnCollisionEnter(CCollider* _pOther) {};

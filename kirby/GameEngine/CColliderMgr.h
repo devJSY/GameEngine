@@ -1,5 +1,6 @@
 #pragma once
 
+// 충돌체간의 조합 ID 생성용 union
 union COLLIDER_ID
 {
     struct {
@@ -17,7 +18,7 @@ class CColliderMgr :
     SINGLE(CColliderMgr);
 
 private:
-    map<ULONGLONG, bool> m_mapColInfo; // 충돌체 ID 와 충돌 여부
+    map<ULONGLONG, bool> m_mapColInfo; // 충돌체간의 고유 ID 저장 용 map
 
     UINT m_arrCheck[(UINT)GROUP_TYPE::END]; // 충돌 체크 용 배열
 
@@ -28,6 +29,6 @@ public:
 
 private:
     void CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight);
-    bool IsCollision(GROUP_TYPE _eLeft, GROUP_TYPE _eRight);
+    bool IsCollision(CCollider* _eLeft, CCollider* _eRight);
 
 };

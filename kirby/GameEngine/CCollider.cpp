@@ -26,7 +26,7 @@ CCollider::~CCollider()
 void CCollider::Component_update()
 {
 	Vec2 vPos = GetOwner()->GetPos();
-	m_vFinalPos += m_vOffsetPos;
+	m_vFinalPos = vPos + m_vOffsetPos;
 
 	// 충돌횟수 오류 체크
 	assert(0 <= m_iCol);
@@ -34,15 +34,11 @@ void CCollider::Component_update()
 
 void CCollider::Component_render(HDC _dc)
 {
-	CObject* pOwner = GetOwner();
-
-	Vec2 vScale = pOwner->GetScale();
-
 	Rectangle(_dc
-		, int(m_vFinalPos.x - vScale.x / 2.f)
-		, int(m_vFinalPos.y - vScale.y / 2.f)
-		, int(m_vFinalPos.x + vScale.x / 2.f)
-		, int(m_vFinalPos.y + vScale.y / 2.f)
+		, int(m_vFinalPos.x - m_vScale.x / 2.f)
+		, int(m_vFinalPos.y - m_vScale.y / 2.f)
+		, int(m_vFinalPos.x + m_vScale.x / 2.f)
+		, int(m_vFinalPos.y + m_vScale.y / 2.f)
 	);
 }
 
