@@ -8,6 +8,7 @@
 #include "CSceneMgr.h"
 #include "CEventMgr.h"
 #include "CPathMgr.h"
+#include "CColliderMgr.h"
 
 CCore::CCore()
 	: m_hWnd(nullptr)
@@ -67,6 +68,7 @@ void CCore::progress()
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
 	CSceneMgr::GetInst()->update();
+	CColliderMgr::GetInst()->upadte();
 
 	// Manager render
 	CTimeMgr::GetInst()->render(m_memDC);

@@ -12,7 +12,7 @@ private:
     Vec2                 vScale;
     wstring              m_strName;
 
-    vector<CComponent*>  vComponent;
+    map<wstring, CComponent*>  m_Component;
 
     bool        m_bAlive; // Dead 체크
 
@@ -37,6 +37,10 @@ public:
     wstring& GetName() { return m_strName; }
 
     bool IsDead() { return !m_bAlive; }
+
+public:
+    void CreateCollider();
+    CCollider* GetCollider();
 
 public:
     virtual CObject* Clone() = 0;

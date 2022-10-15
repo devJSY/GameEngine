@@ -2,6 +2,9 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CCollider.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CColliderMgr.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CComponent.cpp"
 
 

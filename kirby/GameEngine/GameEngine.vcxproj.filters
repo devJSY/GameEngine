@@ -99,6 +99,9 @@
     <Filter Include="소스 파일\06. Component\Collider">
       <UniqueIdentifier>{9d5f15c7-022e-4a10-a214-3cad5195bd0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\03. Manager\CColliderMgr">
+      <UniqueIdentifier>{8c75584b-1ae5-4335-89cf-daff31bed154}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -170,6 +173,9 @@
     <ClInclude Include="CCollider.h">
       <Filter>소스 파일\06. Component\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="CColliderMgr.h">
+      <Filter>소스 파일\03. Manager\CColliderMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -219,6 +225,9 @@
     </ClCompile>
     <ClCompile Include="CCollider.cpp">
       <Filter>소스 파일\06. Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="CColliderMgr.cpp">
+      <Filter>소스 파일\03. Manager\CColliderMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
