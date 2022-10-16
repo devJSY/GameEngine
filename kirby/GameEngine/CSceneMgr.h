@@ -1,7 +1,5 @@
 #pragma once
 
-#include "CRoot.h"
-
 class CScene;
 
 class CSceneMgr :

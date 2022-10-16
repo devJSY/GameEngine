@@ -102,6 +102,12 @@
     <Filter Include="소스 파일\04. Object\Monster\Ability_Monster\Walkie">
       <UniqueIdentifier>{afb21c8a-7700-4fdc-877e-9861c0c362f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\07. Module">
+      <UniqueIdentifier>{0c31e0cb-6e50-4d91-a595-2e3e43b33c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\GDIMgr">
+      <UniqueIdentifier>{cbe8e698-d8b1-408b-be2e-6f9abce67dbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -176,6 +182,12 @@
     <ClInclude Include="CColliderMgr.h">
       <Filter>소스 파일\03. Manager\CColliderMgr</Filter>
     </ClInclude>
+    <ClInclude Include="SelectGDI.h">
+      <Filter>소스 파일\07. Module</Filter>
+    </ClInclude>
+    <ClInclude Include="GDIMgr.h">
+      <Filter>소스 파일\03. Manager\GDIMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -228,6 +240,12 @@
     </ClCompile>
     <ClCompile Include="CColliderMgr.cpp">
       <Filter>소스 파일\03. Manager\CColliderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectGDI.cpp">
+      <Filter>소스 파일\07. Module</Filter>
+    </ClCompile>
+    <ClCompile Include="GDIMgr.cpp">
+      <Filter>소스 파일\03. Manager\GDIMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

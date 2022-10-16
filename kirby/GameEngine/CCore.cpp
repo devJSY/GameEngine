@@ -9,6 +9,7 @@
 #include "CEventMgr.h"
 #include "CPathMgr.h"
 #include "CColliderMgr.h"
+#include "GDIMgr.h"
 
 CCore::CCore()
 	: m_hWnd(nullptr)
@@ -55,6 +56,7 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 	CKeyMgr::GetInst()->init();
 	CSceneMgr::GetInst()->init();
 	CPathMgr::GetInst()->init();
+	GDIMgr::GetInst()->CreateBrushPen();
 
 	return S_OK;
 }

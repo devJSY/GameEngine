@@ -1,6 +1,9 @@
 #include "CCollider.h"
 
 #include "CObject.h"
+#include "SelectGDI.h"
+
+#include "GDIMgr.h"
 
 // CCollider ∞Ì¿Ø ID
 UINT CCollider::g_iNextID = 0;
@@ -34,6 +37,9 @@ void CCollider::Component_update()
 
 void CCollider::Component_render(HDC _dc)
 {
+	SelectGDI p(_dc, PEN_TYPE::GREEN);
+	SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
+
 	Rectangle(_dc
 		, int(m_vFinalPos.x - m_vScale.x / 2.f)
 		, int(m_vFinalPos.y - m_vScale.y / 2.f)

@@ -44,8 +44,14 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\GameEngine.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\GDIMgr.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\global_Func.cpp"
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\Kirby.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\SelectGDI.cpp"
 

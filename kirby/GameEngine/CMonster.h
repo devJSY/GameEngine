@@ -8,6 +8,7 @@ class CMonster :
 public:
     virtual void update();
     virtual void render(HDC _dc);
+    virtual void start();
 
     virtual void OnCollision(CCollider* _pOther) {};
     virtual void OnCollisionEnter(CCollider* _pOther) {};

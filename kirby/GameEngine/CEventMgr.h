@@ -1,7 +1,5 @@
 #pragma once
 
-#include "CRoot.h"
-
 struct tEvent
 {
     EVENT_TYPE  eEven;

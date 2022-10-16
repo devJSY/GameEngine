@@ -10,8 +10,6 @@
 Kirby::Kirby()
 {
 	CreateCollider();
-	GetCollider()->SetScale(Vec2(50.f, 50.f));
-	GetCollider()->SetOffsetPos(Vec2(500.f, 0.f));
 }
 
 Kirby::~Kirby()
@@ -75,4 +73,9 @@ void Kirby::OnCollisionEnter(CCollider* _pOther)
 void Kirby::OnCollisionExit(CCollider* _pOther)
 {
 
+}
+
+void Kirby::start()
+{
+	GetCollider()->SetScale(Vec2(50.f, 50.f));
 }

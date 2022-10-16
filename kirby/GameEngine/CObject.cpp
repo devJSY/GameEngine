@@ -23,12 +23,14 @@ CObject::CObject(const CObject& _origin)
 	, arr_Components{}
 	, m_bAlive(true)
 {
+	CCollider* pCollider = (CCollider*)_origin.arr_Components[(UINT)Component_TYPE::CCollider];
+
 	// 예외처리 추가 기존에 콜라이더 갖고있었던 경우에만 콜라이더 생성
-	if (nullptr != _origin.arr_Components[(UINT)Component_TYPE::CCollider])
+	if (nullptr != pCollider)
 	{
 		CreateCollider();
-		GetCollider()->SetScale(Vec2(50.f, 50.f));
-		GetCollider()->SetOffsetPos(Vec2(500.f, 0.f));
+		GetCollider()->SetScale(pCollider->GetScale());
+		GetCollider()->SetOffsetPos(pCollider->GetOffsetPos());
 	}	
 }
 

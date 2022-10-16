@@ -1,5 +1,5 @@
 #pragma once
-#include "CRoot.h"
+
 #include "global.h"
 
 class CObject;

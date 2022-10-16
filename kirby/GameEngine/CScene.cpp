@@ -67,3 +67,30 @@ void CScene::DeadObjectErase()
 		}
 	}
 }
+
+void CScene::start()
+{
+	for (int i = 0; i < (int)GROUP_TYPE::END; ++i)
+	{
+		for (size_t j = 0; j < m_arrObj[i].size(); ++j)
+		{
+			if (!m_arrObj[i][j]->IsDead())
+			{
+				m_arrObj[i][j]->start();
+			}
+		}
+	}
+}
+
+void CScene::DeleteAll()
+{
+	for (size_t i = 0; i < (UINT)GROUP_TYPE::END; ++i)
+	{
+		DeleteGroup((GROUP_TYPE)i);
+	}
+}
+
+void CScene::DeleteGroup(GROUP_TYPE _eTarget)
+{
+	Safe_Delete_Vec(m_arrObj[(UINT)_eTarget]);
+}

@@ -1,5 +1,5 @@
 #pragma once
-#include "CRoot.h"
+
 class CPathMgr :
     public CRoot
 {

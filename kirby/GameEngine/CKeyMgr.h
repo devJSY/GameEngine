@@ -1,5 +1,4 @@
 #pragma once
-#include "CRoot.h"
 
 enum class KEY_STATE
 {

@@ -1,5 +1,4 @@
 #pragma once
-#include "CRoot.h"
 
 enum class Component_TYPE
 {
@@ -20,13 +19,14 @@ private:
 
     CComponent*         arr_Components[(UINT)Component_TYPE::END];
 
-    bool                m_bAlive; // Dead 체크
+    bool                m_bAlive; // Dead Check
 
 public:
     virtual void update();
     virtual void Component_update() final;
     virtual void render(HDC _dc);
     virtual void Component_render(HDC _dc) final;
+    virtual void start() = 0; // Scene Enter() Afert Call Func
 
     virtual void OnCollision(CCollider* _pOther) {};
     virtual void OnCollisionEnter(CCollider* _pOther) {};

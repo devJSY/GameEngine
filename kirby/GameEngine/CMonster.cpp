@@ -7,8 +7,6 @@
 CMonster::CMonster()
 {
 	CreateCollider();
-	GetCollider()->SetScale(Vec2(50.f, 50.f));
-	GetCollider()->SetOffsetPos(Vec2(500.f, 0.f));
 }
 
 CMonster::~CMonster()
@@ -30,4 +28,12 @@ void CMonster::render(HDC _dc)
 		, int(vPos.x + vScale.x / 2.f)
 		, int(vPos.y + vScale.y / 2.f)
 	);
+
+	Component_render(_dc);
+}
+
+
+void CMonster::start()
+{
+	GetCollider()->SetScale(Vec2(25.f, 25.f));
 }

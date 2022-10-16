@@ -22,6 +22,7 @@ public:
     UINT GetID() { return m_iID; }
 
     Vec2 GetFinalPos() { return m_vFinalPos; }
+    Vec2 GetOffsetPos() { return m_vOffsetPos; }
     Vec2 GetScale() { return m_vScale; }
 
     void SetOffsetPos(Vec2 _vOffsetPos) { m_vOffsetPos = _vOffsetPos; }
