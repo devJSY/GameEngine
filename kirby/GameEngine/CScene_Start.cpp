@@ -46,10 +46,10 @@ void CScene_Start::Enter()
 	CreateObject(gMonObj, GROUP_TYPE::MONSTER);
 
 
-	//CObject* gObj2 = gObj->Clone();
-	//gObj2->SetPos(gObj->GetPos() + Vec2(0.f, 300.f));
-	//gObj2->SetName(L"CopyKirby");
-	//CreateObject(gObj2, GROUP_TYPE::PLAYER);
+	CObject* gObj2 = gObj->Clone();
+	gObj2->SetPos(gObj->GetPos() + Vec2(0.f, 300.f));
+	gObj2->SetName(L"CopyKirby");
+	CreateObject(gObj2, GROUP_TYPE::PLAYER);
 
 
 

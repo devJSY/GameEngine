@@ -74,6 +74,9 @@ void CCore::progress()
 	CTimeMgr::GetInst()->render(m_memDC);
 	CSceneMgr::GetInst()->render(m_memDC);
 
+	// Dead 체크된 Object 삭제
+	CSceneMgr::GetInst()->DeadObjectErase();
+
 	// m_hDC 에 m_memDC에 그려진 비트맵을 옮겨 담는다
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y
 		, m_memDC, 0, 0, SRCCOPY);

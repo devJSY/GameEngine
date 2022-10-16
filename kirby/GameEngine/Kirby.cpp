@@ -59,3 +59,20 @@ void Kirby::render(HDC _dc)
 
 	Component_render(_dc);
 }
+
+void Kirby::OnCollision(CCollider* _pOther)
+{
+}
+
+void Kirby::OnCollisionEnter(CCollider* _pOther)
+{
+	if (L"CopyKirby" == GetName())
+	{
+		DeleteObject(this);
+	}
+}
+
+void Kirby::OnCollisionExit(CCollider* _pOther)
+{
+
+}

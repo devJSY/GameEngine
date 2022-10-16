@@ -43,6 +43,11 @@ void CSceneMgr::render(HDC _dc)
 	m_pCurScene->render(_dc);
 }
 
+void CSceneMgr::DeadObjectErase()
+{
+	m_pCurScene->DeadObjectErase();
+}
+
 void CSceneMgr::ChangeScene(SCENE_TYPE _eNext)
 {
 	m_pCurScene->Exit();

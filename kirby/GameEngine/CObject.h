@@ -1,6 +1,12 @@
 #pragma once
 #include "CRoot.h"
 
+enum class Component_TYPE
+{
+    CCollider,
+    END,
+};
+
 class CComponent;
 class CCollider;
 
@@ -12,9 +18,9 @@ private:
     Vec2                 vScale;
     wstring              m_strName;
 
-    map<wstring, CComponent*>  m_Component;
+    CComponent*         arr_Components[(UINT)Component_TYPE::END];
 
-    bool        m_bAlive; // Dead 체크
+    bool                m_bAlive; // Dead 체크
 
 public:
     virtual void update();

@@ -46,3 +46,24 @@ void CScene::render(HDC _dc)
 		}
 	}
 }
+
+void CScene::DeadObjectErase()
+{
+	for (int i = 0; i < (int)GROUP_TYPE::END; ++i)
+	{
+		vector<CObject*>::iterator iter = m_arrObj[i].begin();
+
+		for (; iter != m_arrObj[i].end();)
+		{
+			if ((*iter)->IsDead())
+			{
+				// 삭제 될경우 다음 순번을 iter에 넣음
+				iter = m_arrObj[i].erase(iter);
+			}
+			else
+			{
+				++iter;
+			}
+		}
+	}
+}

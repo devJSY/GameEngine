@@ -17,6 +17,7 @@ public:
     void init();
     void update();
     void render(HDC _dc);
+    void DeadObjectErase();
 
 
 public:
