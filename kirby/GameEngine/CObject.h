@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CCamera.h"
+
 enum class Component_TYPE
 {
     CCollider,

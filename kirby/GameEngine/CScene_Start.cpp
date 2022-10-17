@@ -8,6 +8,7 @@
 
 #include "CColliderMgr.h"
 #include "CSceneMgr.h"
+#include "CCamera.h"
 
 
 CScene_Start::CScene_Start()
@@ -46,6 +47,9 @@ void CScene_Start::Enter()
 
 	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);
 
+	//CCamera::GetInst()->SetLookAt(vResolution / 2.f);
+	CCamera::GetInst()->SetTarget(gObj);
+	
 	start();
 }
 

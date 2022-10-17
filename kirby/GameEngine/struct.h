@@ -8,6 +8,30 @@ public:
 	float y;
 
 public:
+	bool IsZero()
+	{
+		if (0.f == x && 0.f == y)
+			return true;
+		return false;
+	}
+
+	float Length()
+	{
+		return (float)sqrt(x * x + y * y);
+	}
+
+	Vec2& Normalize()
+	{
+		float length = Length();
+
+		assert(length != 0.f);
+		x /= length;
+		y /= length;
+
+		return *this;
+	}
+
+public:
 	Vec2()
 		: x(0.f)
 		, y(0.f)
@@ -57,6 +81,27 @@ public:
 	{
 		assert(!(0.f == _vOther.x || 0.f == _vOther.y) || !(0.f == x || 0.f == y));
 		return (Vec2(x / _vOther.x, y / _vOther.y));
+	}
+
+	Vec2 operator + (float _f)
+	{
+		return (Vec2(x + _f, y + _f));
+	}
+
+	Vec2 operator - (float _f)
+	{
+		return (Vec2(x - _f, y - _f));
+	}
+
+	Vec2 operator * (float _f)
+	{
+		return (Vec2(x * _f, y * _f));
+	}
+
+	Vec2 operator / (float _f)
+	{
+		assert(!(0.f == x || 0.f == y) || !(0.f == _f));
+		return (Vec2(x / _f, y / _f));
 	}
 
 	void operator += (Vec2 _vOther)

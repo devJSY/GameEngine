@@ -1,4 +1,7 @@
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CCamera.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CCollider.cpp"
 
 

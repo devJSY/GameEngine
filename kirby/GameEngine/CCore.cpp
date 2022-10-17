@@ -13,6 +13,7 @@
 #include "CColliderMgr.h"
 #include "GDIMgr.h"
 #include "CResMgr.h"
+#include "CCamera.h"
 
 
 CCore::CCore()
@@ -49,6 +50,7 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 	CKeyMgr::GetInst()->init();
 	GDIMgr::GetInst()->CreateBrushPen();
 	CSceneMgr::GetInst()->init();
+	CCamera::GetInst()->init();
 
 	return S_OK;
 }
@@ -62,11 +64,13 @@ void CCore::progress()
 	CTimeMgr::GetInst()->update();
 	CKeyMgr::GetInst()->update();
 	CSceneMgr::GetInst()->update();
-	CColliderMgr::GetInst()->upadte();
+	CColliderMgr::GetInst()->update();
+	CCamera::GetInst()->update();
 
 	// Manager render
 	CTimeMgr::GetInst()->render(m_pMemTex->GetDC());
 	CSceneMgr::GetInst()->render(m_pMemTex->GetDC());
+	CCamera::GetInst()->render(m_pMemTex->GetDC());
 
 	// Dead 체크된 Object 삭제
 	CSceneMgr::GetInst()->DeadObjectErase();

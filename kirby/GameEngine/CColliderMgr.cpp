@@ -16,7 +16,7 @@ CColliderMgr::~CColliderMgr()
 {
 }
 
-void CColliderMgr::upadte()
+void CColliderMgr::update()
 {
 	for (UINT iRow = 0; iRow < (UINT)GROUP_TYPE::END; ++iRow)
 	{

@@ -15,6 +15,9 @@ using std::vector;
 using std::map;
 using std::make_pair;
 
+#include <list>
+using std::list;
+
 #include <string>
 using std::string;
 using std::wstring;

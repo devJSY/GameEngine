@@ -36,9 +36,8 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight)
 {
 	// Alpha Blend 
 
-
 	HDC mainDC = CCore::GetInst()->GetMainDC();
-	Vec2 vResolution = CCore::GetInst()->GetResolution();
+	//Vec2 vResolution = CCore::GetInst()->GetResolution();
 
 	// 이중 버퍼링용 Bitmap, DC 생성
 	m_hBit = CreateCompatibleBitmap(mainDC, (int)_iWidth, (int)_iHeight);

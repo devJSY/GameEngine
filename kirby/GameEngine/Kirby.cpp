@@ -51,7 +51,7 @@ void Kirby::render(HDC _dc)
 	int iWidth = m_pTex->Width();
 	int iHeight = m_pTex->Height();
 
-	Vec2 vPos = GetPos();
+	Vec2 vPos = CCamera::GetInst()->GetRenderPos(GetPos());
 
 	TransparentBlt(_dc
 		, int(vPos.x - (float)(iWidth / 2))
