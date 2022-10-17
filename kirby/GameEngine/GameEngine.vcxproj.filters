@@ -18,20 +18,11 @@
     <Filter Include="소스 파일\04. Object">
       <UniqueIdentifier>{0aa28ead-1fdf-47d0-94a3-7458f178c79b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\03. Manager\CKeyMgr">
-      <UniqueIdentifier>{40077e71-8679-4ca2-9dc6-f11024741a8e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\default">
       <UniqueIdentifier>{ea162030-fb17-40b7-bd9d-af238d8fdfa0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\03. Manager\CTimeMgr">
-      <UniqueIdentifier>{5bee7ad1-979d-42b7-a7ac-073c8e448554}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\05. Scene">
       <UniqueIdentifier>{7a35b618-3941-4b6d-b6bd-de04e5981ab4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\03. Manager\CSceneMgr">
-      <UniqueIdentifier>{77b39e01-2337-45a3-b269-42061f9f41ae}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\05. Scene\Scene_Start">
       <UniqueIdentifier>{9ef5524c-b248-4249-a9c7-562e33f9ae6f}</UniqueIdentifier>
@@ -54,17 +45,8 @@
     <Filter Include="소스 파일\06. Component">
       <UniqueIdentifier>{35c09d63-c2fc-4260-9933-c484a41e74d6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\03. Manager\CEventMgr">
-      <UniqueIdentifier>{79300f37-3116-4dd3-85ac-d9ed637e9d7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\03. Manager\CPathMgr">
-      <UniqueIdentifier>{1148bc1b-2aa7-4814-9038-7ffb9c938153}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\06. Component\Collider">
       <UniqueIdentifier>{9d5f15c7-022e-4a10-a214-3cad5195bd0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\03. Manager\CColliderMgr">
-      <UniqueIdentifier>{8c75584b-1ae5-4335-89cf-daff31bed154}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\04. Object\Monster\Normal_Monster">
       <UniqueIdentifier>{bb2c9cae-d6b3-4673-aeba-714e397dc278}</UniqueIdentifier>
@@ -108,6 +90,33 @@
     <Filter Include="소스 파일\03. Manager\GDIMgr">
       <UniqueIdentifier>{cbe8e698-d8b1-408b-be2e-6f9abce67dbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\08. Resource">
+      <UniqueIdentifier>{1e9f747f-97ec-4ed5-ab9b-c3a4a97b6ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\08. Resource\Texture">
+      <UniqueIdentifier>{c0e067b8-ddc7-4959-8ce3-bd70cd5943b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\ResMgr">
+      <UniqueIdentifier>{b3322b1e-3294-4371-8a8b-8a3796fdec0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\SceneMgr">
+      <UniqueIdentifier>{77b39e01-2337-45a3-b269-42061f9f41ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\TimeMgr">
+      <UniqueIdentifier>{5bee7ad1-979d-42b7-a7ac-073c8e448554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\PathMgr">
+      <UniqueIdentifier>{1148bc1b-2aa7-4814-9038-7ffb9c938153}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\KeyMgr">
+      <UniqueIdentifier>{40077e71-8679-4ca2-9dc6-f11024741a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\EventMgr">
+      <UniqueIdentifier>{79300f37-3116-4dd3-85ac-d9ed637e9d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\ColliderMgr">
+      <UniqueIdentifier>{8c75584b-1ae5-4335-89cf-daff31bed154}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -135,7 +144,7 @@
       <Filter>소스 파일\01.Header</Filter>
     </ClInclude>
     <ClInclude Include="CTimeMgr.h">
-      <Filter>소스 파일\03. Manager\CTimeMgr</Filter>
+      <Filter>소스 파일\03. Manager\TimeMgr</Filter>
     </ClInclude>
     <ClInclude Include="struct.h">
       <Filter>소스 파일\01.Header</Filter>
@@ -144,13 +153,13 @@
       <Filter>소스 파일\04. Object</Filter>
     </ClInclude>
     <ClInclude Include="CKeyMgr.h">
-      <Filter>소스 파일\03. Manager\CKeyMgr</Filter>
+      <Filter>소스 파일\03. Manager\KeyMgr</Filter>
     </ClInclude>
     <ClInclude Include="CScene.h">
       <Filter>소스 파일\05. Scene</Filter>
     </ClInclude>
     <ClInclude Include="CSceneMgr.h">
-      <Filter>소스 파일\03. Manager\CSceneMgr</Filter>
+      <Filter>소스 파일\03. Manager\SceneMgr</Filter>
     </ClInclude>
     <ClInclude Include="global_Func.h">
       <Filter>소스 파일\01.Header</Filter>
@@ -168,10 +177,10 @@
       <Filter>소스 파일\06. Component</Filter>
     </ClInclude>
     <ClInclude Include="CEventMgr.h">
-      <Filter>소스 파일\03. Manager\CEventMgr</Filter>
+      <Filter>소스 파일\03. Manager\EventMgr</Filter>
     </ClInclude>
     <ClInclude Include="CPathMgr.h">
-      <Filter>소스 파일\03. Manager\CPathMgr</Filter>
+      <Filter>소스 파일\03. Manager\PathMgr</Filter>
     </ClInclude>
     <ClInclude Include="CMonster.h">
       <Filter>소스 파일\04. Object\Monster</Filter>
@@ -180,13 +189,22 @@
       <Filter>소스 파일\06. Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="CColliderMgr.h">
-      <Filter>소스 파일\03. Manager\CColliderMgr</Filter>
+      <Filter>소스 파일\03. Manager\ColliderMgr</Filter>
     </ClInclude>
     <ClInclude Include="SelectGDI.h">
       <Filter>소스 파일\07. Module</Filter>
     </ClInclude>
     <ClInclude Include="GDIMgr.h">
       <Filter>소스 파일\03. Manager\GDIMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CRes.h">
+      <Filter>소스 파일\08. Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>소스 파일\08. Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="CResMgr.h">
+      <Filter>소스 파일\03. Manager\ResMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,19 +215,19 @@
       <Filter>소스 파일\02. Core</Filter>
     </ClCompile>
     <ClCompile Include="CTimeMgr.cpp">
-      <Filter>소스 파일\03. Manager\CTimeMgr</Filter>
+      <Filter>소스 파일\03. Manager\TimeMgr</Filter>
     </ClCompile>
     <ClCompile Include="CObject.cpp">
       <Filter>소스 파일\04. Object</Filter>
     </ClCompile>
     <ClCompile Include="CKeyMgr.cpp">
-      <Filter>소스 파일\03. Manager\CKeyMgr</Filter>
+      <Filter>소스 파일\03. Manager\KeyMgr</Filter>
     </ClCompile>
     <ClCompile Include="CScene.cpp">
       <Filter>소스 파일\05. Scene</Filter>
     </ClCompile>
     <ClCompile Include="CSceneMgr.cpp">
-      <Filter>소스 파일\03. Manager\CSceneMgr</Filter>
+      <Filter>소스 파일\03. Manager\SceneMgr</Filter>
     </ClCompile>
     <ClCompile Include="global_Func.cpp">
       <Filter>소스 파일\01.Header</Filter>
@@ -227,10 +245,10 @@
       <Filter>소스 파일\06. Component</Filter>
     </ClCompile>
     <ClCompile Include="CEventMgr.cpp">
-      <Filter>소스 파일\03. Manager\CEventMgr</Filter>
+      <Filter>소스 파일\03. Manager\EventMgr</Filter>
     </ClCompile>
     <ClCompile Include="CPathMgr.cpp">
-      <Filter>소스 파일\03. Manager\CPathMgr</Filter>
+      <Filter>소스 파일\03. Manager\PathMgr</Filter>
     </ClCompile>
     <ClCompile Include="CMonster.cpp">
       <Filter>소스 파일\04. Object\Monster</Filter>
@@ -239,13 +257,22 @@
       <Filter>소스 파일\06. Component\Collider</Filter>
     </ClCompile>
     <ClCompile Include="CColliderMgr.cpp">
-      <Filter>소스 파일\03. Manager\CColliderMgr</Filter>
+      <Filter>소스 파일\03. Manager\ColliderMgr</Filter>
     </ClCompile>
     <ClCompile Include="SelectGDI.cpp">
       <Filter>소스 파일\07. Module</Filter>
     </ClCompile>
     <ClCompile Include="GDIMgr.cpp">
       <Filter>소스 파일\03. Manager\GDIMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CRes.cpp">
+      <Filter>소스 파일\08. Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>소스 파일\08. Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="CResMgr.cpp">
+      <Filter>소스 파일\03. Manager\ResMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

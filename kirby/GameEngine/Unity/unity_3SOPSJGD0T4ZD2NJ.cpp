@@ -26,6 +26,12 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CPathMgr.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CRes.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CResMgr.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CRoot.cpp"
 
 
@@ -36,6 +42,9 @@
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_Start.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CTexture.cpp"
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CTimeMgr.cpp"

@@ -4,6 +4,7 @@
 class CMonster :
     public CObject
 {
+    CTexture* m_pTex;
 
 public:
     virtual void update();

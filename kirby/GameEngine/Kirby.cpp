@@ -3,13 +3,16 @@
 
 #include "CCore.h"
 #include "CCollider.h"
+#include "CTexture.h"
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "CResMgr.h"
 
 Kirby::Kirby()
 {
 	CreateCollider();
+	m_pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"\\Texture\\Player1.bmp");
 }
 
 Kirby::~Kirby()
@@ -45,15 +48,18 @@ void Kirby::update()
 
 void Kirby::render(HDC _dc)
 {
-	Vec2 vPos = GetPos();
-	Vec2 vScale = GetScale();
+	int iWidth = m_pTex->Width();
+	int iHeight = m_pTex->Height();
 
-	Rectangle(MemoryDC
-		, int(vPos.x - vScale.x / 2.f)
-		, int(vPos.y - vScale.y / 2.f)
-		, int(vPos.x + vScale.x / 2.f)
-		, int(vPos.y + vScale.y / 2.f)
-	);
+	Vec2 vPos = GetPos();
+
+	TransparentBlt(_dc
+		, int(vPos.x - (float)(iWidth / 2))
+		, int(vPos.y - (float)(iHeight / 2))
+		, iWidth, iHeight
+		, m_pTex->GetDC()
+		, 0, 0, iWidth, iHeight
+		, RGB(255, 0, 255));
 
 	Component_render(_dc);
 }

@@ -1,9 +1,12 @@
 #pragma once
 #include "CObject.h"
 
+class CTexture;
+
 class Kirby :
     public CObject
 {
+    CTexture* m_pTex;
 
 public:
     virtual void update();

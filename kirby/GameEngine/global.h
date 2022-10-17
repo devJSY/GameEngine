@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include <assert.h>
 
+#pragma comment(lib, "Msimg32.lib") // TransparentBlt()
+
 #include "Resource.h"
 
 #include <vector>

@@ -1,5 +1,6 @@
 #pragma once
 
+class CTexture;
 class CCore :
 	public CRoot
 {
@@ -10,8 +11,7 @@ private:
 	HDC			m_hDC;			// 메인 윈도우 DC
 	POINT		m_ptResolution; // 윈도우 해상도
 
-	HBITMAP		m_hBit;			// 이중 버퍼링용 비트맵
-	HDC			m_memDC;		// 이중 버퍼링용 DC
+	CTexture*	m_pMemTex;		// 이중 버퍼링 용 Texture
 
 public:
 	int init(HWND _hWnd, POINT _ptResloution);
@@ -20,7 +20,6 @@ public:
 public:
 	HWND GetMainHwnd() { return m_hWnd; }
 	HDC GetMainDC() { return m_hDC; }
-	HDC GetMemoryDC() { return m_memDC; }
 
 	POINT GetResolution() { return m_ptResolution; }
 };

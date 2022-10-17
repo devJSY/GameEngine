@@ -150,10 +150,13 @@
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="CRes.h" />
+    <ClInclude Include="CResMgr.h" />
     <ClInclude Include="CRoot.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CScene_Start.h" />
+    <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
@@ -178,10 +181,13 @@
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CRes.cpp" />
+    <ClCompile Include="CResMgr.cpp" />
     <ClCompile Include="CRoot.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CScene_Start.cpp" />
+    <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GDIMgr.cpp" />

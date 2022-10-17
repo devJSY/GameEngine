@@ -18,7 +18,6 @@
 
 #define MainHwnd CCore::GetInst()->GetMainHwnd()
 #define MainDC CCore::GetInst()->GetMainDC()
-#define MemoryDC CCore::GetInst()->GetMemoryDC()
 #define MOUSE_POS CKeyMgr::GetInst()->GetMousePos()
 
 
