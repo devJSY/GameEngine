@@ -30,3 +30,19 @@ void ChangeScene(SCENE_TYPE _eNext)
 
 	CEventMgr::GetInst()->AddEvent(evn);
 }
+
+void FScanf(char* _pOutBuff, FILE* _pFile)
+{
+	int i = 0;
+	while (true)
+	{
+		char c = (char)getc(_pFile);	// 파일로부터 한글자씩 잘라온다
+		if (c == '\n')					// 개행 문자였다면 널문자로 만든뒤 break
+		{
+			_pOutBuff[i++] = '\0';
+			break;
+		}
+
+		_pOutBuff[i++] = c;
+	}
+}

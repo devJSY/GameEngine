@@ -27,7 +27,7 @@ void CPathMgr::init()
 	}
 
 	// content 경로 추가
-	wcscat_s(m_szContentPath, 255, L"\\Bulid\\Release\\content");
+	wcscat_s(m_szContentPath, 255, L"\\Bulid\\Release\\content\\");
 }
 
 wstring CPathMgr::GetRelativePath(const wchar_t* _filepath)

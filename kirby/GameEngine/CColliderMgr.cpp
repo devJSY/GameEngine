@@ -70,7 +70,7 @@ void CColliderMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 	for (int i = 0; i < vecLeft.size(); ++i)
 	{
 		// 콜라이더가 없을경우 스킵
-		if(nullptr == vecLeft[i]->GetCollider())
+		if(nullptr == vecLeft[i]->GetComponents(Component_TYPE::Collider))
 		{
 			continue;
 		}
@@ -78,14 +78,14 @@ void CColliderMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 		for (int j = 0; j < vecRight.size(); ++j)
 		{
 			// 콜라이더가 없거나 자기 자신과의 충돌 체크인 경우 스킵
-			if (nullptr == vecRight[j]->GetCollider()
+			if (nullptr == vecRight[j]->GetComponents(Component_TYPE::Collider)
 				|| vecLeft[i] == vecRight[j])
 			{
 				continue;
 			}
 
-			CCollider* pLeftCol = vecLeft[i]->GetCollider();
-			CCollider* pRightCol = vecRight[j]->GetCollider();
+			CCollider* pLeftCol = (CCollider*)vecLeft[i]->GetComponents(Component_TYPE::Collider);
+			CCollider* pRightCol = (CCollider*)vecRight[j]->GetComponents(Component_TYPE::Collider);
 
 			COLLIDER_ID ID;
 			ID.iLeft_id = pLeftCol->GetID();

@@ -1,4 +1,10 @@
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CAnimation.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CAnimator.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CCamera.cpp"
 
 

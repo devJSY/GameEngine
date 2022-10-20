@@ -4,11 +4,10 @@
 #include "CObject.h"
 #include "CComponent.h"
 #include "CCollider.h"
+#include "CAnimator.h"
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
-
-
 
 CObject::CObject()
 	: m_bAlive(true)
@@ -23,15 +22,27 @@ CObject::CObject(const CObject& _origin)
 	, arr_Components{}
 	, m_bAlive(true)
 {
-	CCollider* pCollider = (CCollider*)_origin.arr_Components[(UINT)Component_TYPE::CCollider];
+	CComponent* pComponent = nullptr;
 
-	// 예외처리 추가 기존에 콜라이더 갖고있었던 경우에만 콜라이더 생성
-	if (nullptr != pCollider)
+	for (int i = 0; i < (int)Component_TYPE::END; ++i)
 	{
-		CreateCollider();
-		GetCollider()->SetScale(pCollider->GetScale());
-		GetCollider()->SetOffsetPos(pCollider->GetOffsetPos());
-	}	
+		if (nullptr != _origin.arr_Components[(UINT)i])
+		{
+			CreateComponents(Component_TYPE(i));
+		}
+	}
+
+	// ====================
+	// 각 컴포넌트 예외 처리 
+	// ====================
+
+	// 기존에 콜라이더 갖고있었던 경우에만 콜라이더 생성
+	if (nullptr != arr_Components[(UINT)Component_TYPE::Collider])
+	{
+		CCollider* pCollider = (CCollider*)GetComponents(Component_TYPE::Collider);
+		pCollider->SetScale(pCollider->GetScale());
+		pCollider->SetOffsetPos(pCollider->GetOffsetPos());
+	}
 }
 
 CObject::~CObject()
@@ -47,6 +58,7 @@ CObject::~CObject()
 
 void CObject::update()
 {
+	// 기본 업데이트 없음
 }
 
 void CObject::Component_update()
@@ -62,7 +74,7 @@ void CObject::Component_update()
 
 void CObject::render(HDC _dc)
 {
-
+	// 기본 렌더 없음
 }
 
 void CObject::Component_render(HDC _dc)
@@ -76,21 +88,30 @@ void CObject::Component_render(HDC _dc)
 	}
 }
 
-
-void CObject::CreateCollider()
+void CObject::CreateComponents(Component_TYPE _etype)
 {
-	CCollider* pCollider = new CCollider;
-	pCollider->m_pOwner = this;
+	if (Component_TYPE::Collider == _etype)
+	{
+		CCollider* pCollider = new CCollider;
+		pCollider->m_pOwner = this;
 
-	arr_Components[(UINT)Component_TYPE::CCollider] = pCollider;
+		arr_Components[(UINT)Component_TYPE::Collider] = pCollider;
+	}
+	else if (Component_TYPE::Animator == _etype)
+	{
+		CAnimator* pAnimator = new CAnimator;
+		pAnimator->m_pOwner = this;
+
+		arr_Components[(UINT)Component_TYPE::Animator] = pAnimator;
+	}
 }
 
-CCollider* CObject::GetCollider()
+CComponent* CObject::GetComponents(Component_TYPE _etype)
 {
-	if (nullptr == arr_Components[(UINT)Component_TYPE::CCollider])
+	if (nullptr == arr_Components[(UINT)_etype])
 	{
 		return nullptr;
 	}
 
-	return (CCollider*)arr_Components[(UINT)Component_TYPE::CCollider];
+	return arr_Components[(UINT)_etype];
 }

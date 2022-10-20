@@ -32,6 +32,15 @@ void CCamera::init()
 
 void CCamera::update()
 {
+	if (KEY_HOLD(KEY::W))
+		m_vLookAt.y -= 500.f * fDT;
+	if (KEY_HOLD(KEY::S))
+		m_vLookAt.y += 500.f * fDT;
+	if (KEY_HOLD(KEY::A))
+		m_vLookAt.x -= 500.f * fDT;
+	if (KEY_HOLD(KEY::D))
+		m_vLookAt.x += 500.f * fDT;
+
 	if (m_pTargetObj)
 	{
 		if (m_pTargetObj->IsDead())
@@ -45,15 +54,7 @@ void CCamera::update()
 			m_vLookAt = m_pTargetObj->GetPos();
 		}
 	}
-
-	if (KEY_HOLD(KEY::W))
-		m_vLookAt.y -= 500.f * fDT;
-	if (KEY_HOLD(KEY::S))
-		m_vLookAt.y += 500.f * fDT;
-	if (KEY_HOLD(KEY::A))
-		m_vLookAt.x -= 500.f * fDT;
-	if (KEY_HOLD(KEY::D))
-		m_vLookAt.x += 500.f * fDT;
+	
 
 	// 현재 카메아 위치값 계산
 	CalDiff();

@@ -141,6 +141,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCollider.h" />
     <ClInclude Include="CColliderMgr.h" />
@@ -173,6 +175,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCollider.cpp" />
     <ClCompile Include="CColliderMgr.cpp" />

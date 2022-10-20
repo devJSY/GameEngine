@@ -9,7 +9,7 @@
 
 CMonster::CMonster()
 {
-	CreateCollider();
+	CreateComponents(Component_TYPE::Collider);
 	m_pTex = CResMgr::GetInst()->LoadTexture(L"MonTex", L"\\Texture\\Player1.bmp");
 }
 
@@ -42,5 +42,6 @@ void CMonster::render(HDC _dc)
 
 void CMonster::start()
 {
-	GetCollider()->SetScale(Vec2(25.f, 25.f));
+	CCollider* pCollider = ((CCollider*)GetComponents(Component_TYPE::Collider));
+	pCollider->SetScale(Vec2(50.f, 50.f));
 }

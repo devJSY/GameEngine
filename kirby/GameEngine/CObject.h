@@ -4,12 +4,14 @@
 
 enum class Component_TYPE
 {
-    CCollider,
+    Collider,
+    Animator,
     END,
 };
 
 class CComponent;
 class CCollider;
+class CAnimator;
 
 class CObject :
     public CRoot
@@ -47,8 +49,8 @@ public:
     bool IsDead() { return !m_bAlive; }
 
 public:
-    void CreateCollider();
-    CCollider* GetCollider();
+    void CreateComponents(Component_TYPE _etype);
+    CComponent* GetComponents(Component_TYPE _etype);
 
 public:
     virtual CObject* Clone() = 0;

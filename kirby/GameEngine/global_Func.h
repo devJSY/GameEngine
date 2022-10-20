@@ -34,3 +34,6 @@ void Safe_Delete_Map(map<T1, T2>& _map)
 	}
 	_map.clear();
 }
+
+
+void FScanf(char* _pOutBuff, FILE* _pFile);
