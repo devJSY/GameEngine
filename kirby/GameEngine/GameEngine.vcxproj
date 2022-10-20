@@ -161,6 +161,8 @@
     <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTimeMgr.h" />
+    <ClInclude Include="CUI.h" />
+    <ClInclude Include="CUIMgr.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameEngine.h" />
@@ -195,6 +197,8 @@
     <ClCompile Include="CScene_Start.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
+    <ClCompile Include="CUI.cpp" />
+    <ClCompile Include="CUIMgr.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GDIMgr.cpp" />
     <ClCompile Include="global_Func.cpp" />

@@ -59,6 +59,12 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CTimeMgr.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CUI.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CUIMgr.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\GameEngine.cpp"
 
 

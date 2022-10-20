@@ -74,18 +74,20 @@ void Kirby::update()
 
 void Kirby::render(HDC _dc)
 {
-	int iWidth = m_pTex->Width();
+	// 텍스쳐 렌더링
+	/*int iWidth = m_pTex->Width();
 	int iHeight = m_pTex->Height();
 
 	Vec2 vPos = CCamera::GetInst()->GetRenderPos(GetPos());
 
-	//TransparentBlt(_dc
-	//	, int(vPos.x - (float)(iWidth / 2))
-	//	, int(vPos.y - (float)(iHeight / 2))
-	//	, iWidth, iHeight
-	//	, m_pTex->GetDC()
-	//	, 0, 0, iWidth, iHeight
-	//	, RGB(255, 0, 255));
+	
+	TransparentBlt(_dc
+		, int(vPos.x - (float)(iWidth / 2))
+		, int(vPos.y - (float)(iHeight / 2))
+		, iWidth, iHeight
+		, m_pTex->GetDC()
+		, 0, 0, iWidth, iHeight
+		, RGB(255, 0, 255));*/
 
 	Component_render(_dc);
 }

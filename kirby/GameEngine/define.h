@@ -34,6 +34,7 @@ enum class GROUP_TYPE
 	NON_DEFINE,
 	PLAYER,
 	MONSTER,
+	UI,
 
 	END = 32,
 };

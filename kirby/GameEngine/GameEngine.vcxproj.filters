@@ -126,6 +126,12 @@
     <Filter Include="소스 파일\06. Component\Animator\Animation">
       <UniqueIdentifier>{324b1f08-f8fc-495d-a180-cac862b90e59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\04. Object\UI">
+      <UniqueIdentifier>{adb8ba7a-087a-4954-8b08-d12c4c549d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\03. Manager\UIMgr">
+      <UniqueIdentifier>{9b263382-eaf8-479a-9324-bbc16d3b506f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -224,6 +230,12 @@
     <ClInclude Include="CAnimation.h">
       <Filter>소스 파일\06. Component\Animator\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="CUI.h">
+      <Filter>소스 파일\04. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CUIMgr.h">
+      <Filter>소스 파일\03. Manager\UIMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -300,6 +312,12 @@
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>소스 파일\06. Component\Animator\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="CUI.cpp">
+      <Filter>소스 파일\04. Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CUIMgr.cpp">
+      <Filter>소스 파일\03. Manager\UIMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
