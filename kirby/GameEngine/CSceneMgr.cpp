@@ -3,6 +3,8 @@
 
 #include "CScene.h"
 #include "CScene_Start.h"
+#include "CScene_Animation_Tool.h"
+
 
 CSceneMgr::CSceneMgr()
 	: m_arrScene{}
@@ -27,10 +29,12 @@ void CSceneMgr::init()
 	CScene* StartScene = new CScene_Start;
 	m_arrScene[(UINT)SCENE_TYPE::START] = StartScene;
 
+	CScene* Animation_Tool = new CScene_Animation_Tool;
+	m_arrScene[(UINT)SCENE_TYPE::Animation_Tool] = Animation_Tool;
+
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
 
 	m_pCurScene->Enter();
-	m_pCurScene->Exit();
 }
 
 void CSceneMgr::update()

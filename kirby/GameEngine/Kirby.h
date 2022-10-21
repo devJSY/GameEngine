@@ -21,6 +21,6 @@ public:
 
 public:
     Kirby();
-    ~Kirby();
+    virtual ~Kirby();
 };
 

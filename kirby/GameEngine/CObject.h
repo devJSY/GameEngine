@@ -63,6 +63,6 @@ private:
 public:
     CObject();
     CObject(const CObject& _origin);
-    ~CObject();
+    virtual ~CObject();
 };
 

@@ -45,6 +45,7 @@ enum class SCENE_TYPE
 	STAGE_01,
 	STAGE_02,
 	STAGE_03,
+	Animation_Tool,
 
 	END,
 };

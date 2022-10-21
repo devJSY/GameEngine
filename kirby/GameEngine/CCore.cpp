@@ -14,6 +14,7 @@
 #include "GDIMgr.h"
 #include "CResMgr.h"
 #include "CCamera.h"
+#include "CUIMgr.h"
 
 
 CCore::CCore()
@@ -66,6 +67,7 @@ void CCore::progress()
 	CSceneMgr::GetInst()->update();
 	CColliderMgr::GetInst()->update();
 	CCamera::GetInst()->update();
+	CUIMgr::GetInst()->update();
 
 	// Manager render
 	CTimeMgr::GetInst()->render(m_pMemTex->GetDC());

@@ -132,6 +132,15 @@
     <Filter Include="소스 파일\03. Manager\UIMgr">
       <UniqueIdentifier>{9b263382-eaf8-479a-9324-bbc16d3b506f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\05. Scene\Scene_Animation_Tool">
+      <UniqueIdentifier>{09a8212a-d28c-4460-b919-a47007e17e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\UI\PanelUI">
+      <UniqueIdentifier>{af4bb4fb-7eca-436e-8ae1-c61979c22757}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\04. Object\UI\BtnUI">
+      <UniqueIdentifier>{25d11cf4-dc7d-4a1b-bfb8-afd058a7622a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -236,6 +245,15 @@
     <ClInclude Include="CUIMgr.h">
       <Filter>소스 파일\03. Manager\UIMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Animation_Tool.h">
+      <Filter>소스 파일\05. Scene\Scene_Animation_Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="CBtnUI.h">
+      <Filter>소스 파일\04. Object\UI\BtnUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CPanelUI.h">
+      <Filter>소스 파일\04. Object\UI\PanelUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -318,6 +336,15 @@
     </ClCompile>
     <ClCompile Include="CUIMgr.cpp">
       <Filter>소스 파일\03. Manager\UIMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Animation_Tool.cpp">
+      <Filter>소스 파일\05. Scene\Scene_Animation_Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="CBtnUI.cpp">
+      <Filter>소스 파일\04. Object\UI\BtnUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CPanelUI.cpp">
+      <Filter>소스 파일\04. Object\UI\PanelUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

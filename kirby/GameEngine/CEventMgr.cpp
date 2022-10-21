@@ -5,6 +5,7 @@
 
 #include "CEventMgr.h"
 #include "CSceneMgr.h"
+#include "CUIMgr.h"
 
 CEventMgr::CEventMgr()
 {
@@ -68,7 +69,7 @@ void CEventMgr::Excute(const tEvent& _eve)
 	{
 		// lParm : SCENE_TYPE
 		CSceneMgr::GetInst()->ChangeScene((SCENE_TYPE)_eve.lParm);
-		//CUIMgr::GetInst()->SetFocusedUI(nullptr);
+		CUIMgr::GetInst()->SetFocusedUI(nullptr);
 	}
 	break;
 

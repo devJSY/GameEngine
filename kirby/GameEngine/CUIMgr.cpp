@@ -58,6 +58,31 @@ void CUIMgr::update()
 
 void CUIMgr::SetFocusedUI(CUI* _pUI)
 {
+	// 인자값이 nullptr 이거나 현재 포커싱된 UI일 경우
+	if (_pUI == m_pFocusedUI || nullptr == _pUI)
+	{
+		m_pFocusedUI = _pUI;
+		return;
+	}
+	else
+	{
+		m_pFocusedUI = _pUI;
+
+		CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+		vector<CObject*>& vecUI = pCurScene->GetUIGroup();
+		vector<CObject*>::iterator iter = vecUI.begin();
+
+		for (; iter != vecUI.end(); ++iter)
+		{
+			if (m_pFocusedUI == *iter)
+			{
+				break;
+			}
+		}
+
+		vecUI.erase(iter);
+		vecUI.push_back(m_pFocusedUI);
+	}
 }
 
 CUI* CUIMgr::GetFocusedUI()
@@ -107,7 +132,7 @@ CUI* CUIMgr::GetTargetedUI(CUI* _pParentUI)
 {
 	bool bLbtnAway = KEY_AWAY(KEY::LBTN);
 
-	// 1. 부모 UI 포한, 모든 자식들을 검사 한다.
+	// 1. 부모 UI 포함, 모든 자식들을 검사 한다.
 	CUI* pTargetUI = nullptr;
 
 	static list<CUI*> queue;

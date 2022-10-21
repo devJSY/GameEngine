@@ -5,6 +5,9 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CAnimator.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CBtnUI.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CCamera.cpp"
 
 
@@ -32,6 +35,9 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CObject.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CPanelUI.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CPathMgr.cpp"
 
 
@@ -48,6 +54,9 @@
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CSceneMgr.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_Animation_Tool.cpp"
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_Start.cpp"

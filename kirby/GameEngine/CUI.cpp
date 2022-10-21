@@ -33,13 +33,12 @@ CUI::~CUI()
 
 void CUI::update()
 {
+	m_vUIPos = GetPos();
+
 	// 부모 위치에 자신의 위치를 더함
 	if (GetParent())
-	{
-		Vec2 vPos = GetPos();
-		vPos += GetParent()->GetPos();
-
-		SetPos(vPos);
+	{		
+		m_vUIPos += GetParent()->GetUIPos();
 	}
 
 	// UI Mouse 체크
@@ -52,12 +51,11 @@ void CUI::update()
 
 void CUI::render(HDC _dc)
 {
-	Vec2 vPos = GetPos();
 	Vec2 vScale = GetScale();
 
 	if (m_bCamAffected)
 	{
-		vPos = CCamera::GetInst()->GetRenderPos(vPos);
+		m_vUIPos = CCamera::GetInst()->GetRenderPos(m_vUIPos);
 	}
 
 	if (m_bLbtnDown)
@@ -65,18 +63,18 @@ void CUI::render(HDC _dc)
 		SelectGDI select(_dc, PEN_TYPE::GREEN);
 
 		Rectangle(_dc
-			, int(vPos.x)
-			, int(vPos.y)
-			, int(vPos.x + vScale.x)
-			, int(vPos.y + vScale.y));
+			, int(m_vUIPos.x)
+			, int(m_vUIPos.y)
+			, int(m_vUIPos.x + vScale.x)
+			, int(m_vUIPos.y + vScale.y));
 	}
 	else
 	{
 		Rectangle(_dc
-			, int(vPos.x)
-			, int(vPos.y)
-			, int(vPos.x + vScale.x)
-			, int(vPos.y + vScale.y));
+			, int(m_vUIPos.x)
+			, int(m_vUIPos.y)
+			, int(m_vUIPos.x + vScale.x)
+			, int(m_vUIPos.y + vScale.y));
 	}
 
 
@@ -102,7 +100,6 @@ void CUI::render_child(HDC _dc)
 
 void CUI::MouseOnCheck()
 {
-	Vec2 vPos = GetPos();
 	Vec2 vMousePos = MOUSE_POS;
 	Vec2 vScale = GetScale();
 	
@@ -111,8 +108,8 @@ void CUI::MouseOnCheck()
 		vMousePos = CCamera::GetInst()->GetRealPos(vMousePos);
 	}
 
-	if (vPos.x <= vMousePos.x && vMousePos.x <= vPos.x + vScale.x
-		&& vPos.y <= vMousePos.y && vMousePos.y <= vPos.y + vScale.y)
+	if (m_vUIPos.x <= vMousePos.x && vMousePos.x <= m_vUIPos.x + vScale.x
+		&& m_vUIPos.y <= vMousePos.y && vMousePos.y <= m_vUIPos.y + vScale.y)
 	{
 		m_bMouseOn = true;
 	}

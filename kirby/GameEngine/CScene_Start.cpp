@@ -5,6 +5,9 @@
 #include "CObject.h"
 #include "Kirby.h"
 #include "CMonster.h"
+#include "CUI.h"
+#include "CPanelUI.h"
+#include "CBtnUI.h"
 
 #include "CColliderMgr.h"
 #include "CSceneMgr.h"
@@ -33,26 +36,26 @@ void CScene_Start::Enter()
 {
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 
-	CObject* gObj = new Kirby;
-	gObj->SetPos(Vec2(vResolution.x / 2.f, vResolution.y / 2.f));
-	gObj->SetScale(Vec2(100.f, 100.f));
-	gObj->SetName(L"Kirby");
-	EnterAddObject(gObj, GROUP_TYPE::PLAYER);
+	CUI* PanelUI = new CPanelUI;
+	PanelUI->SetName(L"PanelUI");
+	PanelUI->SetScale(Vec2(500.f, 500.f));
+	PanelUI->SetPos(Vec2(vResolution / 2.f - PanelUI->GetScale() / 2.f));
 
-	CObject* gMonObj = new CMonster;
-	gMonObj->SetPos(Vec2(vResolution.x / 2.f, vResolution.y / 2.f - 300.f));
-	gMonObj->SetScale(Vec2(50.f, 50.f));
-	gMonObj->SetName(L"Monster");
-	EnterAddObject(gMonObj, GROUP_TYPE::MONSTER);
+	CUI* BtnUI = new CBtnUI;
+	BtnUI->SetName(L"BtnUI");
+	BtnUI->SetScale(Vec2(200.f, 200.f));
+	BtnUI->SetPos(PanelUI->GetScale() / 2.f - BtnUI->GetScale() / 2.f);
 
-	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);
+	PanelUI->AddChild(BtnUI);
+
+	EnterAddObject(PanelUI, GROUP_TYPE::UI);
 
 	//CCamera::GetInst()->SetLookAt(vResolution / 2.f);
-	CCamera::GetInst()->SetTarget(gObj);
 	
 	start();
 }
 
 void CScene_Start::Exit()
 {
+	DeleteAll();
 }
