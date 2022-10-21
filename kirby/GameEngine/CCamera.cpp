@@ -32,14 +32,8 @@ void CCamera::init()
 
 void CCamera::update()
 {
-	if (KEY_HOLD(KEY::W))
-		m_vLookAt.y -= 500.f * fDT;
-	if (KEY_HOLD(KEY::S))
-		m_vLookAt.y += 500.f * fDT;
-	if (KEY_HOLD(KEY::A))
-		m_vLookAt.x -= 500.f * fDT;
-	if (KEY_HOLD(KEY::D))
-		m_vLookAt.x += 500.f * fDT;
+	// 누적된 이동값 적용
+	m_vLookAt -= m_AccLookAt;
 
 	if (m_pTargetObj)
 	{
@@ -58,6 +52,9 @@ void CCamera::update()
 
 	// 현재 카메아 위치값 계산
 	CalDiff();
+
+	// 누적값 최기화
+	m_AccLookAt = Vec2(0.f, 0.f);
 }
 
 void CCamera::render(HDC _dc)

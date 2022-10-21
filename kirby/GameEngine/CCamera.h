@@ -26,6 +26,8 @@ private:
     Vec2             m_vPrevLookAt;
     Vec2             m_vCurLookAt;
 
+    Vec2             m_AccLookAt;   // 누적 이동 값
+
     CObject*         m_pTargetObj;
     Vec2             m_vDiff;
 
@@ -56,6 +58,12 @@ public:
     Vec2 GetRenderPos(Vec2 _vObjPos) { return _vObjPos - m_vDiff; }
     Vec2 GetRealPos(Vec2 _vRenderPos) { return _vRenderPos + m_vDiff; }
     Vec2 GetLookAt() { return m_vCurLookAt; }
+
+public:
+    void AddAccLookAt(Vec2 _vAdd)
+    {
+        m_AccLookAt += _vAdd;
+    }
 
 public:
     void fadeIn(float _fDuration)
