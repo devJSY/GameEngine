@@ -22,7 +22,6 @@ private:
     Vec2         m_vAwayPos;
     bool         m_DragTrig;
 
-    Vec2        vPos;
     Vec2        vAccPos;
 
     vector<AnimFrmData>    frameData;

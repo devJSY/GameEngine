@@ -31,6 +31,13 @@ public:
 		return *this;
 	}
 
+	Vec2& Vec2_abs()
+	{
+		x = abs(x);
+		y = abs(y);
+		return *this;
+	}
+
 public:
 	Vec2()
 		: x(0.f)

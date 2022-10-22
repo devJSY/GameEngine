@@ -20,6 +20,7 @@ CScene_Animation_Tool::CScene_Animation_Tool()
 
 CScene_Animation_Tool::~CScene_Animation_Tool()
 {
+	
 }
 
 void CScene_Animation_Tool::update()
@@ -42,37 +43,28 @@ void CScene_Animation_Tool::update()
 		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
 		AnimFrmData p = {};
 
-		p.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos);
-		p.vRB = (m_vTapPos - m_vAwayPos) + CCamera::GetInst()->GetRealPos(vPos);
+		// 좌상단 절대값 저장
+		p.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos + vAccPos);
+		p.vLT.Vec2_abs();
+
+		// 우하단 절대값 저장
+		p.vRB = (m_vTapPos - m_vAwayPos) + vAccPos;
+		p.vRB.Vec2_abs();
 
 		frameData.push_back(p);
 	}
 
-	//Vec2 AddLookAt = Vec2(0.f, 0.f);
+	float Cam_fSpeed = CCamera::GetInst()->GetMoveSpeed();
 
+	// 클릭시 카메라 이동값 누적
 	if (KEY_HOLD(KEY::W))
-	{
-		vPos.y += 800.f * fDT;
-		vAccPos.y += 800.f * fDT;
-	}
+		vAccPos.y += Cam_fSpeed * fDT;
 	if (KEY_HOLD(KEY::S))
-	{
-		vPos.y -= 800.f * fDT;
-		vAccPos.y -= 800.f * fDT;
-	}
-
+		vAccPos.y -= Cam_fSpeed * fDT;
 	if (KEY_HOLD(KEY::A))
-	{
-		vPos.x += 800.f * fDT;
-		vAccPos.x += 800.f * fDT;
-	}
-
+		vAccPos.x += Cam_fSpeed * fDT;
 	if (KEY_HOLD(KEY::D))
-	{
-		vPos.x -= 800.f * fDT;
-		vAccPos.x -= 800.f * fDT;
-	}
-
+		vAccPos.x -= Cam_fSpeed * fDT;
 
 	//CCamera::GetInst()->AddAccLookAt(AddLookAt);
 }
@@ -85,7 +77,7 @@ void CScene_Animation_Tool::render(HDC _dc)
 		int iWidth = m_CurTex->Width();
 		int iHeight = m_CurTex->Height();
 
-		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(vPos);
+		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
 
 		BitBlt(_dc
 			, (int)vRenderPos.x
@@ -100,15 +92,14 @@ void CScene_Animation_Tool::render(HDC _dc)
 		
 	SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
 	SelectGDI p(_dc, PEN_TYPE::GREEN);
-
+		
 	Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
-	vTagPos += vAccPos;
 
 	if (m_DragTrig)
 	{
 		Rectangle(_dc
-			, (int)vTagPos.x
-			, (int)vTagPos.y
+			, (int)(m_vTapPos.x + vAccPos.x)	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)(m_vTapPos.y + vAccPos.y)	// 클릭한 순간 부터 카메라 영향 받음
 			, (int)vMousePos.x
 			, (int)vMousePos.y);
 	}
@@ -122,6 +113,7 @@ void CScene_Animation_Tool::Enter()
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution /2.f ));
+	CCamera::GetInst()->SetMovsSpeed(800.f);
 }
 
 void CScene_Animation_Tool::Exit()

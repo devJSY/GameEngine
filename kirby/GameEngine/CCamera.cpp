@@ -12,10 +12,9 @@
 
 CCamera::CCamera()
 	: m_pTargetObj(nullptr)
-	, m_fTime(0.5f)
-	, m_fSpeed(0.f)
-	, m_fAccTime(0.5f)
+	, m_fMoveSpeed(0.f)
 	, m_pVeilTex(nullptr)
+
 {
 }
 
@@ -33,13 +32,13 @@ void CCamera::init()
 void CCamera::update()
 {
 	if (KEY_HOLD(KEY::W))
-		m_vLookAt.y -= 800.f * fDT;
+		m_vLookAt.y -= m_fMoveSpeed * fDT;
 	if (KEY_HOLD(KEY::S))
-		m_vLookAt.y += 800.f * fDT;
+		m_vLookAt.y += m_fMoveSpeed * fDT;
 	if (KEY_HOLD(KEY::A))
-		m_vLookAt.x -= 800.f * fDT;
+		m_vLookAt.x -= m_fMoveSpeed * fDT;
 	if (KEY_HOLD(KEY::D))
-		m_vLookAt.x += 800.f * fDT;
+		m_vLookAt.x += m_fMoveSpeed * fDT;
 
 	if (m_pTargetObj)
 	{
@@ -114,25 +113,6 @@ void CCamera::render(HDC _dc)
 
 void CCamera::CalDiff()
 {
-	//m_fAccTime += fDT;
-
-	//if (m_fTime <= m_fAccTime)
-	//{
-	//	// 설정한 시간이 지났다면 바로 현재 위치 로 설정
-	//	m_vCurLookAt = m_vLookAt;
-	//}
-	//else
-	//{
-	//	// 이전 위치 에서 현재위치로의 방향 벡터
-	//	Vec2 vDir = m_vLookAt - m_vPrevLookAt;
-
-	//	if (!vDir.IsZero())
-	//	{
-	//		// 이전 위치에 방향벡터 방향으로 설정한 속도만큼 현재 위치를 결정
-	//		m_vCurLookAt = m_vPrevLookAt + vDir.Normalize() * m_fSpeed * fDT;
-	//	}
-	//}
-
 	m_vCurLookAt = m_vLookAt;
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
