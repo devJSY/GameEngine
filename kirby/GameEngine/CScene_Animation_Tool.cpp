@@ -15,6 +15,7 @@
 CScene_Animation_Tool::CScene_Animation_Tool()
 	: m_CurTex(nullptr)
 	, m_DragTrig(false)
+	, CurAinmData{}
 {
 }
 
@@ -39,19 +40,23 @@ void CScene_Animation_Tool::update()
 		m_vAwayPos = MOUSE_POS;
 		m_DragTrig = false;
 
-
-		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
-		AnimFrmData p = {};
-
 		// 좌상단 절대값 저장
-		p.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos + vAccPos);
-		p.vLT.Vec2_abs();
+		CurAinmData.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos + vAccPos);
+		CurAinmData.vLT.Vec2_abs();
 
 		// 우하단 절대값 저장
-		p.vRB = (m_vTapPos - m_vAwayPos) + vAccPos;
-		p.vRB.Vec2_abs();
+		CurAinmData.vRB = (m_vTapPos - m_vAwayPos) + vAccPos;
+		CurAinmData.vRB.Vec2_abs();		
+		CurAinmData.vRB += CurAinmData.vLT;
 
-		frameData.push_back(p);
+		CurAinmData.vSlice = (m_vTapPos - m_vAwayPos) + vAccPos;
+		CurAinmData.vSlice.Vec2_abs();
+	}
+
+	if (KEY_TAP(KEY::SPACE))
+	{
+		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
+		frameData.push_back(CurAinmData);
 	}
 
 	float Cam_fSpeed = CCamera::GetInst()->GetMoveSpeed();

@@ -16,15 +16,16 @@ class CScene_Animation_Tool :
     public CScene
 {
 private:
-    CTexture*    m_CurTex;
+    CTexture*               m_CurTex;
 
-    Vec2         m_vTapPos;
-    Vec2         m_vAwayPos;
-    bool         m_DragTrig;
+    Vec2                    m_vTapPos;
+    Vec2                    m_vAwayPos;
+    bool                    m_DragTrig;
 
-    Vec2        vAccPos;
+    Vec2                    vAccPos;
 
-    vector<AnimFrmData>    frameData;
+    AnimFrmData             CurAinmData;
+    vector<AnimFrmData>     frameData;
         
 public:
     virtual void update();
