@@ -1,6 +1,15 @@
 #pragma once
 #include "CScene.h"
 
+struct AnimFrmData
+{
+    Vec2 vLT;
+    Vec2 vRB;
+    Vec2 vSlice;
+    Vec2 vOffset;
+    float fDuration;
+};
+
 class CTexture;
 
 class CScene_Animation_Tool :
@@ -12,6 +21,11 @@ private:
     Vec2         m_vTapPos;
     Vec2         m_vAwayPos;
     bool         m_DragTrig;
+
+    Vec2        vPos;
+    Vec2        vAccPos;
+
+    vector<AnimFrmData>    frameData;
         
 public:
     virtual void update();

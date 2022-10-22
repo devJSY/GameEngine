@@ -30,54 +30,85 @@ void CScene_Animation_Tool::update()
 	{
 		m_vTapPos = MOUSE_POS;
 		m_DragTrig = true;
+		vAccPos = Vec2(0.f, 0.f);
 	}
 
 	if (KEY_AWAY(KEY::LBTN))
 	{
 		m_vAwayPos = MOUSE_POS;
 		m_DragTrig = false;
+
+
+		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
+		AnimFrmData p = {};
+
+		p.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos);
+		p.vRB = (m_vTapPos - m_vAwayPos) + CCamera::GetInst()->GetRealPos(vPos);
+
+		frameData.push_back(p);
 	}
 
-	Vec2 AddLookAt = Vec2(0.f, 0.f);
+	//Vec2 AddLookAt = Vec2(0.f, 0.f);
 
 	if (KEY_HOLD(KEY::W))
-		AddLookAt.y -= 800.f * fDT;
+	{
+		vPos.y += 800.f * fDT;
+		vAccPos.y += 800.f * fDT;
+	}
 	if (KEY_HOLD(KEY::S))
-		AddLookAt.y += 800.f * fDT;
-	if (KEY_HOLD(KEY::A))
-		AddLookAt.x -= 800.f * fDT;
-	if (KEY_HOLD(KEY::D))
-		AddLookAt.x += 800.f * fDT;
+	{
+		vPos.y -= 800.f * fDT;
+		vAccPos.y -= 800.f * fDT;
+	}
 
-	CCamera::GetInst()->AddAccLookAt(AddLookAt);
+	if (KEY_HOLD(KEY::A))
+	{
+		vPos.x += 800.f * fDT;
+		vAccPos.x += 800.f * fDT;
+	}
+
+	if (KEY_HOLD(KEY::D))
+	{
+		vPos.x -= 800.f * fDT;
+		vAccPos.x -= 800.f * fDT;
+	}
+
+
+	//CCamera::GetInst()->AddAccLookAt(AddLookAt);
 }
 
 void CScene_Animation_Tool::render(HDC _dc)
 {
-	int iWidth = m_CurTex->Width();
-	int iHeight = m_CurTex->Height();
+	// 텍스쳐 렌더링
+	if (nullptr != m_CurTex)
+	{
+		int iWidth = m_CurTex->Width();
+		int iHeight = m_CurTex->Height();
 
+		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(vPos);
 
-	Vec2 LookAt = CCamera::GetInst()->GetLookAt();
-
-	BitBlt(_dc
-		, (int)LookAt.x
-		, (int)LookAt.y
-		, (int)(iWidth - LookAt.x)
-		, (int)(iHeight - LookAt.y)
-		, m_CurTex->GetDC()
-		, 0, 0, SRCCOPY); 
+		BitBlt(_dc
+			, (int)vRenderPos.x
+			, (int)vRenderPos.y
+			, (int)iWidth
+			, (int)iHeight
+			, m_CurTex->GetDC()
+			, 0, 0, SRCCOPY);
+	}
 
 	Vec2 vMousePos = MOUSE_POS;
 		
 	SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
 	SelectGDI p(_dc, PEN_TYPE::GREEN);
 
+	Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
+	vTagPos += vAccPos;
+
 	if (m_DragTrig)
 	{
 		Rectangle(_dc
-			, (int)m_vTapPos.x
-			, (int)m_vTapPos.y
+			, (int)vTagPos.x
+			, (int)vTagPos.y
 			, (int)vMousePos.x
 			, (int)vMousePos.y);
 	}
@@ -90,7 +121,7 @@ void CScene_Animation_Tool::Enter()
 	m_CurTex = CResMgr::GetInst()->LoadTexture(L"AnimTex", L"Texture\\KirbyRight.bmp");
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
-	CCamera::GetInst()->SetLookAt(Vec2(0.f , 0.f));
+	CCamera::GetInst()->SetLookAt(Vec2(vResolution /2.f ));
 }
 
 void CScene_Animation_Tool::Exit()
