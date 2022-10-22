@@ -13,7 +13,7 @@
 
 
 CScene_Animation_Tool::CScene_Animation_Tool()
-	: m_CurTex(nullptr)
+	: m_pTex(nullptr)
 	, m_DragTrig(false)
 	, CurAinmData{}
 {
@@ -40,17 +40,17 @@ void CScene_Animation_Tool::update()
 		m_vAwayPos = MOUSE_POS;
 		m_DragTrig = false;
 
+		// 슬라이스 사이즈 저장
+		CurAinmData.vSlice = (m_vTapPos - m_vAwayPos) + vAccPos;
+		CurAinmData.vSlice.Vec2_abs();
+
 		// 좌상단 절대값 저장
 		CurAinmData.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos + vAccPos);
 		CurAinmData.vLT.Vec2_abs();
 
 		// 우하단 절대값 저장
-		CurAinmData.vRB = (m_vTapPos - m_vAwayPos) + vAccPos;
+		CurAinmData.vRB = CurAinmData.vLT + CurAinmData.vSlice;	// 좌상단 위치 + 드래그한 사이즈 
 		CurAinmData.vRB.Vec2_abs();		
-		CurAinmData.vRB += CurAinmData.vLT;
-
-		CurAinmData.vSlice = (m_vTapPos - m_vAwayPos) + vAccPos;
-		CurAinmData.vSlice.Vec2_abs();
 	}
 
 	if (KEY_TAP(KEY::SPACE))
@@ -70,17 +70,15 @@ void CScene_Animation_Tool::update()
 		vAccPos.x += Cam_fSpeed * fDT;
 	if (KEY_HOLD(KEY::D))
 		vAccPos.x -= Cam_fSpeed * fDT;
-
-	//CCamera::GetInst()->AddAccLookAt(AddLookAt);
 }
 
 void CScene_Animation_Tool::render(HDC _dc)
 {
 	// 텍스쳐 렌더링
-	if (nullptr != m_CurTex)
+	if (nullptr != m_pTex)
 	{
-		int iWidth = m_CurTex->Width();
-		int iHeight = m_CurTex->Height();
+		int iWidth = m_pTex->Width();
+		int iHeight = m_pTex->Height();
 
 		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
 
@@ -89,7 +87,7 @@ void CScene_Animation_Tool::render(HDC _dc)
 			, (int)vRenderPos.y
 			, (int)iWidth
 			, (int)iHeight
-			, m_CurTex->GetDC()
+			, m_pTex->GetDC()
 			, 0, 0, SRCCOPY);
 	}
 
@@ -114,7 +112,7 @@ void CScene_Animation_Tool::render(HDC _dc)
 
 void CScene_Animation_Tool::Enter()
 {
-	m_CurTex = CResMgr::GetInst()->LoadTexture(L"AnimTex", L"Texture\\KirbyRight.bmp");
+	m_pTex = CResMgr::GetInst()->LoadTexture(L"AnimTex", L"Texture\\KirbyRight.bmp");
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution /2.f ));

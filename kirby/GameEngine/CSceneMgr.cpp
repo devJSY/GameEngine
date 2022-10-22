@@ -27,9 +27,11 @@ void CSceneMgr::init()
 {
 	// Scene »ý¼º
 	CScene* StartScene = new CScene_Start;
+	StartScene->SetName(L"StartScene");
 	m_arrScene[(UINT)SCENE_TYPE::START] = StartScene;
 
 	CScene* Animation_Tool = new CScene_Animation_Tool;
+	Animation_Tool->SetName(L"Animation_Tool");
 	m_arrScene[(UINT)SCENE_TYPE::Animation_Tool] = Animation_Tool;
 
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];

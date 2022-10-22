@@ -16,7 +16,7 @@ class CScene_Animation_Tool :
     public CScene
 {
 private:
-    CTexture*               m_CurTex;
+    CTexture*               m_pTex;
 
     Vec2                    m_vTapPos;
     Vec2                    m_vAwayPos;
@@ -33,6 +33,8 @@ public:
 
     virtual void Enter();
     virtual void Exit();
+
+    CTexture* GetTexture() { return m_pTex; }
 
 public:
     CScene_Animation_Tool();

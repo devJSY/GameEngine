@@ -4,10 +4,13 @@
 #include "CCore.h"
 #include "CObject.h"
 #include "CTexture.h"
+#include "CScene.h"
+#include "CScene_Animation_Tool.h"
 
 #include "CResMgr.h"
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "CSceneMgr.h"
 
 
 CCamera::CCamera()
@@ -31,14 +34,37 @@ void CCamera::init()
 
 void CCamera::update()
 {
-	if (KEY_HOLD(KEY::W))
-		m_vLookAt.y -= m_fMoveSpeed * fDT;
-	if (KEY_HOLD(KEY::S))
-		m_vLookAt.y += m_fMoveSpeed * fDT;
-	if (KEY_HOLD(KEY::A))
-		m_vLookAt.x -= m_fMoveSpeed * fDT;
-	if (KEY_HOLD(KEY::D))
-		m_vLookAt.x += m_fMoveSpeed * fDT;
+	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+	if(L"Animation_Tool" == pCurScene->GetName())
+	{
+		CTexture* SceneTex = ((CScene_Animation_Tool*)pCurScene)->GetTexture();
+
+		UINT TexWidth = SceneTex->Width();
+		UINT TexHeight = SceneTex->Height();
+
+		if (m_vLookAt.x > 0)
+		{
+			if (KEY_HOLD(KEY::A))
+				m_vLookAt.x -= m_fMoveSpeed * fDT;
+		}
+		if (m_vLookAt.x < TexWidth)
+		{
+			if (KEY_HOLD(KEY::D))
+				m_vLookAt.x += m_fMoveSpeed * fDT;
+		}
+		if (m_vLookAt.y > 0)
+		{
+			if (KEY_HOLD(KEY::W))
+				m_vLookAt.y -= m_fMoveSpeed * fDT;
+		}
+		if (m_vLookAt.x < TexHeight)
+		{
+			if (KEY_HOLD(KEY::S))
+				m_vLookAt.y += m_fMoveSpeed * fDT;
+		}	
+	}
+
 
 	if (m_pTargetObj)
 	{
