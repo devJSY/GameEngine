@@ -32,7 +32,7 @@ void CScene_Animation_Tool::update()
 	{
 		m_vTapPos = MOUSE_POS;
 		m_DragTrig = true;
-		vAccPos = Vec2(0.f, 0.f);
+		vAccPos = CCamera::GetInst()->GetLookAt();	// 클릭 당시 위치 값 저장
 	}
 
 	if (KEY_AWAY(KEY::LBTN))
@@ -57,20 +57,7 @@ void CScene_Animation_Tool::update()
 	{
 		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
 		frameData.push_back(CurAinmData);
-	}
-
-	float Cam_fSpeed = CCamera::GetInst()->GetMoveSpeed();
-
-	// 클릭시 카메라 이동값 누적
-	if (KEY_HOLD(KEY::A))
-		vAccPos.x += Cam_fSpeed * fDT;
-	if (KEY_HOLD(KEY::D))
-		vAccPos.x -= Cam_fSpeed * fDT;
-	if (KEY_HOLD(KEY::W))
-		vAccPos.y += Cam_fSpeed * fDT;
-	if (KEY_HOLD(KEY::S))
-		vAccPos.y -= Cam_fSpeed * fDT;
-	
+	}	
 }
 
 void CScene_Animation_Tool::render(HDC _dc)
@@ -95,15 +82,18 @@ void CScene_Animation_Tool::render(HDC _dc)
 	Vec2 vMousePos = MOUSE_POS;
 		
 	SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
-	SelectGDI p(_dc, PEN_TYPE::GREEN);
-		
-	Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
+	SelectGDI p(_dc, PEN_TYPE::GREEN);	
 
 	if (m_DragTrig)
 	{
+		// 클릭 당시 위치값과 현재 위치값의 차이, 즉 카메라 이동량을 구함
+		Vec2 vCamDist = vAccPos - CCamera::GetInst()->GetLookAt(); 
+
+		Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
+
 		Rectangle(_dc
-			, (int)(m_vTapPos.x + vAccPos.x)	// 클릭한 순간 부터 카메라 영향 받음
-			, (int)(m_vTapPos.y + vAccPos.y)	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)(m_vTapPos.x + vCamDist.x)	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)(m_vTapPos.y + vCamDist.y)	// 클릭한 순간 부터 카메라 영향 받음
 			, (int)vMousePos.x
 			, (int)vMousePos.y);
 	}
@@ -117,7 +107,7 @@ void CScene_Animation_Tool::Enter()
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution /2.f ));
-	CCamera::GetInst()->SetMovsSpeed(2000.f);
+	CCamera::GetInst()->SetMovsSpeed(800.f);
 }
 
 void CScene_Animation_Tool::Exit()
