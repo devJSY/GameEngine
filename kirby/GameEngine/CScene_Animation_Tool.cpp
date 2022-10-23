@@ -24,7 +24,8 @@ CScene_Animation_Tool::CScene_Animation_Tool()
 
 CScene_Animation_Tool::~CScene_Animation_Tool()
 {
-	
+	if (nullptr != m_SaveAnim)
+		delete m_SaveAnim;
 }
 
 void CScene_Animation_Tool::update()
@@ -53,19 +54,29 @@ void CScene_Animation_Tool::update()
 
 		// 우하단 절대값 저장
 		CurAinmData.vRB = CCamera::GetInst()->GetRealPos(m_vAwayPos);
-		//CurAinmData.vRB.Vec2_abs();				
+		//CurAinmData.vRB.Vec2_abs();		
+
+		// 드래그 위치에 따라 좌상단, 우하단 위치 결정
+		if (CurAinmData.vLT.x > CurAinmData.vRB.x && CurAinmData.vLT.y > CurAinmData.vRB.y)
+		{
+			Vec2 vTemp = CurAinmData.vLT;
+			CurAinmData.vLT = CurAinmData.vRB;
+			CurAinmData.vRB = vTemp;
+		}
 	}
 
 	if (KEY_TAP(KEY::SPACE))
 	{
 		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
 		frameData.push_back(CurAinmData);
+
+		// 애니메이션 생성및 저장
 		m_SaveAnim = new CAnimation;
 
 		CurAinmData.vLT = CurAinmData.vLT.Vec2_abs();
 		CurAinmData.vRB = CurAinmData.vRB.Vec2_abs();
 
-		m_SaveAnim->Create(m_pTex, CurAinmData.vLT, Vec2(CurAinmData.vSlice.x / 5.f, CurAinmData.vSlice.y), Vec2(CurAinmData.vSlice.x / 5.f, 0.f), 0.3f, 5);
+		m_SaveAnim->Create(m_pTex, CurAinmData.vLT, Vec2(CurAinmData.vSlice.x / 11.f, CurAinmData.vSlice.y), Vec2(CurAinmData.vSlice.x / 11.f, 0.f), 0.1f, 11);
 		m_SaveAnim->SetName(L"Test");
 		m_SaveAnim->Save(L"animation\\Test.anim");
 	}	
@@ -116,8 +127,8 @@ void CScene_Animation_Tool::render(HDC _dc)
 		Vec2 vRB = CCamera::GetInst()->GetRenderPos(frameData[i].vRB);
 
 		Rectangle(_dc
-			, (int)vLT.x	// 클릭한 순간 부터 카메라 영향 받음
-			, (int)vLT.y	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)vLT.x	
+			, (int)vLT.y	
 			, (int)vRB.x
 			, (int)vRB.y);
 	}
