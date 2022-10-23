@@ -12,12 +12,14 @@ struct AnimFrmData
 };
 
 class CTexture;
+class CAnimation;
 
 class CScene_Animation_Tool :
     public CScene
 {
 private:
     CTexture*               m_pTex;
+    CAnimation*             m_SaveAnim;
 
     Vec2                    m_vTapPos;
     Vec2                    m_vAwayPos;

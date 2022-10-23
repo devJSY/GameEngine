@@ -5,6 +5,8 @@
 #include "CResMgr.h"
 #include "CCamera.h"
 #include "CCore.h"
+#include "CAnimation.h"
+
 #include "Kirby.h"
 
 #include "SelectGDI.h"
@@ -14,6 +16,7 @@
 
 CScene_Animation_Tool::CScene_Animation_Tool()
 	: m_pTex(nullptr)
+	, m_SaveAnim(nullptr)
 	, m_DragTrig(false)
 	, CurAinmData{}
 {
@@ -57,6 +60,14 @@ void CScene_Animation_Tool::update()
 	{
 		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
 		frameData.push_back(CurAinmData);
+		m_SaveAnim = new CAnimation;
+
+		CurAinmData.vLT = CurAinmData.vLT.Vec2_abs();
+		CurAinmData.vRB = CurAinmData.vRB.Vec2_abs();
+
+		m_SaveAnim->Create(m_pTex, CurAinmData.vLT, Vec2(CurAinmData.vSlice.x / 5.f, CurAinmData.vSlice.y), Vec2(CurAinmData.vSlice.x / 5.f, 0.f), 0.3f, 5);
+		m_SaveAnim->SetName(L"Test");
+		m_SaveAnim->Save(L"animation\\Test.anim");
 	}	
 
 	// 클릭 당시 위치값과 현재 위치값의 차이, 즉 카메라 이동량을 구함
@@ -122,6 +133,13 @@ void CScene_Animation_Tool::Enter()
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution /2.f ));
 	CCamera::GetInst()->SetMovsSpeed(800.f);
+
+	CObject* mObj = new Kirby;
+	mObj->SetName(L"Obj");
+	mObj->SetScale(Vec2(300, 300));
+	mObj->SetPos(vResolution / 2.f);
+
+	EnterAddObject(mObj, GROUP_TYPE::PLAYER);
 }
 
 void CScene_Animation_Tool::Exit()

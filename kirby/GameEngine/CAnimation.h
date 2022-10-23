@@ -55,5 +55,6 @@ public:
 	~CAnimation();
 
 	friend class CAnimator;
+	friend class CScene_Animation_Tool;
 };
 
