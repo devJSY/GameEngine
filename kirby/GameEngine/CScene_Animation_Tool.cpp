@@ -13,7 +13,6 @@
 #include "CTexture.h"
 #include "CTimeMgr.h"
 
-
 CScene_Animation_Tool::CScene_Animation_Tool()
 	: m_pTex(nullptr)
 	, m_SaveAnim(nullptr)
