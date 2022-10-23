@@ -136,3 +136,14 @@ public:
 		y /= _vOther.y;
 	}
 };
+
+
+// 전역 함수
+Vec2& Vec2_abs(const Vec2& _origin)
+{
+	Vec2 v;
+	v.x = abs(_origin.x);
+	v.y = abs(_origin.y);
+
+	return v;
+}

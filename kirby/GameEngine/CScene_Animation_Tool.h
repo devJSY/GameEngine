@@ -5,6 +5,7 @@ struct AnimFrmData
 {
     Vec2 vLT;
     Vec2 vRB;
+
     Vec2 vSlice;
     Vec2 vOffset;
     float fDuration;
@@ -23,6 +24,7 @@ private:
     bool                    m_DragTrig;
 
     Vec2                    vAccPos;
+    Vec2                    vCamDist;
 
     AnimFrmData             CurAinmData;
     vector<AnimFrmData>     frameData;
