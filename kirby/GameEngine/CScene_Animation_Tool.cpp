@@ -62,14 +62,15 @@ void CScene_Animation_Tool::update()
 	float Cam_fSpeed = CCamera::GetInst()->GetMoveSpeed();
 
 	// 클릭시 카메라 이동값 누적
-	if (KEY_HOLD(KEY::W))
-		vAccPos.y += Cam_fSpeed * fDT;
-	if (KEY_HOLD(KEY::S))
-		vAccPos.y -= Cam_fSpeed * fDT;
 	if (KEY_HOLD(KEY::A))
 		vAccPos.x += Cam_fSpeed * fDT;
 	if (KEY_HOLD(KEY::D))
 		vAccPos.x -= Cam_fSpeed * fDT;
+	if (KEY_HOLD(KEY::W))
+		vAccPos.y += Cam_fSpeed * fDT;
+	if (KEY_HOLD(KEY::S))
+		vAccPos.y -= Cam_fSpeed * fDT;
+	
 }
 
 void CScene_Animation_Tool::render(HDC _dc)
@@ -116,7 +117,7 @@ void CScene_Animation_Tool::Enter()
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution /2.f ));
-	CCamera::GetInst()->SetMovsSpeed(800.f);
+	CCamera::GetInst()->SetMovsSpeed(2000.f);
 }
 
 void CScene_Animation_Tool::Exit()

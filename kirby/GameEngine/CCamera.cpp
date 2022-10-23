@@ -17,7 +17,6 @@ CCamera::CCamera()
 	: m_pTargetObj(nullptr)
 	, m_fMoveSpeed(0.f)
 	, m_pVeilTex(nullptr)
-
 {
 }
 
@@ -27,7 +26,7 @@ CCamera::~CCamera()
 
 void CCamera::init()
 {
-	// redner 용 Texture 생성
+	// render 용 Texture 생성
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	m_pVeilTex = CResMgr::GetInst()->CreateTexture(L"CameraVeil", (UINT)vResolution.x, (UINT)vResolution.y);
 }
@@ -43,28 +42,59 @@ void CCamera::update()
 		UINT TexWidth = SceneTex->Width();
 		UINT TexHeight = SceneTex->Height();
 
-		if (m_vLookAt.x > 0)
+		Vec2 vResolution = CCore::GetInst()->GetResolution();
+		Vec2 vLT = m_vLookAt - vResolution / 2.f;
+
+		// x Axis Left Move Limit
+		if (vLT.x > 0)
 		{
 			if (KEY_HOLD(KEY::A))
 				m_vLookAt.x -= m_fMoveSpeed * fDT;
 		}
-		if (m_vLookAt.x < TexWidth)
+		
+		// x Axis right Move Limit
+		if (vLT.x < (TexWidth - vResolution.x))
 		{
 			if (KEY_HOLD(KEY::D))
 				m_vLookAt.x += m_fMoveSpeed * fDT;
 		}
-		if (m_vLookAt.y > 0)
+
+		// y Axis top Move Limit
+		if (vLT.y > 0)
 		{
 			if (KEY_HOLD(KEY::W))
 				m_vLookAt.y -= m_fMoveSpeed * fDT;
 		}
-		if (m_vLookAt.x < TexHeight)
+
+		// y Axis bottom Move Limit
+		if (vLT.y < (TexHeight - vResolution.y))
 		{
 			if (KEY_HOLD(KEY::S))
 				m_vLookAt.y += m_fMoveSpeed * fDT;
 		}	
-	}
 
+		// 가로 범위가 텍스트를 초과한 경우
+		if (vLT.x > (TexWidth - vResolution.x))
+		{
+			m_vLookAt.x = TexWidth - (vResolution.x / 2.f);
+		}
+
+		// 세로 범위가 텍스트를 초과한 경우
+		if (vLT.y > (TexHeight - vResolution.y))
+		{
+			m_vLookAt.y = TexHeight - (vResolution.y / 2.f);
+		}
+
+		if (vLT.x < 0)
+		{
+			m_vLookAt.x = vResolution.x / 2.f;
+		}
+
+		if (vLT.y < 0)
+		{
+			m_vLookAt.y = vResolution.y / 2.f;
+		}
+	}
 
 	if (m_pTargetObj)
 	{
