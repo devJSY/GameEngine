@@ -150,6 +150,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -165,6 +168,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         case IDM_EXIT:
             DestroyWindow(hWnd);
+            break;
+        case ID_ANIM:
+               DialogBox(hInst, MAKEINTRESOURCE(IDD_ANIM_SAVE), hWnd, AnimSave);
             break;
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);

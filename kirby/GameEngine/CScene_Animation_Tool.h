@@ -38,6 +38,8 @@ public:
     virtual void Enter();
     virtual void Exit();
 
+    void SaveAnimation(UINT _FrameCount, const wchar_t* _Name, const wchar_t* _FileName, float _fDuration);
+
     CTexture* GetTexture() { return m_pTex; }
 
 public:
