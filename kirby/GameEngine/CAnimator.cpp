@@ -50,7 +50,16 @@ void CAnimator::LoadAnimation(const wstring& _strRelativePath)
 	}
 	else
 	{
-		delete pAnim;
+		// 기존에 존재하던 애니메이션 삭제
+		map<wstring, CAnimation*>::iterator iter = m_mapAnim.find(pAnim->GetName());
+		
+		delete iter->second;
+
+		m_mapAnim.erase(iter);
+
+		// 새로 생성한 애니메이션으로 제 등록
+		pAnim->m_pAnimator = this;
+		m_mapAnim.insert(make_pair(pAnim->GetName(), pAnim));
 	}
 }
 
