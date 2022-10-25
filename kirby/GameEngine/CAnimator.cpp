@@ -8,11 +8,13 @@ CAnimator::CAnimator()
 	: m_pCurAnim(nullptr)
 	, m_bRepeat(false)
 	, m_pTex(nullptr)
+	, m_pRealRender(false)
 {
 }
 CAnimator::CAnimator(const CAnimator& _origin)
 	: m_bRepeat(_origin.m_bRepeat)
 	, m_pTex(_origin.m_pTex)
+	, m_pRealRender(_origin.m_pRealRender)
 {
 	LoadAnimation(_origin.m_pTex->GetRelativePath());
 }
@@ -40,8 +42,16 @@ void CAnimator::LoadAnimation(const wstring& _strRelativePath)
 	CAnimation* pAnim = new CAnimation;
 	pAnim->Load(_strRelativePath);		// 해당 경로 파일을 Load하여 애니메이션 생성
 
-	pAnim->m_pAnimator = this;
-	m_mapAnim.insert(make_pair(pAnim->GetName(), pAnim));
+	// 기존에 애니메이션이 존재하지않았다면 추가
+	if (nullptr == FindAnimation(pAnim->GetName()))
+	{
+		pAnim->m_pAnimator = this;
+		m_mapAnim.insert(make_pair(pAnim->GetName(), pAnim));
+	}
+	else
+	{
+		delete pAnim;
+	}
 }
 
 CAnimation* CAnimator::FindAnimation(const wstring& _strName)
@@ -54,11 +64,12 @@ CAnimation* CAnimator::FindAnimation(const wstring& _strName)
 	return iter->second;
 }
 
-void CAnimator::Play(const wstring& _strName, bool _bRepeat)
+void CAnimator::Play(const wstring& _strName, bool _bRepeat, bool _pRealRender)
 {
 	m_pCurAnim = FindAnimation(_strName);
 	assert(nullptr != m_pCurAnim);	// 애니메이션을 찾지 못했음
 	m_bRepeat = _bRepeat;
+	m_pCurAnim->SetRenderCoordinate(_pRealRender); // 렌더 좌표여부 설정
 }
 
 void CAnimator::Component_update()

@@ -4,19 +4,20 @@
 #include "CKeyMgr.h"
 #include "CResMgr.h"
 #include "CCamera.h"
+#include "CSceneMgr.h"
 #include "CCore.h"
-#include "CAnimation.h"
 
 #include "Kirby.h"
 
 #include "SelectGDI.h"
 #include "CTexture.h"
 #include "CTimeMgr.h"
-#include "CSceneMgr.h"
+#include "CAnimation.h"
+#include "CAnimPlayer.h"
+
 
 CScene_Animation_Tool::CScene_Animation_Tool()
 	: m_pTex(nullptr)
-	, m_SaveAnim(nullptr)
 	, m_DragTrig(false)
 	, CurAinmData{}
 {
@@ -24,8 +25,6 @@ CScene_Animation_Tool::CScene_Animation_Tool()
 
 CScene_Animation_Tool::~CScene_Animation_Tool()
 {
-	if (nullptr != m_SaveAnim)
-		delete m_SaveAnim;
 }
 
 void CScene_Animation_Tool::update()
@@ -37,6 +36,8 @@ void CScene_Animation_Tool::update()
 		m_vTapPos = MOUSE_POS;
 		m_DragTrig = true;
 		vAccPos = CCamera::GetInst()->GetLookAt();	// 클릭 당시 위치 값 저장
+
+		CurAinmData = {};	// 재 클릭시 현재 애니메이션 초기화
 	}
 
 	if (KEY_AWAY(KEY::RBTN))
@@ -70,6 +71,11 @@ void CScene_Animation_Tool::update()
 
 	// 클릭 당시 위치값과 현재 위치값의 차이, 즉 카메라 이동량을 구함
 	vCamDist = CCamera::GetInst()->GetLookAt() - vAccPos;
+
+	if (KEY_AWAY(KEY::SPACE))
+	{
+		ChangeScene(SCENE_TYPE::START);
+	}
 }
 
 void CScene_Animation_Tool::render(HDC _dc)
@@ -91,13 +97,14 @@ void CScene_Animation_Tool::render(HDC _dc)
 			, 0, 0, SRCCOPY);
 	}
 
-	Vec2 vMousePos = MOUSE_POS;
 		
-	SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
-	SelectGDI p(_dc, PEN_TYPE::GREEN);	
-
 	if (m_DragTrig)
 	{
+		Vec2 vMousePos = MOUSE_POS;
+
+		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
+		SelectGDI p(_dc, PEN_TYPE::GREEN);
+
 		Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
 
 		Rectangle(_dc
@@ -120,15 +127,21 @@ void CScene_Animation_Tool::render(HDC _dc)
 	//		, (int)vRB.y);
 	//}
 
-	// 현재 프레임 렌더링
-	Vec2 vLT = CCamera::GetInst()->GetRenderPos(CurAinmData.vLT);
-	Vec2 vRB = CCamera::GetInst()->GetRenderPos(CurAinmData.vRB);
+	if (CurAinmData.vLT != Vec2(0.f, 0.f))
+	{
+		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
+		SelectGDI p(_dc, PEN_TYPE::GREEN);
 
-	Rectangle(_dc
-		, (int)vLT.x	
-		, (int)vLT.y	
-		, (int)vRB.x
-		, (int)vRB.y);
+		// 현재 프레임 렌더링
+		Vec2 vLT = CCamera::GetInst()->GetRenderPos(CurAinmData.vLT);
+		Vec2 vRB = CCamera::GetInst()->GetRenderPos(CurAinmData.vRB);
+
+		Rectangle(_dc
+			, (int)vLT.x
+			, (int)vLT.y
+			, (int)vRB.x
+			, (int)vRB.y);
+	}
 
 	CScene::render(_dc);
 }
@@ -141,22 +154,22 @@ void CScene_Animation_Tool::Enter()
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution /2.f ));
 	CCamera::GetInst()->SetMovsSpeed(800.f);
 
-	CObject* mObj = new Kirby;
-	mObj->SetName(L"Obj");
-	mObj->SetScale(Vec2(300, 300));
-	mObj->SetPos(vResolution / 2.f);
+	CObject* PlayAnim = new CAnimPlayer;
+	PlayAnim->SetName(L"PlayAnim");
+	PlayAnim->SetPos(Vec2(1100.f, 200.f));
 
-	EnterAddObject(mObj, GROUP_TYPE::PLAYER);
+	EnterAddObject(PlayAnim, GROUP_TYPE::PLAYER);
 }
 
 void CScene_Animation_Tool::Exit()
 {
+	DeleteAll();
 }
 
 void CScene_Animation_Tool::SaveAnimation(UINT _FrameCount, const wchar_t* _Name, const wchar_t* _FileName, float _fDuration)
 {
 	// 애니메이션 생성및 저장
-	m_SaveAnim = new CAnimation;
+	CAnimation SaveAnim;
 
 	wstring AnimAddress = L"animation\\";
 	AnimAddress += _FileName;
@@ -165,9 +178,32 @@ void CScene_Animation_Tool::SaveAnimation(UINT _FrameCount, const wchar_t* _Name
 	CurAinmData.vLT = CurAinmData.vLT.Vec2_abs();
 	CurAinmData.vRB = CurAinmData.vRB.Vec2_abs();
 
-	m_SaveAnim->Create(m_pTex, CurAinmData.vLT, Vec2(CurAinmData.vSlice.x / _FrameCount, CurAinmData.vSlice.y), Vec2(CurAinmData.vSlice.x / _FrameCount, 0.f), _fDuration, _FrameCount);
-	m_SaveAnim->SetName(_Name);
-	m_SaveAnim->Save(AnimAddress);
+	SaveAnim.Create(m_pTex, CurAinmData.vLT, Vec2(CurAinmData.vSlice.x / _FrameCount, CurAinmData.vSlice.y), Vec2(CurAinmData.vSlice.x / _FrameCount, 0.f), _fDuration, _FrameCount);
+	SaveAnim.SetName(_Name);
+	SaveAnim.Save(AnimAddress);
+}
+
+void CScene_Animation_Tool::LoadAnimation(const wchar_t* _Name, const wchar_t* _FileName)
+{
+	wstring AnimAddress = L"animation\\";
+	AnimAddress += _FileName;
+	AnimAddress += L".anim";
+
+	CObject* PlayAnim = nullptr;
+
+	const vector<CObject*>& objvec =  GetGroupObject(GROUP_TYPE::PLAYER);
+
+	for (size_t i = 0; i < objvec.size(); ++i)
+	{
+		if (L"PlayAnim" == objvec[i]->GetName())
+		{
+			PlayAnim = objvec[i];
+		}
+	}
+
+	assert(PlayAnim);
+
+	((CAnimPlayer*)PlayAnim)->SetAnimation(AnimAddress, _Name, true);
 }
 
 
@@ -217,3 +253,42 @@ INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	return (INT_PTR)FALSE;
 }
+
+INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK)
+		{
+			wchar_t AnimName[256] = {};
+			wchar_t AnimFileName[256] = {};
+
+			GetDlgItemText(hDlg, IDC_ANIM_NAME, AnimName, 256);
+			GetDlgItemText(hDlg, IDC_ANIM_ADDRESS, AnimFileName, 256);
+
+			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+			// CScene_Animation_Tool 확인
+			CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
+			assert(pToolScene);
+
+			pToolScene->LoadAnimation(AnimName, AnimFileName);
+
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		else if (LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
+}
+

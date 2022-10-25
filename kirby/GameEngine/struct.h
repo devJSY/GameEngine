@@ -111,6 +111,13 @@ public:
 		return (Vec2(x / _f, y / _f));
 	}
 
+	bool operator != (Vec2 _vOther)
+	{
+		if (x != _vOther.x || y != _vOther.y)
+			return true;
+		return false;
+	}
+
 	void operator += (Vec2 _vOther)
 	{
 		x += _vOther.x;

@@ -24,7 +24,6 @@ private:
 
     void MouseOnCheck();
 
-
 public:
     CUI* GetParent() { return m_pParentUI; }
     bool IsMouseOn() { return m_bMouseOn; }
@@ -41,6 +40,9 @@ public:
     virtual void MouseLbtnClicked();
 
     virtual CUI* Clone() = 0;
+
+public:
+    bool IsCamAffected() { return m_bCamAffected; }
 
 public:
     CUI(bool _bCamAff);

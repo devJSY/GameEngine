@@ -19,7 +19,6 @@ class CScene_Animation_Tool :
 {
 private:
     CTexture*               m_pTex;
-    CAnimation*             m_SaveAnim;
 
     Vec2                    m_vTapPos;
     Vec2                    m_vAwayPos;
@@ -39,6 +38,7 @@ public:
     virtual void Exit();
 
     void SaveAnimation(UINT _FrameCount, const wchar_t* _Name, const wchar_t* _FileName, float _fDuration);
+    void LoadAnimation(const wchar_t* _Name, const wchar_t* _FileName);
 
     CTexture* GetTexture() { return m_pTex; }
 

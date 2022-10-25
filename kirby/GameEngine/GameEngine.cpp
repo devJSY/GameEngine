@@ -28,7 +28,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     // 메모리 누수 확인
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    //_CrtSetBreakAlloc();
+   // _CrtSetBreakAlloc();
 
 
     UNREFERENCED_PARAMETER(hPrevInstance);
@@ -151,6 +151,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -169,8 +170,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case IDM_EXIT:
             DestroyWindow(hWnd);
             break;
-        case ID_ANIM:
+        case ID_ANIM_SAVE:
                DialogBox(hInst, MAKEINTRESOURCE(IDD_ANIM_SAVE), hWnd, AnimSave);
+            break;
+        case ID_ANIM_LOAD:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_ANIM_LOAD), hWnd, AnimLoad);
             break;
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);

@@ -13,7 +13,7 @@ struct tAnimFrm
 };
 
 class CAnimation :
-    public CRoot
+	public CRoot
 {
 private:
 	wstring				m_strName;
@@ -24,6 +24,7 @@ private:
 	float				m_fAccTime; // 시간 누적
 
 	bool				m_bFinish;	// 재생 끝에 도달여부
+	bool				m_pRealRender; // 실제 좌표, 렌더링 좌표 여부 1 이면 실제 좌표
 
 public:
 	const wstring GetName() { return m_strName; }
@@ -40,6 +41,7 @@ public:
 
 private:
 	void SetName(const wstring& _strName) { m_strName = _strName; }
+	void SetRenderCoordinate(bool _pRealRender) { m_pRealRender = _pRealRender; }
 
 public:
 	void Save(const wstring& _strRelativePath);

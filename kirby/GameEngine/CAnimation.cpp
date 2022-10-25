@@ -15,6 +15,7 @@ CAnimation::CAnimation()
 	, m_iCurFrm(0)
 	, m_fAccTime(0.f)
 	, m_bFinish(false)
+	, m_pRealRender(false)
 {
 }
 CAnimation::~CAnimation()
@@ -56,8 +57,11 @@ void CAnimation::Component_render(HDC _dc)
 	Vec2 vPos = pObj->GetPos();
 	vPos += m_vecFrm[m_iCurFrm].vOffset; // Object Position 에 Offset 만큼 추가 이동 위치
 
-	// 렌더링 좌표로 변환
-	vPos = CCamera::GetInst()->GetRenderPos(vPos);
+	if (!m_pRealRender)
+	{
+		// 렌더링 좌표로 변환
+		vPos = CCamera::GetInst()->GetRenderPos(vPos);
+	}
 
 	TransparentBlt(_dc
 		, (int)(vPos.x - m_vecFrm[m_iCurFrm].vSlice.x / 2.f)	// 좌상단 x 위치

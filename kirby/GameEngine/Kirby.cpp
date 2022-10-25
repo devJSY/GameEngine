@@ -39,7 +39,7 @@ Kirby::Kirby()
 	pAnimator->LoadAnimation(L"animation\\player_idle_right.anim");
 	pAnimator->LoadAnimation(L"animation\\Test.anim");
 
-	pAnimator->Play(L"Test", true);
+	pAnimator->Play(L"Test", true, false);
 }
 
 Kirby::~Kirby()
