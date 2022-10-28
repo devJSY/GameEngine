@@ -6,6 +6,7 @@
 #include "CCamera.h"
 #include "CSceneMgr.h"
 #include "CCore.h"
+#include "CPathMgr.h"
 
 #include "Kirby.h"
 
@@ -206,6 +207,33 @@ void CScene_Animation_Tool::LoadAnimation(const wchar_t* _Name, const wchar_t* _
 	((CAnimPlayer*)PlayAnim)->SetAnimation(AnimAddress, _Name, true);
 }
 
+void CScene_Animation_Tool::LoadTexture()
+{
+	wchar_t szName[256] = {};
+	OPENFILENAME ofn = {};
+
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = CCore::GetInst()->GetMainHwnd();
+	ofn.lpstrFile = szName;
+	ofn.nMaxFile = sizeof(szName);
+	ofn.lpstrFilter = L"All\0*.*\ANIM\0*.anim\0";
+	ofn.nFilterIndex = 0;
+	ofn.lpstrFileTitle = nullptr;
+	ofn.nMaxFileTitle = 0;
+
+	wstring strTileFolder = CPathMgr::GetInst()->GetContentPath();
+	strTileFolder += L"Animation";
+	ofn.lpstrInitialDir = strTileFolder.c_str();
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	// Modal
+	if (GetOpenFileName(&ofn))
+	{
+		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
+		m_pTex = CResMgr::GetInst()->LoadTexture(strRelativePath, strRelativePath);
+	}
+}
+
 
 
 // ======================
@@ -232,6 +260,14 @@ INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 			GetDlgItemText(hDlg, IDC_ANIM_NAME, AnimName, 256);
 			GetDlgItemText(hDlg, IDC_ANIM_ADDRESS, AnimFileName, 256);
+
+
+			// 입력이 없었을경우 아무것도 안하고 종료
+			if ('\0' == AnimName[0] || '\0' == AnimFileName[0] || 0 == AnimFrameCount || 0.f == AnimDuration)
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			}
 
 			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
@@ -270,6 +306,13 @@ INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 			GetDlgItemText(hDlg, IDC_ANIM_NAME, AnimName, 256);
 			GetDlgItemText(hDlg, IDC_ANIM_ADDRESS, AnimFileName, 256);
+			
+			// 입력이 없었을경우 아무것도 안하고 종료
+			if ('\0' == AnimName[0] || '\0' == AnimFileName[0])
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			}
 
 			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
@@ -292,3 +335,35 @@ INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	return (INT_PTR)FALSE;
 }
 
+
+INT_PTR CALLBACK TextureLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK)
+		{
+			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+			// CScene_Animation_Tool 확인
+			CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
+			assert(pToolScene);
+
+			pToolScene->LoadTexture();
+
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		else if (LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
+}

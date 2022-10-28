@@ -39,6 +39,7 @@ public:
 
     void SaveAnimation(UINT _FrameCount, const wchar_t* _Name, const wchar_t* _FileName, float _fDuration);
     void LoadAnimation(const wchar_t* _Name, const wchar_t* _FileName);
+    void LoadTexture();
 
     CTexture* GetTexture() { return m_pTex; }
 

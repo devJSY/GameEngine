@@ -12,20 +12,20 @@
 #define IDI_SMALL                       108
 #define IDC_GAMEENGINE                  109
 #define IDR_MAINFRAME                   128
-#define IDD_ANIM_REPEAT                 130
 #define IDD_ANIM_LOAD                   130
 #define IDD_ANIM_SAVE                   131
 #define IDC_ANIM_NAME                   1000
 #define IDC_FRAME_COUNT                 1001
 #define IDC_ANIM_ADDRESS                1002
 #define IDC_ANIM_DURATION               1004
-#define IDC_CHECK2                      1009
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_ANIM                         32773
 #define ID_32774                        32774
 #define ID_ANIM_SAVE                    32775
 #define ID_ANIM_LOAD                    32776
+#define ID_32777                        32777
+#define ID_TEXTURE_LOAD                 32778
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -34,7 +34,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        132
-#define _APS_NEXT_COMMAND_VALUE         32777
+#define _APS_NEXT_COMMAND_VALUE         32779
 #define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
