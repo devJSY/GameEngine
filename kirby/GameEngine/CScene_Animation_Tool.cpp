@@ -225,10 +225,10 @@ INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			wchar_t AnimName[256] = {};
 			wchar_t AnimFileName[256] = {};
 			UINT AnimFrameCount = GetDlgItemInt(hDlg, IDC_FRAME_COUNT, nullptr, false);
-			int tempAnimDuration = GetDlgItemInt(hDlg, IDC_ANIM_DURATION, nullptr, false);
+			float AnimDuration = (float)GetDlgItemInt(hDlg, IDC_ANIM_DURATION, nullptr, false);
 
-			// 임시 고정값 / 10
-			float AnimDuration = tempAnimDuration / 10.f;
+			// ms 단위로 변경
+			AnimDuration /= 1000.f;
 
 			GetDlgItemText(hDlg, IDC_ANIM_NAME, AnimName, 256);
 			GetDlgItemText(hDlg, IDC_ANIM_ADDRESS, AnimFileName, 256);
