@@ -72,28 +72,6 @@ void CCamera::update()
 			if (KEY_HOLD(KEY::S))
 				m_vLookAt.y += m_fMoveSpeed * fDT;
 		}	
-
-		// 가로 범위가 텍스트를 초과한 경우
-		if (vLT.x > (TexWidth - vResolution.x))
-		{
-			m_vLookAt.x = TexWidth - (vResolution.x / 2.f);
-		}
-
-		// 세로 범위가 텍스트를 초과한 경우
-		if (vLT.y > (TexHeight - vResolution.y))
-		{
-			m_vLookAt.y = TexHeight - (vResolution.y / 2.f);
-		}
-
-		if (vLT.x < 0)
-		{
-			m_vLookAt.x = vResolution.x / 2.f;
-		}
-
-		if (vLT.y < 0)
-		{
-			m_vLookAt.y = vResolution.y / 2.f;
-		}
 	}
 
 	if (m_pTargetObj)

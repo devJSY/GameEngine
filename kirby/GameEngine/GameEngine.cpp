@@ -4,6 +4,9 @@
 #include "global.h"
 #include "framework.h"
 #include "GameEngine.h"
+#include "CScene.h"
+#include "CSceneMgr.h"
+#include "CScene_Animation_Tool.h"
 
 #include "CCore.h"
 
@@ -152,8 +155,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-INT_PTR CALLBACK TextureLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
-
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -178,7 +179,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             DialogBox(hInst, MAKEINTRESOURCE(IDD_ANIM_LOAD), hWnd, AnimLoad);
             break;
         case ID_TEXTURE_LOAD:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_ANIM_LOAD), hWnd, TextureLoad);
+        {
+            CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+            CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
+            assert(pToolScene);
+
+            pToolScene->LoadTexture();
+        }
             break;
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);

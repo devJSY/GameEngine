@@ -59,11 +59,18 @@ void CScene_Animation_Tool::update()
 		//CurAinmData.vRB.Vec2_abs();		
 
 		// 드래그 위치에 따라 좌상단, 우하단 위치 결정
-		if (CurAinmData.vLT.x > CurAinmData.vRB.x && CurAinmData.vLT.y > CurAinmData.vRB.y)
+		if (CurAinmData.vLT.x > CurAinmData.vRB.x )
 		{
-			Vec2 vTemp = CurAinmData.vLT;
-			CurAinmData.vLT = CurAinmData.vRB;
-			CurAinmData.vRB = vTemp;
+			float fTemp = CurAinmData.vLT.x;
+			CurAinmData.vLT.x = CurAinmData.vRB.x;
+			CurAinmData.vRB.x = fTemp;
+		}
+
+		if (CurAinmData.vLT.y > CurAinmData.vRB.y)
+		{
+			float fTemp = CurAinmData.vLT.y;
+			CurAinmData.vLT.y = CurAinmData.vRB.y;
+			CurAinmData.vRB.y = fTemp;
 		}
 
 		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
@@ -216,13 +223,13 @@ void CScene_Animation_Tool::LoadTexture()
 	ofn.hwndOwner = CCore::GetInst()->GetMainHwnd();
 	ofn.lpstrFile = szName;
 	ofn.nMaxFile = sizeof(szName);
-	ofn.lpstrFilter = L"All\0*.*\ANIM\0*.anim\0";
+	ofn.lpstrFilter = L"All\0*.*\0BITMAP\0*.bmp\0";
 	ofn.nFilterIndex = 0;
 	ofn.lpstrFileTitle = nullptr;
 	ofn.nMaxFileTitle = 0;
 
 	wstring strTileFolder = CPathMgr::GetInst()->GetContentPath();
-	strTileFolder += L"Animation";
+	strTileFolder += L"Texture";
 	ofn.lpstrInitialDir = strTileFolder.c_str();
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 
@@ -231,6 +238,10 @@ void CScene_Animation_Tool::LoadTexture()
 	{
 		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
 		m_pTex = CResMgr::GetInst()->LoadTexture(strRelativePath, strRelativePath);
+
+		// 카메라 위치 초기화
+		Vec2 vResolution = CCore::GetInst()->GetResolution();
+		CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
 	}
 }
 
@@ -321,39 +332,6 @@ INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			assert(pToolScene);
 
 			pToolScene->LoadAnimation(AnimName, AnimFileName);
-
-			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
-		}
-		else if (LOWORD(wParam) == IDCANCEL)
-		{
-			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
-		}
-		break;
-	}
-	return (INT_PTR)FALSE;
-}
-
-
-INT_PTR CALLBACK TextureLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
-
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK)
-		{
-			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
-
-			// CScene_Animation_Tool 확인
-			CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
-			assert(pToolScene);
-
-			pToolScene->LoadTexture();
 
 			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
