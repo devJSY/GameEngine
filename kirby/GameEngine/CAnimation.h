@@ -36,7 +36,7 @@ public:
 		m_fAccTime = 0.f;
 	}
 
-	tAnimFrm& GEtFrame(int _iIdx) { return m_vecFrm[_iIdx]; }
+	tAnimFrm& GetFrame(int _iIdx) { return m_vecFrm[_iIdx]; }
 	UINT GetMaxFrame() { return (UINT)m_vecFrm.size(); }
 
 private:
@@ -51,6 +51,10 @@ public:
 	void Component_update();
 	void Component_render(HDC _dc);
 	void Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount);
+
+private:
+	void SetTexture(CTexture* _pTex) { m_pTex = _pTex; }
+	void AddFrameVec(Vec2 _vLT, Vec2 _vSlice, float fDuration);
 
 public:
 	CAnimation();

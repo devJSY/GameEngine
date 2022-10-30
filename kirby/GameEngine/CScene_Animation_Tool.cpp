@@ -115,10 +115,10 @@ void CScene_Animation_Tool::update()
 	// 이전 프레임 마우스 위치 
 	vPrevMousePos = MOUSE_POS;
 
-	//if (KEY_AWAY(KEY::SPACE))
-//{
-//	ChangeScene(SCENE_TYPE::START);
-//}
+	if (KEY_AWAY(KEY::ALT))
+	{
+		ChangeScene(SCENE_TYPE::START);
+	}
 }
 
 void CScene_Animation_Tool::render(HDC _dc)
@@ -146,7 +146,7 @@ void CScene_Animation_Tool::render(HDC _dc)
 		Vec2 vMousePos = MOUSE_POS;
 
 		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
-		SelectGDI p(_dc, PEN_TYPE::GREEN);
+		SelectGDI p(_dc, PEN_TYPE::RED);
 
 		Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
 
@@ -177,7 +177,7 @@ void CScene_Animation_Tool::render(HDC _dc)
 	if (CurAinmData.vLT != Vec2(0.f, 0.f))
 	{
 		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
-		SelectGDI p(_dc, PEN_TYPE::GREEN);
+		SelectGDI p(_dc, PEN_TYPE::RED);
 		
 		Vec2 vLT = CCamera::GetInst()->GetRenderPos(CurAinmData.vLT);
 		Vec2 vRB = CCamera::GetInst()->GetRenderPos(CurAinmData.vRB);
@@ -209,10 +209,14 @@ void CScene_Animation_Tool::Enter()
 
 void CScene_Animation_Tool::Exit()
 {
+	// 기존에 저장했던 프레임 데이터 초기화
+	frameData.clear();
+	CurAinmData = {};
+
 	DeleteAll();
 }
 
-void CScene_Animation_Tool::SaveAnimation(UINT _FrameCount, const wchar_t* _Name, const wchar_t* _FileName, float _fDuration)
+void CScene_Animation_Tool::SaveAnimation(const wchar_t* _FileName, float _fDuration)
 {
 	// 애니메이션 생성및 저장
 	CAnimation SaveAnim;
@@ -221,15 +225,21 @@ void CScene_Animation_Tool::SaveAnimation(UINT _FrameCount, const wchar_t* _Name
 	AnimAddress += _FileName;
 	AnimAddress += L".anim";
 
-	CurAinmData.vLT = CurAinmData.vLT.Vec2_abs();
-	CurAinmData.vRB = CurAinmData.vRB.Vec2_abs();
+	SaveAnim.SetTexture(m_pTex);
 
-	SaveAnim.Create(m_pTex, CurAinmData.vLT, Vec2(CurAinmData.vSlice.x / _FrameCount, CurAinmData.vSlice.y), Vec2(CurAinmData.vSlice.x / _FrameCount, 0.f), _fDuration, _FrameCount);
-	SaveAnim.SetName(_Name);
+	for (size_t i = 0; i < frameData.size(); ++i)
+	{
+		frameData[i].vLT = frameData[i].vLT.Vec2_abs();
+		frameData[i].vRB = frameData[i].vRB.Vec2_abs();
+
+		SaveAnim.AddFrameVec(frameData[i].vLT, frameData[i].vSlice, _fDuration);
+	}
+	
+	SaveAnim.SetName(_FileName);
 	SaveAnim.Save(AnimAddress);
 }
 
-void CScene_Animation_Tool::LoadAnimation(const wchar_t* _Name, const wchar_t* _FileName)
+void CScene_Animation_Tool::LoadAnimation(const wchar_t* _FileName)
 {
 	wstring AnimAddress = L"animation\\";
 	AnimAddress += _FileName;
@@ -249,7 +259,7 @@ void CScene_Animation_Tool::LoadAnimation(const wchar_t* _Name, const wchar_t* _
 
 	assert(PlayAnim);
 
-	((CAnimPlayer*)PlayAnim)->SetAnimation(AnimAddress, _Name, true);
+	((CAnimPlayer*)PlayAnim)->SetAnimation(AnimAddress, _FileName, true);
 }
 
 void CScene_Animation_Tool::LoadTexture()
@@ -280,6 +290,10 @@ void CScene_Animation_Tool::LoadTexture()
 		// 카메라 위치 초기화
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
 		CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
+
+		// 기존에 저장했던 프레임 데이터 초기화
+		frameData.clear();
+		CurAinmData = {};
 	}
 }
 
@@ -299,20 +313,17 @@ INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK)
 		{
-			wchar_t AnimName[256] = {};
 			wchar_t AnimFileName[256] = {};
-			UINT AnimFrameCount = GetDlgItemInt(hDlg, IDC_FRAME_COUNT, nullptr, false);
 			float AnimDuration = (float)GetDlgItemInt(hDlg, IDC_ANIM_DURATION, nullptr, false);
 
 			// ms 단위로 변경
 			AnimDuration /= 1000.f;
 
-			GetDlgItemText(hDlg, IDC_ANIM_NAME, AnimName, 256);
 			GetDlgItemText(hDlg, IDC_ANIM_ADDRESS, AnimFileName, 256);
 
 
 			// 입력이 없었을경우 아무것도 안하고 종료
-			if ('\0' == AnimName[0] || '\0' == AnimFileName[0] || 0 == AnimFrameCount || 0.f == AnimDuration)
+			if ('\0' == AnimFileName[0] || 0.f == AnimDuration)
 			{
 				EndDialog(hDlg, LOWORD(wParam));
 				return (INT_PTR)TRUE;
@@ -324,7 +335,7 @@ INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
 			assert(pToolScene);
 
-			pToolScene->SaveAnimation(AnimFrameCount, AnimName, AnimFileName, AnimDuration);
+			pToolScene->SaveAnimation(AnimFileName, AnimDuration);
 
 			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
@@ -350,14 +361,12 @@ INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK)
 		{
-			wchar_t AnimName[256] = {};
 			wchar_t AnimFileName[256] = {};
 
-			GetDlgItemText(hDlg, IDC_ANIM_NAME, AnimName, 256);
 			GetDlgItemText(hDlg, IDC_ANIM_ADDRESS, AnimFileName, 256);
 			
 			// 입력이 없었을경우 아무것도 안하고 종료
-			if ('\0' == AnimName[0] || '\0' == AnimFileName[0])
+			if ('\0' == AnimFileName[0])
 			{
 				EndDialog(hDlg, LOWORD(wParam));
 				return (INT_PTR)TRUE;
@@ -369,7 +378,7 @@ INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
 			assert(pToolScene);
 
-			pToolScene->LoadAnimation(AnimName, AnimFileName);
+			pToolScene->LoadAnimation(AnimFileName);
 
 			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;

@@ -95,6 +95,19 @@ void CAnimation::Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vSte
 	}
 }
 
+void CAnimation::AddFrameVec(Vec2 _vLT, Vec2 _vSlice, float fDuration)
+{
+	// 각 프레임에 맞는 데이터 설정후 vector 에 저장
+	tAnimFrm frm = {};
+
+	frm.fDuration = fDuration;
+	frm.vSlice = _vSlice;
+	frm.vLT = _vLT ;
+
+	m_vecFrm.push_back(frm);
+}
+
+
 void CAnimation::Save(const wstring& _strRelativePath)
 {
 	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
