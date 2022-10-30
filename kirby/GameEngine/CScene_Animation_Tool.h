@@ -29,6 +29,10 @@ private:
 
     AnimFrmData             CurAinmData;
     vector<AnimFrmData>     frameData;
+
+    
+    Vec2                    vPrevMousePos;
+    Vec2                    vPrevCamLookAt;
         
 public:
     virtual void update();

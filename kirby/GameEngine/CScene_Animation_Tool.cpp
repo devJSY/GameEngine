@@ -77,13 +77,48 @@ void CScene_Animation_Tool::update()
 		//frameData.push_back(CurAinmData);
 	}
 
-	// 클릭 당시 위치값과 현재 위치값의 차이, 즉 카메라 이동량을 구함
-	vCamDist = CCamera::GetInst()->GetLookAt() - vAccPos;
+	// 프레임 드래그 이동 처리
+	Vec2 vMousePos = MOUSE_POS;
+	Vec2 CurAnimvLT = CCamera::GetInst()->GetRenderPos(CurAinmData.vLT);
+	Vec2 CurAnimvRB = CCamera::GetInst()->GetRenderPos(CurAinmData.vRB);	
+
+	if (CurAnimvLT.x <= vMousePos.x && vMousePos.x <= CurAnimvRB.x
+		&& CurAnimvLT.y <= vMousePos.y && vMousePos.y <= CurAnimvRB.y)
+	{
+		if (KEY_HOLD(KEY::LBTN))
+		{
+			Vec2 vMouseDiff = MOUSE_POS - vPrevMousePos;
+			Vec2 vCamDiff = CCamera::GetInst()->GetLookAt() - vPrevCamLookAt; 
+
+			CurAinmData.vLT.x += vMouseDiff.x + vCamDiff.x;
+			CurAinmData.vRB.x += vMouseDiff.x + vCamDiff.x;
+		}
+	}
+
 
 	if (KEY_AWAY(KEY::SPACE))
 	{
-		ChangeScene(SCENE_TYPE::START);
+		frameData.push_back(CurAinmData);
 	}
+
+	if (KEY_AWAY(KEY::CTRL))
+	{
+		frameData.clear();
+	}
+
+	// 클릭 당시 위치값과 현재 위치값의 차이, 즉 카메라 이동량을 구함
+	vCamDist = CCamera::GetInst()->GetLookAt() - vAccPos;
+
+	// 이전 프레임 카메라 위치
+	vPrevCamLookAt = CCamera::GetInst()->GetLookAt();	
+
+	// 이전 프레임 마우스 위치 
+	vPrevMousePos = MOUSE_POS;
+
+	//if (KEY_AWAY(KEY::SPACE))
+//{
+//	ChangeScene(SCENE_TYPE::START);
+//}
 }
 
 void CScene_Animation_Tool::render(HDC _dc)
@@ -123,24 +158,27 @@ void CScene_Animation_Tool::render(HDC _dc)
 	}
 
 	// 생성한 프레임 렌더링
-	//for (size_t i = 0; i < frameData.size(); ++i)
-	//{
-	//	Vec2 vLT = CCamera::GetInst()->GetRenderPos(frameData[i].vLT);
-	//	Vec2 vRB = CCamera::GetInst()->GetRenderPos(frameData[i].vRB);
-
-	//	Rectangle(_dc
-	//		, (int)vLT.x	
-	//		, (int)vLT.y	
-	//		, (int)vRB.x
-	//		, (int)vRB.y);
-	//}
-
-	if (CurAinmData.vLT != Vec2(0.f, 0.f))
+	for (size_t i = 0; i < frameData.size(); ++i)
 	{
 		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
 		SelectGDI p(_dc, PEN_TYPE::GREEN);
 
-		// 현재 프레임 렌더링
+		Vec2 vLT = CCamera::GetInst()->GetRenderPos(frameData[i].vLT);
+		Vec2 vRB = CCamera::GetInst()->GetRenderPos(frameData[i].vRB);
+
+		Rectangle(_dc
+			, (int)vLT.x	
+			, (int)vLT.y	
+			, (int)vRB.x
+			, (int)vRB.y);
+	}
+
+	// 현재 선택 영역 렌더링
+	if (CurAinmData.vLT != Vec2(0.f, 0.f))
+	{
+		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
+		SelectGDI p(_dc, PEN_TYPE::GREEN);
+		
 		Vec2 vLT = CCamera::GetInst()->GetRenderPos(CurAinmData.vLT);
 		Vec2 vRB = CCamera::GetInst()->GetRenderPos(CurAinmData.vRB);
 

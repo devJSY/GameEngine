@@ -34,7 +34,7 @@ void CSceneMgr::init()
 	Animation_Tool->SetName(L"Animation_Tool");
 	m_arrScene[(UINT)SCENE_TYPE::Animation_Tool] = Animation_Tool;
 
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::Animation_Tool];
 
 	m_pCurScene->Enter();
 }
