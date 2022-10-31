@@ -1,7 +1,7 @@
 #pragma once
 #include "CObject.h"
 
-enum class PLAYER_STATE
+enum class KIRBY_STATE
 {
     IDLE,
     WALK,
@@ -10,27 +10,17 @@ enum class PLAYER_STATE
     DEAD,
 };
 
-enum class PLAYER_ATTACK_STATE
-{
-    NORMAL_ATT_1,
-    NORMAL_ATT_2,
-    NORMAL_ATT_3,
-    NORMAL_ATT_4,
-    SKILL_ATT_1,
-};
-
 class CTexture;
 
 class Kirby :
     public CObject
 {
-    CTexture*       m_pTex;
-    int             m_iDir; // 플레이어 방향 정보
-    int             m_iPrevDir;
-    PLAYER_STATE    m_eCurState; // 현재 상태
-    PLAYER_STATE    m_ePreveState; // 이전 상태
+    CTexture*      m_pTex;
 
-    int             m_iState;
+    int            m_iDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
+    KIRBY_STATE    m_eCurState; // 현재 상태
+
+    int             m_iDashTrig;
     float           m_fAccTime;
 
 public:

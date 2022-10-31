@@ -13,11 +13,9 @@
 
 Kirby::Kirby()
 	: m_iDir(1)
-	, m_iPrevDir(1)
-	, m_eCurState(PLAYER_STATE::IDLE)
-	, m_ePreveState(PLAYER_STATE::WALK)
-	, m_iState(0)
-	, m_fAccTime(0.f)
+	, m_eCurState(KIRBY_STATE::IDLE)
+	, m_ePrevState(KIRBY_STATE::IDLE)
+
 {
 	CreateComponents(Component_TYPE::Collider);
 	// = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"Texture\\Player1.bmp");
@@ -66,8 +64,6 @@ void Kirby::update()
 	update_animation();
 	update_gravity();
 
-	m_ePreveState = m_eCurState;
-	m_iPrevDir = m_iDir;
 }
 
 void Kirby::render(HDC _dc)
@@ -90,101 +86,100 @@ void Kirby::render(HDC _dc)
 	Component_render(_dc);
 }
 
-void Kirby::OnCollision(CCollider* _pOther)
-{
-}
-
-void Kirby::OnCollisionEnter(CCollider* _pOther)
-{
-}
-
-void Kirby::OnCollisionExit(CCollider* _pOther)
-{
-
-}
-
 void Kirby::update_state()
 {
-	if (0 == m_iState)
+	switch (m_eCurState)
 	{
-		m_eCurState = PLAYER_STATE::IDLE;
+	case KIRBY_STATE::IDLE:
+	{
+		m_fAccTime = 0.f;
+
+		if (KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT) ||
+			KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT))
+		{
+			if (m_eCurState != KIRBY_STATE::JUMP)
+			{
+				m_eCurState = KIRBY_STATE::WALK;
+			}
+		}
+	}
+	break;
+
+	case KIRBY_STATE::WALK:
+	{
+		m_fAccTime += fDT;
+
+		if (m_fAccTime <= 0.3f)
+		{
+			if (KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT))
+			{
+				if (m_eCurState != KIRBY_STATE::JUMP)
+				{
+					m_eCurState = KIRBY_STATE::RUN;
+					m_fAccTime = 0.f;
+				}
+			}
+		}
+		else if (KEY_AWAY(KEY::LEFT) || KEY_AWAY(KEY::RIGHT))
+		{
+			if (m_eCurState != KIRBY_STATE::JUMP)
+			{
+				m_eCurState = KIRBY_STATE::IDLE;
+			}
+		}
+		else
+		{
+			if (!(KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT)))
+			{
+				m_eCurState = KIRBY_STATE::IDLE;
+			}			
+		}
+	}	
+		break;
+
+	case KIRBY_STATE::RUN:
+	{
+		if (KEY_AWAY(KEY::LEFT) || KEY_AWAY(KEY::RIGHT))
+		{
+			if (m_eCurState != KIRBY_STATE::JUMP)
+			{
+				m_eCurState = KIRBY_STATE::IDLE;
+			}
+		}
+	}
+		break;
+
+	case KIRBY_STATE::JUMP:
+	{
+		m_fAccTime += fDT;
+
+		if (m_fAccTime >= 1.f)
+		{
+			m_eCurState = KIRBY_STATE::IDLE;
+		}
+	}
+	break;
+
+	case KIRBY_STATE::DEAD:
+		break;
 	}
 
-
-	// KEY_TAP
+	// 키입력에 따른 방향 설정
 	if (KEY_TAP(KEY::LEFT))
 	{
-		++m_iState;
+		m_iDir = 1;
 	}
 	else if (KEY_TAP(KEY::RIGHT))
 	{
-		++m_iState;
+		m_iDir = 0;
 	}
 
 	if (KEY_TAP(KEY::SPACE))
 	{
-		m_eCurState = PLAYER_STATE::JUMP;
+		m_ePrevState = m_eCurState;
+		m_eCurState = KIRBY_STATE::JUMP;
 	}
 
-
-	// KEY_HOLD
-	if (KEY_HOLD(KEY::LEFT))
-	{
-		m_iDir = -1;
-
-		if (1 == m_iState)
-		{
-			if (m_eCurState != PLAYER_STATE::JUMP)
-				m_eCurState = PLAYER_STATE::WALK;
-		}
-		else if (2 <= m_iState)
-		{
-			if (m_eCurState != PLAYER_STATE::JUMP)
-				m_eCurState = PLAYER_STATE::RUN;
-		}
-	}
-	else if (KEY_HOLD(KEY::RIGHT))
-	{
-		m_iDir = 1;
-
-		if (1 == m_iState)
-		{
-			if (m_eCurState != PLAYER_STATE::JUMP)
-				m_eCurState = PLAYER_STATE::WALK;
-		}
-		else if (2 <= m_iState)
-		{
-			if (m_eCurState != PLAYER_STATE::JUMP)
-				m_eCurState = PLAYER_STATE::RUN;
-		}
-	}
-
-
-	// KEY_AWAY
-	if (0 != m_iState)
-	{
-		m_fAccTime += fDT;
-
-		if (KEY_AWAY(KEY::LEFT) || KEY_AWAY(KEY::RIGHT))
-		{
-			if (m_eCurState == PLAYER_STATE::WALK)
-			{
-				if (m_fAccTime >= 0.3f)
-				{
-					m_iState = 0;
-				}
-				
-			}
-			else if (m_eCurState == PLAYER_STATE::RUN)
-			{
-				m_iState = 0;
-			}		
-		}
-	}
-	else
-	{
-		m_fAccTime = 0.f;
-	}
 }
 
 void Kirby::update_move()
@@ -205,16 +200,13 @@ void Kirby::update_move()
 
 void Kirby::update_animation()
 {
-	if (m_eCurState == m_ePreveState && m_iDir == m_iPrevDir)
-		return;
-
 	CAnimator* pAnimator = (CAnimator*)GetComponents(Component_TYPE::Animator);
 
 	switch (m_eCurState)
 	{
-	case PLAYER_STATE::IDLE:
+	case KIRBY_STATE::IDLE:
 	{
-		if (m_iDir == -1)
+		if (1 == m_iDir)
 		{
 			pAnimator->Play(L"IDLE_Left", true, false);
 		}
@@ -225,9 +217,9 @@ void Kirby::update_animation()
 	}
 	break;
 
-	case PLAYER_STATE::WALK:
+	case KIRBY_STATE::WALK:
 
-		if (m_iDir == -1)
+		if (1 == m_iDir)
 		{
 			pAnimator->Play(L"WALK_Left", true, false);
 		}
@@ -238,9 +230,8 @@ void Kirby::update_animation()
 
 		break;
 
-	case PLAYER_STATE::RUN:
-
-		if (m_iDir == -1)
+	case KIRBY_STATE::RUN:
+		if (1 == m_iDir)
 		{
 			pAnimator->Play(L"RUN_Left", true, false);
 		}
@@ -251,9 +242,9 @@ void Kirby::update_animation()
 
 		break;
 
-	case PLAYER_STATE::JUMP:
+	case KIRBY_STATE::JUMP:
 	{
-		if (m_iDir == -1)
+		if (1 == m_iDir)
 		{
 			pAnimator->Play(L"JUMP_Left", true, false);
 		}
@@ -264,13 +255,27 @@ void Kirby::update_animation()
 	}
 	break;
 
-	case PLAYER_STATE::DEAD:
+	case KIRBY_STATE::DEAD:
 		break;
 	}
 }
 
 void Kirby::update_gravity()
 {
+}
+
+
+void Kirby::OnCollision(CCollider* _pOther)
+{
+}
+
+void Kirby::OnCollisionEnter(CCollider* _pOther)
+{
+}
+
+void Kirby::OnCollisionExit(CCollider* _pOther)
+{
+
 }
 
 void Kirby::start()
