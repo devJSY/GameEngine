@@ -18,13 +18,14 @@ class CAnimation :
 private:
 	wstring				m_strName;
 	CAnimator*			m_pAnimator;
-	CTexture*			m_pTex;		// Animation 이 사용하는 텍스쳐
-	vector<tAnimFrm>	m_vecFrm;	// 모든 프레임 정보
-	int					m_iCurFrm;	// 현재 프레임
-	float				m_fAccTime; // 시간 누적
+	CTexture*			m_pTex;			// Animation 이 사용하는 텍스쳐
+	vector<tAnimFrm>	m_vecFrm;		// 모든 프레임 정보
+	int					m_iCurFrm;		// 현재 프레임
+	float				m_fAccTime;		// 시간 누적
 
-	bool				m_bFinish;	// 재생 끝에 도달여부
-	bool				m_pRealRender; // 실제 좌표, 렌더링 좌표 여부 1 이면 실제 좌표
+	bool				m_bFinish;		// 재생 끝에 도달여부
+	bool				m_pRealRender;  // 실제 좌표, 렌더링 좌표 여부 1 이면 실제 좌표
+	
 
 public:
 	const wstring GetName() { return m_strName; }

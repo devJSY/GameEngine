@@ -36,21 +36,28 @@ void CScene_Start::Enter()
 {
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 
-	CUI* PanelUI = new CPanelUI;
-	PanelUI->SetName(L"PanelUI");
-	PanelUI->SetScale(Vec2(500.f, 500.f));
-	PanelUI->SetPos(Vec2(vResolution / 2.f - PanelUI->GetScale() / 2.f));
+	//CUI* PanelUI = new CPanelUI;
+	//PanelUI->SetName(L"PanelUI");
+	//PanelUI->SetScale(Vec2(500.f, 500.f));
+	//PanelUI->SetPos(Vec2(vResolution / 2.f - PanelUI->GetScale() / 2.f));
 
-	CUI* BtnUI = new CBtnUI;
-	BtnUI->SetName(L"BtnUI");
-	BtnUI->SetScale(Vec2(200.f, 200.f));
-	BtnUI->SetPos(PanelUI->GetScale() / 2.f - BtnUI->GetScale() / 2.f);
+	//CUI* BtnUI = new CBtnUI;
+	//BtnUI->SetName(L"BtnUI");
+	//BtnUI->SetScale(Vec2(200.f, 200.f));
+	//BtnUI->SetPos(PanelUI->GetScale() / 2.f - BtnUI->GetScale() / 2.f);
 
-	PanelUI->AddChild(BtnUI);
+	//PanelUI->AddChild(BtnUI);
 
-	EnterAddObject(PanelUI, GROUP_TYPE::UI);
+	//EnterAddObject(PanelUI, GROUP_TYPE::UI);
 
-	//CCamera::GetInst()->SetLookAt(vResolution / 2.f);
+	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
+
+	CObject* player = new Kirby;
+	player->SetName(L"Kirby");
+	player->SetScale(Vec2(200.f, 200.f));
+	player->SetPos(vResolution /2.f);
+
+	EnterAddObject(player, GROUP_TYPE::PLAYER);
 	
 	start();
 }

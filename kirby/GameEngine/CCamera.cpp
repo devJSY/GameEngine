@@ -33,6 +33,7 @@ void CCamera::init()
 
 void CCamera::update()
 {
+	// CScene_Animation_Tool 텍스쳐 이동 제한
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
 	if(L"Animation_Tool" == pCurScene->GetName())
@@ -156,4 +157,14 @@ void CCamera::CalDiff()
 	m_vDiff = m_vCurLookAt - vCenter;
 
 	m_vPrevLookAt = m_vCurLookAt;
+
+	if (KEY_HOLD(KEY::Z))
+	{
+		m_Zoom += Vec2(500.f, 500.f);
+	}
+
+	if (KEY_HOLD(KEY::C))
+	{
+		m_Zoom -= Vec2(500.f, 500.f);
+	}
 }

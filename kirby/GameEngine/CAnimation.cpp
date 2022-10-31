@@ -63,6 +63,9 @@ void CAnimation::Component_render(HDC _dc)
 		vPos = CCamera::GetInst()->GetRenderPos(vPos);
 	}
 
+	// 애니메이터의 RGB 색상 
+	IgnoreRGB vIgnoreRGB = m_pAnimator->GetIgnoreRGB();
+
 	TransparentBlt(_dc
 		, (int)(vPos.x - m_vecFrm[m_iCurFrm].vSlice.x / 2.f)	// 좌상단 x 위치
 		, (int)(vPos.y - m_vecFrm[m_iCurFrm].vSlice.y / 2.f)	// 좌상단 y 위치 
@@ -73,7 +76,7 @@ void CAnimation::Component_render(HDC _dc)
 		, (int)(m_vecFrm[m_iCurFrm].vLT.y)						// 복사할 y 위치	
 		, (int)(m_vecFrm[m_iCurFrm].vSlice.x)					// 좌상단으로부터의 길이값 x
 		, (int)(m_vecFrm[m_iCurFrm].vSlice.y)					// 좌상단으로부터의 길이값 y
-		, RGB(255, 0, 255)										// 무시할 RGB 색상
+		, RGB(vIgnoreRGB.R, vIgnoreRGB.G, vIgnoreRGB.B)		// 무시할 RGB 색상
 	);
 }
 

@@ -9,12 +9,14 @@ CAnimator::CAnimator()
 	, m_bRepeat(false)
 	, m_pTex(nullptr)
 	, m_pRealRender(false)
+	, m_IgnoreRGB{ 255, 0, 255 }
 {
 }
 CAnimator::CAnimator(const CAnimator& _origin)
 	: m_bRepeat(_origin.m_bRepeat)
 	, m_pTex(_origin.m_pTex)
 	, m_pRealRender(_origin.m_pRealRender)
+	, m_IgnoreRGB{ _origin.m_IgnoreRGB }
 {
 	LoadAnimation(_origin.m_pTex->GetRelativePath());
 }
