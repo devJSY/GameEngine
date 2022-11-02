@@ -91,36 +91,30 @@ void Kirby::render(HDC _dc)
 void Kirby::update_state()
 {
 	// 입력 체크
-	if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::RIGHT))
+	if (KEY_TAP(KEY::RIGHT))
 	{
 		m_KeyTrig.RIGHT = true;
-	}
-
-
-	if (KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::LEFT))
-	{
-		m_KeyTrig.LEFT = true;
-	}
-
-	// 키입력이 동시에 들어온경우
-	if (true == m_KeyTrig.LEFT && true == m_KeyTrig.RIGHT)
-	{
-		if (m_iPrevDir != m_iDir)
-		{
-			m_iDir = !m_iPrevDir; // 방향 전환	
-		}				
-	}
-	else if (true == m_KeyTrig.RIGHT)
-	{
 		m_iDir = 0;
 	}
-	else if (true == m_KeyTrig.LEFT)
+
+	if (KEY_TAP(KEY::LEFT))
 	{
+		m_KeyTrig.LEFT = true;
 		m_iDir = 1;
 	}
 
-
-
+	// 예외처리 키가 눌린상태에서 반대쪽키가 떼졌다면 눌려있는 키로 방향설정
+	if (KEY_HOLD(KEY::RIGHT) || KEY_HOLD(KEY::LEFT))
+	{
+		if (KEY_AWAY(KEY::RIGHT))
+		{
+			m_iDir = 1;
+		}
+		else if (KEY_AWAY(KEY::LEFT))
+		{
+			m_iDir = 0;
+		}
+	}
 
 
 	switch (m_eCurState)
@@ -131,7 +125,6 @@ void Kirby::update_state()
 		{
 			if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::RIGHT))
 			{
-				m_iDir = 0;
 				m_eCurState = KIRBY_STATE::WALK;
 			}
 		}
@@ -139,11 +132,9 @@ void Kirby::update_state()
 		{
 			if (KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::LEFT))
 			{
-				m_iDir = 1;
 				m_eCurState = KIRBY_STATE::WALK;
 			}
 		}
-
 
 		if (KEY_TAP(KEY::SPACE))
 		{
@@ -158,18 +149,16 @@ void Kirby::update_state()
 
 		if (0 == m_iDir)
 		{
-			if (KEY_TAP(KEY::RIGHT))
+			if (KEY_TAP(KEY::RIGHT) && 0 == m_iPrevDir)
 			{
-				m_iDir = 0;
 				m_eCurState = KIRBY_STATE::RUN;
 				m_fAccTime = 0.f;
 			}		
 		}
 		else if (1 == m_iDir)
 		{
-			if (KEY_TAP(KEY::LEFT))
+			if (KEY_TAP(KEY::LEFT) && 1 == m_iPrevDir)
 			{
-				m_iDir = 1;
 				m_eCurState = KIRBY_STATE::RUN;
 				m_fAccTime = 0.f;
 			}
@@ -183,7 +172,6 @@ void Kirby::update_state()
 				m_fAccTime = 0.f;
 			}
 		}
-
 
 
 		if (KEY_TAP(KEY::SPACE))
