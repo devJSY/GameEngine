@@ -10,6 +10,12 @@ enum class KIRBY_STATE
     DEAD,
 };
 
+struct KEY_TRIG
+{
+    bool LEFT;
+    bool RIGHT;
+};
+
 class CTexture;
 
 class Kirby :
@@ -17,13 +23,13 @@ class Kirby :
 {
     CTexture*      m_pTex;
 
-    int            m_iDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
-    int            m_iPrevDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
-    KIRBY_STATE    m_eCurState; // 현재 상태
+    bool            m_iDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
+    bool            m_iPrevDir;  // 플레이어 방향 정보 0 우측 / 1 좌측
+    KIRBY_STATE     m_eCurState; // 현재 상태
+    KEY_TRIG        m_KeyTrig;   // 키입력 상태
 
     float           m_fAccTime;
-    bool            m_RunTrig;
-    int             m_KeyTrig;
+    float           m_JumpTime;
 
 public:
     virtual void update();

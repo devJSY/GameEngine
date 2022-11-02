@@ -14,8 +14,9 @@
 Kirby::Kirby()
 	: m_iDir(1)
 	, m_eCurState(KIRBY_STATE::IDLE)
-	, m_RunTrig(false)
-	, m_KeyTrig(-1)
+	, m_fAccTime(0.f)
+	, m_JumpTime(0.f)
+	, m_KeyTrig{}
 
 {
 	CreateComponents(Component_TYPE::Collider);
@@ -87,152 +88,215 @@ void Kirby::render(HDC _dc)
 	Component_render(_dc);
 }
 
-
 void Kirby::update_state()
 {
-	m_KeyTrig = -1; // 키입력 체크 기본값 -1
-	m_fAccTime += fDT;
-
-
-	// 방향 설정
-	if (KEY_TAP(KEY::LEFT))
+	// 입력 체크
+	if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::RIGHT))
 	{
-		++m_KeyTrig;
-		m_iDir = 1;
-
-		if (m_fAccTime < 0.3f && m_eCurState == KIRBY_STATE::WALK && m_iPrevDir == m_iDir)
-		{
-			m_RunTrig = true;
-		}		
+		m_KeyTrig.RIGHT = true;
 	}
-	
-	if (KEY_TAP(KEY::RIGHT))
+
+
+	if (KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::LEFT))
 	{
-		++m_KeyTrig;
+		m_KeyTrig.LEFT = true;
+	}
+
+	// 키입력이 동시에 들어온경우
+	if (true == m_KeyTrig.LEFT && true == m_KeyTrig.RIGHT)
+	{
+		if (m_iPrevDir != m_iDir)
+		{
+			m_iDir = !m_iPrevDir; // 방향 전환	
+		}				
+	}
+	else if (true == m_KeyTrig.RIGHT)
+	{
 		m_iDir = 0;
+	}
+	else if (true == m_KeyTrig.LEFT)
+	{
+		m_iDir = 1;
+	}
 
-		if (m_fAccTime < 0.3f && m_eCurState == KIRBY_STATE::WALK && m_iPrevDir == m_iDir)
+
+
+
+
+	switch (m_eCurState)
+	{
+	case KIRBY_STATE::IDLE:
+	{
+		if (0 == m_iDir)
 		{
-			m_RunTrig = true;
+			if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::RIGHT))
+			{
+				m_iDir = 0;
+				m_eCurState = KIRBY_STATE::WALK;
+			}
+		}
+		else if (1 == m_iDir)
+		{
+			if (KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::LEFT))
+			{
+				m_iDir = 1;
+				m_eCurState = KIRBY_STATE::WALK;
+			}
+		}
+
+
+		if (KEY_TAP(KEY::SPACE))
+		{
+			m_eCurState = KIRBY_STATE::JUMP;
+		}
+	}
+	break;
+
+	case KIRBY_STATE::WALK:
+	{		
+		m_fAccTime += fDT;
+
+		if (0 == m_iDir)
+		{
+			if (KEY_TAP(KEY::RIGHT))
+			{
+				m_iDir = 0;
+				m_eCurState = KIRBY_STATE::RUN;
+				m_fAccTime = 0.f;
+			}		
+		}
+		else if (1 == m_iDir)
+		{
+			if (KEY_TAP(KEY::LEFT))
+			{
+				m_iDir = 1;
+				m_eCurState = KIRBY_STATE::RUN;
+				m_fAccTime = 0.f;
+			}
 		}		
-	}
 
-
-	// 상태 처리
-	if (1 == m_iDir)
-	{
-		if (KEY_HOLD(KEY::LEFT))
+		if (m_fAccTime > 0.3f)
 		{
-			++m_KeyTrig;
-
-			if (m_eCurState != KIRBY_STATE::JUMP)
-			{
-				if (m_RunTrig)
-				{
-					m_eCurState = KIRBY_STATE::RUN;
-				}
-				else
-				{
-					m_eCurState = KIRBY_STATE::WALK;
-				}
-			}
-			
-		}
-	}
-	else if (0 == m_iDir)
-	{
-		if (KEY_HOLD(KEY::RIGHT))
-		{
-			++m_KeyTrig;
-
-			if (m_eCurState != KIRBY_STATE::JUMP)
-			{
-				if (m_RunTrig)
-				{
-					m_eCurState = KIRBY_STATE::RUN;
-				}
-				else
-				{
-					m_eCurState = KIRBY_STATE::WALK;
-				}
-			}
-		}
-	}
-
-
-	if (KEY_AWAY(KEY::LEFT))
-	{
-		if (KEY_HOLD(KEY::RIGHT))
-		{
-			m_iDir = 0;
-		}
-	}
-	if (KEY_AWAY(KEY::RIGHT))
-	{
-		if (KEY_HOLD(KEY::LEFT))
-		{
-			m_iDir = 1;
-		}
-	}
-
-
-
-	if (KEY_TAP(KEY::SPACE))
-	{
-		m_eCurState = KIRBY_STATE::JUMP;
-	}
-
-
-	if (0 > m_KeyTrig)
-	{
-		if (m_eCurState != KIRBY_STATE::WALK)
-		{
-			m_eCurState = KIRBY_STATE::IDLE;
-			m_fAccTime = 0.f;
-			m_RunTrig = false;
-		}
-		else
-		{
-			if (m_fAccTime > 0.3f)
+			if (!(KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT)))
 			{
 				m_eCurState = KIRBY_STATE::IDLE;
 				m_fAccTime = 0.f;
-				m_RunTrig = false;
 			}
 		}
-	}
-	else
-	{
-		if (m_fAccTime > 0.3f)
+
+
+
+		if (KEY_TAP(KEY::SPACE))
 		{
+			m_eCurState = KIRBY_STATE::JUMP;
 			m_fAccTime = 0.f;
 		}
 	}
+	break;
 
+	case KIRBY_STATE::RUN:
+	{
+		if (0 == m_iDir)
+		{
+			if (KEY_AWAY(KEY::RIGHT))
+			{
+				m_eCurState = KIRBY_STATE::IDLE;
+			}
+		}
+		else if (1 == m_iDir)
+		{
+			if (KEY_AWAY(KEY::LEFT))
+			{
+				m_eCurState = KIRBY_STATE::IDLE;
+			}
+		}
 
+		if (KEY_TAP(KEY::SPACE))
+		{
+			m_eCurState = KIRBY_STATE::JUMP;
+		}
+	}
+	break;
 
+	case KIRBY_STATE::JUMP:
+	{
+		m_JumpTime += fDT;
 
-	// 이전 방향 값 설정
-	m_iPrevDir = m_iDir; 
+		if (m_JumpTime > 1.f)
+		{
+			m_JumpTime = 0.f;
+			m_eCurState = KIRBY_STATE::IDLE;
+		}
+	}
+	break;
+
+	case KIRBY_STATE::DEAD:
+		break;
+	}
+
+	// 이전 상태정보 저장
+	m_iPrevDir = m_iDir;
+	m_KeyTrig = {false, false};	// 키입력 초기화
 }
 
 void Kirby::update_move()
 {
 	Vec2 vPos = GetPos();
 
-	if (1 == m_iDir)
+
+	switch (m_eCurState)
 	{
-		if (KEY_HOLD(KEY::LEFT))
-		{
-			vPos.x -= 500 * fDT;
-		}	
+	case KIRBY_STATE::IDLE:
+	{
 	}
-	else if (0 == m_iDir)
+	break;
+
+	case KIRBY_STATE::WALK:
 	{
-		if (KEY_HOLD(KEY::RIGHT))
+		if (0 == m_iDir)
 		{
-			vPos.x += 500 * fDT;
-		}		
+			if (KEY_HOLD(KEY::RIGHT))
+			{
+				vPos.x += 200 * fDT;
+			}
+		}
+		else if (1 == m_iDir)
+		{
+			if (KEY_HOLD(KEY::LEFT))
+			{
+				vPos.x -= 200 * fDT;
+			}
+		}
+	}
+	break;
+
+	case KIRBY_STATE::RUN:
+	{
+		if (0 == m_iDir)
+		{
+			if (KEY_HOLD(KEY::RIGHT))
+			{
+				vPos.x += 500 * fDT;
+			}
+		}
+		else if (1 == m_iDir)
+		{
+			if (KEY_HOLD(KEY::LEFT))
+			{
+				vPos.x -= 500 * fDT;
+			}
+		}
+	}
+	break;
+
+	case KIRBY_STATE::JUMP:
+	{
+		vPos.y -= 50 * fDT;
+	}
+	break;
+
+	case KIRBY_STATE::DEAD:
+		break;
 	}
 
 
@@ -259,7 +323,7 @@ void Kirby::update_animation()
 	break;
 
 	case KIRBY_STATE::WALK:
-
+	{
 		if (1 == m_iDir)
 		{
 			pAnimator->Play(L"WALK_Left", true, false);
@@ -268,10 +332,12 @@ void Kirby::update_animation()
 		{
 			pAnimator->Play(L"WALK_Right", true, false);
 		}
+	}
 
 		break;
 
 	case KIRBY_STATE::RUN:
+	{
 		if (1 == m_iDir)
 		{
 			pAnimator->Play(L"RUN_Left", true, false);
@@ -280,6 +346,7 @@ void Kirby::update_animation()
 		{
 			pAnimator->Play(L"RUN_Right", true, false);
 		}
+	}
 
 		break;
 
