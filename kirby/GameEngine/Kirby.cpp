@@ -13,10 +13,11 @@
 
 Kirby::Kirby()
 	: m_iDir(1)
+	, m_iPrevDir(m_iDir)
 	, m_eCurState(KIRBY_STATE::IDLE)
+	, m_eStockState(KIRBY_STATE::IDLE)
 	, m_fAccTime(0.f)
-	, m_JumpTime(0.f)
-	, m_KeyTrig{}
+	, m_fJumpTime(0.f)
 
 {
 	CreateComponents(Component_TYPE::Collider);
@@ -93,14 +94,12 @@ void Kirby::update_state()
 	// 입력 체크
 	if (KEY_TAP(KEY::RIGHT))
 	{
-		m_KeyTrig.RIGHT = true;
-		m_iDir = 0;
+		m_iDir = (UINT)KIRBY_DIR::RIGHT;
 	}
 
 	if (KEY_TAP(KEY::LEFT))
 	{
-		m_KeyTrig.LEFT = true;
-		m_iDir = 1;
+		m_iDir = (UINT)KIRBY_DIR::LEFT;
 	}
 
 	// 예외처리 키가 눌린상태에서 반대쪽키가 떼졌다면 눌려있는 키로 방향설정
@@ -108,11 +107,11 @@ void Kirby::update_state()
 	{
 		if (KEY_AWAY(KEY::RIGHT))
 		{
-			m_iDir = 1;
+			m_iDir = (UINT)KIRBY_DIR::LEFT;
 		}
 		else if (KEY_AWAY(KEY::LEFT))
 		{
-			m_iDir = 0;
+			m_iDir = (UINT)KIRBY_DIR::RIGHT;
 		}
 	}
 
@@ -121,14 +120,14 @@ void Kirby::update_state()
 	{
 	case KIRBY_STATE::IDLE:
 	{
-		if (0 == m_iDir)
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::RIGHT))
 			{
 				m_eCurState = KIRBY_STATE::WALK;
 			}
 		}
-		else if (1 == m_iDir)
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::LEFT))
 			{
@@ -148,17 +147,17 @@ void Kirby::update_state()
 	{		
 		m_fAccTime += fDT;
 
-		if (0 == m_iDir)
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
-			if (KEY_TAP(KEY::RIGHT) && 0 == m_iPrevDir)
+			if (KEY_TAP(KEY::RIGHT) && (UINT)KIRBY_DIR::RIGHT == m_iPrevDir)
 			{
 				m_eCurState = KIRBY_STATE::RUN;
 				m_fAccTime = 0.f;
 			}		
 		}
-		else if (1 == m_iDir)
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
-			if (KEY_TAP(KEY::LEFT) && 1 == m_iPrevDir)
+			if (KEY_TAP(KEY::LEFT) && (UINT)KIRBY_DIR::LEFT == m_iPrevDir)
 			{
 				m_eCurState = KIRBY_STATE::RUN;
 				m_fAccTime = 0.f;
@@ -186,7 +185,7 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::RUN:
 	{
-		if (0 == m_iDir)
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
 			// 키입력이없을경우 상태변경
 			if (!(KEY_HOLD(KEY::RIGHT)))
@@ -202,7 +201,7 @@ void Kirby::update_state()
 				}				
 			}
 		}
-		else if (1 == m_iDir)
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			// 키입력이없을경우 상태변경
 			if (!(KEY_HOLD(KEY::LEFT)))
@@ -229,11 +228,11 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::JUMP:
 	{
-		m_JumpTime += fDT;
+		m_fJumpTime += fDT;
 
-		if (m_JumpTime > 1.f)
+		if (m_fJumpTime > 1.f)
 		{
-			m_JumpTime = 0.f;
+			m_fJumpTime = 0.f;
 			m_eCurState = m_eStockState;
 		}
 	}
@@ -245,7 +244,6 @@ void Kirby::update_state()
 
 	// 이전 상태정보 저장
 	m_iPrevDir = m_iDir;	
-	m_KeyTrig = {false, false};	// 키입력 초기화
 }
 
 void Kirby::update_move()
@@ -262,14 +260,14 @@ void Kirby::update_move()
 
 	case KIRBY_STATE::WALK:
 	{
-		if (0 == m_iDir)
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
 				vPos.x += 200 * fDT;
 			}
 		}
-		else if (1 == m_iDir)
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
@@ -281,14 +279,14 @@ void Kirby::update_move()
 
 	case KIRBY_STATE::RUN:
 	{
-		if (0 == m_iDir)
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
 				vPos.x += 500 * fDT;
 			}
 		}
-		else if (1 == m_iDir)
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
@@ -320,7 +318,7 @@ void Kirby::update_animation()
 	{
 	case KIRBY_STATE::IDLE:
 	{
-		if (1 == m_iDir)
+		if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			pAnimator->Play(L"IDLE_Left", true, false);
 		}
@@ -333,7 +331,7 @@ void Kirby::update_animation()
 
 	case KIRBY_STATE::WALK:
 	{
-		if (1 == m_iDir)
+		if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			pAnimator->Play(L"WALK_Left", true, false);
 		}
@@ -347,7 +345,7 @@ void Kirby::update_animation()
 
 	case KIRBY_STATE::RUN:
 	{
-		if (1 == m_iDir)
+		if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			pAnimator->Play(L"RUN_Left", true, false);
 		}
@@ -361,7 +359,7 @@ void Kirby::update_animation()
 
 	case KIRBY_STATE::JUMP:
 	{
-		if (1 == m_iDir)
+		if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			pAnimator->Play(L"JUMP_Left", true, false);
 		}

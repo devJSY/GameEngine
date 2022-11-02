@@ -10,10 +10,10 @@ enum class KIRBY_STATE
     DEAD,
 };
 
-struct KEY_TRIG
+enum class KIRBY_DIR
 {
-    bool LEFT;
-    bool RIGHT;
+    RIGHT = 0,
+    LEFT = 1,
 };
 
 class CTexture;
@@ -21,16 +21,15 @@ class CTexture;
 class Kirby :
     public CObject
 {
-    CTexture*      m_pTex;
+    CTexture*       m_pTex;
 
-    bool            m_iDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
-    bool            m_iPrevDir;  // 플레이어 방향 정보 0 우측 / 1 좌측
-    KIRBY_STATE     m_eCurState; // 현재 상태
-    KIRBY_STATE     m_eStockState; // 저장용 상태
-    KEY_TRIG        m_KeyTrig;   // 키입력 상태
+    UINT            m_iDir;         // 플레이어 방향 정보 
+    UINT            m_iPrevDir;     // 플레이어 이전 방향 정보
+    KIRBY_STATE     m_eCurState;    // 현재 상태
+    KIRBY_STATE     m_eStockState;  // 상태 저장용 변수
 
-    float           m_fAccTime;
-    float           m_JumpTime;
+    float           m_fAccTime;     // Run 키입력 딜레이 시간
+    float           m_fJumpTime;    // 체공 시간 
 
 public:
     virtual void update();
