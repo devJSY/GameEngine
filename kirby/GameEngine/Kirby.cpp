@@ -87,6 +87,7 @@ void Kirby::render(HDC _dc)
 	Component_render(_dc);
 }
 
+
 void Kirby::update_state()
 {
 	m_KeyTrig = -1; // 키입력 체크 기본값 -1
