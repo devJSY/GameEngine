@@ -18,6 +18,7 @@ class Kirby :
     CTexture*      m_pTex;
 
     int            m_iDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
+    int            m_iPrevDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
     KIRBY_STATE    m_eCurState; // 현재 상태
 
     float           m_fAccTime;

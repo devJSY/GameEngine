@@ -97,25 +97,23 @@ void Kirby::update_state()
 	if (KEY_TAP(KEY::LEFT))
 	{
 		++m_KeyTrig;
+		m_iDir = 1;
 
-		if (m_fAccTime < 1.f && m_eCurState == KIRBY_STATE::WALK && 1 == m_iDir)
+		if (m_fAccTime < 0.3f && m_eCurState == KIRBY_STATE::WALK && m_iPrevDir == m_iDir)
 		{
 			m_RunTrig = true;
-		}
-
-		m_iDir = 1;
+		}		
 	}
 	
 	if (KEY_TAP(KEY::RIGHT))
 	{
 		++m_KeyTrig;
+		m_iDir = 0;
 
-		if (m_fAccTime < 1.f && m_eCurState == KIRBY_STATE::WALK && 0 == m_iDir)
+		if (m_fAccTime < 0.3f && m_eCurState == KIRBY_STATE::WALK && m_iPrevDir == m_iDir)
 		{
 			m_RunTrig = true;
-		}
-
-		m_iDir = 0;
+		}		
 	}
 
 
@@ -161,18 +159,60 @@ void Kirby::update_state()
 	}
 
 
+	if (KEY_AWAY(KEY::LEFT))
+	{
+		if (KEY_HOLD(KEY::RIGHT))
+		{
+			m_iDir = 0;
+		}
+	}
+	if (KEY_AWAY(KEY::RIGHT))
+	{
+		if (KEY_HOLD(KEY::LEFT))
+		{
+			m_iDir = 1;
+		}
+	}
+
+
+
 	if (KEY_TAP(KEY::SPACE))
 	{
 		m_eCurState = KIRBY_STATE::JUMP;
 	}
 
 
-	if (0 > m_KeyTrig && m_fAccTime > 1.f)
+	if (0 > m_KeyTrig)
 	{
-		m_eCurState = KIRBY_STATE::IDLE;
-		m_RunTrig = false;
-		m_fAccTime = 0.f;
+		if (m_eCurState != KIRBY_STATE::WALK)
+		{
+			m_eCurState = KIRBY_STATE::IDLE;
+			m_fAccTime = 0.f;
+			m_RunTrig = false;
+		}
+		else
+		{
+			if (m_fAccTime > 0.3f)
+			{
+				m_eCurState = KIRBY_STATE::IDLE;
+				m_fAccTime = 0.f;
+				m_RunTrig = false;
+			}
+		}
 	}
+	else
+	{
+		if (m_fAccTime > 0.3f)
+		{
+			m_fAccTime = 0.f;
+		}
+	}
+
+
+
+
+	// 이전 방향 값 설정
+	m_iPrevDir = m_iDir; 
 }
 
 void Kirby::update_move()
