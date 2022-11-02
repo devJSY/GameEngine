@@ -120,19 +120,9 @@ void Kirby::update_state()
 	{
 	case KIRBY_STATE::IDLE:
 	{
-		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
+		if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::LEFT))
 		{
-			if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::RIGHT))
-			{
-				m_eCurState = KIRBY_STATE::WALK;
-			}
-		}
-		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
-		{
-			if (KEY_HOLD(KEY::LEFT) || KEY_TAP(KEY::LEFT))
-			{
-				m_eCurState = KIRBY_STATE::WALK;
-			}
+			m_eCurState = KIRBY_STATE::WALK;
 		}
 
 		if (KEY_TAP(KEY::SPACE))
@@ -147,21 +137,11 @@ void Kirby::update_state()
 	{		
 		m_fAccTime += fDT;
 
-		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
+		// 동일한 키입력이 2번되었을때 RUN상태로 변환
+		if ((KEY_TAP(KEY::RIGHT) || KEY_TAP(KEY::LEFT)) && m_iPrevDir == m_iDir)
 		{
-			if (KEY_TAP(KEY::RIGHT) && (UINT)KIRBY_DIR::RIGHT == m_iPrevDir)
-			{
-				m_eCurState = KIRBY_STATE::RUN;
-				m_fAccTime = 0.f;
-			}		
-		}
-		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
-		{
-			if (KEY_TAP(KEY::LEFT) && (UINT)KIRBY_DIR::LEFT == m_iPrevDir)
-			{
-				m_eCurState = KIRBY_STATE::RUN;
-				m_fAccTime = 0.f;
-			}
+			m_eCurState = KIRBY_STATE::RUN;
+			m_fAccTime = 0.f;
 		}		
 
 		// 추가입력 시간 확보
