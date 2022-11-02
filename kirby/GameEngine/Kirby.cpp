@@ -138,6 +138,7 @@ void Kirby::update_state()
 
 		if (KEY_TAP(KEY::SPACE))
 		{
+			m_eStockState = m_eCurState;
 			m_eCurState = KIRBY_STATE::JUMP;
 		}
 	}
@@ -164,6 +165,7 @@ void Kirby::update_state()
 			}
 		}		
 
+		// 추가입력 시간 확보
 		if (m_fAccTime > 0.3f)
 		{
 			if (!(KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT)))
@@ -173,9 +175,9 @@ void Kirby::update_state()
 			}
 		}
 
-
 		if (KEY_TAP(KEY::SPACE))
 		{
+			m_eStockState = KIRBY_STATE::IDLE; // 설정 시간 딜레이 제거를 위해서 IDLE상태로 변경
 			m_eCurState = KIRBY_STATE::JUMP;
 			m_fAccTime = 0.f;
 		}
@@ -186,21 +188,40 @@ void Kirby::update_state()
 	{
 		if (0 == m_iDir)
 		{
-			if (KEY_AWAY(KEY::RIGHT))
+			// 키입력이없을경우 상태변경
+			if (!(KEY_HOLD(KEY::RIGHT)))
 			{
-				m_eCurState = KIRBY_STATE::IDLE;
+				// 예외처리 방향 바꿀때에는 RUN상태 유지
+				if ((KEY_HOLD(KEY::LEFT)))
+				{
+					m_eCurState = KIRBY_STATE::RUN;
+				}
+				else
+				{
+					m_eCurState = KIRBY_STATE::IDLE;
+				}				
 			}
 		}
 		else if (1 == m_iDir)
 		{
-			if (KEY_AWAY(KEY::LEFT))
+			// 키입력이없을경우 상태변경
+			if (!(KEY_HOLD(KEY::LEFT)))
 			{
-				m_eCurState = KIRBY_STATE::IDLE;
+				// 예외처리 방향 바꿀때에는 RUN상태 유지
+				if ((KEY_HOLD(KEY::RIGHT)))
+				{
+					m_eCurState = KIRBY_STATE::RUN;
+				}
+				else
+				{
+					m_eCurState = KIRBY_STATE::IDLE;
+				}
 			}
 		}
 
 		if (KEY_TAP(KEY::SPACE))
 		{
+			m_eStockState = m_eCurState;
 			m_eCurState = KIRBY_STATE::JUMP;
 		}
 	}
@@ -213,7 +234,7 @@ void Kirby::update_state()
 		if (m_JumpTime > 1.f)
 		{
 			m_JumpTime = 0.f;
-			m_eCurState = KIRBY_STATE::IDLE;
+			m_eCurState = m_eStockState;
 		}
 	}
 	break;
@@ -223,7 +244,7 @@ void Kirby::update_state()
 	}
 
 	// 이전 상태정보 저장
-	m_iPrevDir = m_iDir;
+	m_iPrevDir = m_iDir;	
 	m_KeyTrig = {false, false};	// 키입력 초기화
 }
 
@@ -279,7 +300,7 @@ void Kirby::update_move()
 
 	case KIRBY_STATE::JUMP:
 	{
-		vPos.y -= 50 * fDT;
+		//vPos.y -= 50 * fDT;
 	}
 	break;
 
