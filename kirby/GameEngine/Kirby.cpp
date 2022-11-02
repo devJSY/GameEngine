@@ -120,7 +120,7 @@ void Kirby::update_state()
 	{
 	case KIRBY_STATE::IDLE:
 	{
-		if (KEY_HOLD(KEY::RIGHT) || KEY_TAP(KEY::LEFT))
+		if (KEY_HOLD(KEY::RIGHT) || KEY_HOLD(KEY::LEFT))
 		{
 			m_eCurState = KIRBY_STATE::WALK;
 		}
@@ -165,38 +165,12 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::RUN:
 	{
-		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
+		// 키입력이없을경우 상태변경
+		if (!((KEY_HOLD(KEY::RIGHT)) || (KEY_HOLD(KEY::LEFT))))
 		{
-			// 키입력이없을경우 상태변경
-			if (!(KEY_HOLD(KEY::RIGHT)))
-			{
-				// 예외처리 방향 바꿀때에는 RUN상태 유지
-				if ((KEY_HOLD(KEY::LEFT)))
-				{
-					m_eCurState = KIRBY_STATE::RUN;
-				}
-				else
-				{
-					m_eCurState = KIRBY_STATE::IDLE;
-				}				
-			}
-		}
-		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
-		{
-			// 키입력이없을경우 상태변경
-			if (!(KEY_HOLD(KEY::LEFT)))
-			{
-				// 예외처리 방향 바꿀때에는 RUN상태 유지
-				if ((KEY_HOLD(KEY::RIGHT)))
-				{
-					m_eCurState = KIRBY_STATE::RUN;
-				}
-				else
-				{
-					m_eCurState = KIRBY_STATE::IDLE;
-				}
-			}
-		}
+			m_eCurState = KIRBY_STATE::IDLE;
+								
+		}		
 
 		if (KEY_TAP(KEY::SPACE))
 		{
