@@ -20,8 +20,9 @@ class Kirby :
     int            m_iDir;      // 플레이어 방향 정보 0 우측 / 1 좌측
     KIRBY_STATE    m_eCurState; // 현재 상태
 
-    int             m_iDashTrig;
     float           m_fAccTime;
+    bool            m_RunTrig;
+    int             m_KeyTrig;
 
 public:
     virtual void update();

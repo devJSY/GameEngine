@@ -14,7 +14,8 @@
 Kirby::Kirby()
 	: m_iDir(1)
 	, m_eCurState(KIRBY_STATE::IDLE)
-	, m_ePrevState(KIRBY_STATE::IDLE)
+	, m_RunTrig(false)
+	, m_KeyTrig(-1)
 
 {
 	CreateComponents(Component_TYPE::Collider);
@@ -88,112 +89,111 @@ void Kirby::render(HDC _dc)
 
 void Kirby::update_state()
 {
-	switch (m_eCurState)
-	{
-	case KIRBY_STATE::IDLE:
-	{
-		m_fAccTime = 0.f;
+	m_KeyTrig = -1; // 키입력 체크 기본값 -1
+	m_fAccTime += fDT;
 
-		if (KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT) ||
-			KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT))
-		{
-			if (m_eCurState != KIRBY_STATE::JUMP)
-			{
-				m_eCurState = KIRBY_STATE::WALK;
-			}
-		}
-	}
-	break;
 
-	case KIRBY_STATE::WALK:
-	{
-		m_fAccTime += fDT;
-
-		if (m_fAccTime <= 0.3f)
-		{
-			if (KEY_TAP(KEY::LEFT) || KEY_TAP(KEY::RIGHT))
-			{
-				if (m_eCurState != KIRBY_STATE::JUMP)
-				{
-					m_eCurState = KIRBY_STATE::RUN;
-					m_fAccTime = 0.f;
-				}
-			}
-		}
-		else if (KEY_AWAY(KEY::LEFT) || KEY_AWAY(KEY::RIGHT))
-		{
-			if (m_eCurState != KIRBY_STATE::JUMP)
-			{
-				m_eCurState = KIRBY_STATE::IDLE;
-			}
-		}
-		else
-		{
-			if (!(KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT)))
-			{
-				m_eCurState = KIRBY_STATE::IDLE;
-			}			
-		}
-	}	
-		break;
-
-	case KIRBY_STATE::RUN:
-	{
-		if (KEY_AWAY(KEY::LEFT) || KEY_AWAY(KEY::RIGHT))
-		{
-			if (m_eCurState != KIRBY_STATE::JUMP)
-			{
-				m_eCurState = KIRBY_STATE::IDLE;
-			}
-		}
-	}
-		break;
-
-	case KIRBY_STATE::JUMP:
-	{
-		m_fAccTime += fDT;
-
-		if (m_fAccTime >= 1.f)
-		{
-			m_eCurState = KIRBY_STATE::IDLE;
-		}
-	}
-	break;
-
-	case KIRBY_STATE::DEAD:
-		break;
-	}
-
-	// 키입력에 따른 방향 설정
+	// 방향 설정
 	if (KEY_TAP(KEY::LEFT))
 	{
+		++m_KeyTrig;
+
+		if (m_fAccTime < 1.f && m_eCurState == KIRBY_STATE::WALK && 1 == m_iDir)
+		{
+			m_RunTrig = true;
+		}
+
 		m_iDir = 1;
 	}
-	else if (KEY_TAP(KEY::RIGHT))
+	
+	if (KEY_TAP(KEY::RIGHT))
 	{
+		++m_KeyTrig;
+
+		if (m_fAccTime < 1.f && m_eCurState == KIRBY_STATE::WALK && 0 == m_iDir)
+		{
+			m_RunTrig = true;
+		}
+
 		m_iDir = 0;
 	}
 
+
+	// 상태 처리
+	if (1 == m_iDir)
+	{
+		if (KEY_HOLD(KEY::LEFT))
+		{
+			++m_KeyTrig;
+
+			if (m_eCurState != KIRBY_STATE::JUMP)
+			{
+				if (m_RunTrig)
+				{
+					m_eCurState = KIRBY_STATE::RUN;
+				}
+				else
+				{
+					m_eCurState = KIRBY_STATE::WALK;
+				}
+			}
+			
+		}
+	}
+	else if (0 == m_iDir)
+	{
+		if (KEY_HOLD(KEY::RIGHT))
+		{
+			++m_KeyTrig;
+
+			if (m_eCurState != KIRBY_STATE::JUMP)
+			{
+				if (m_RunTrig)
+				{
+					m_eCurState = KIRBY_STATE::RUN;
+				}
+				else
+				{
+					m_eCurState = KIRBY_STATE::WALK;
+				}
+			}
+		}
+	}
+
+
 	if (KEY_TAP(KEY::SPACE))
 	{
-		m_ePrevState = m_eCurState;
 		m_eCurState = KIRBY_STATE::JUMP;
 	}
 
+
+	if (0 > m_KeyTrig && m_fAccTime > 1.f)
+	{
+		m_eCurState = KIRBY_STATE::IDLE;
+		m_RunTrig = false;
+		m_fAccTime = 0.f;
+	}
 }
 
 void Kirby::update_move()
 {
 	Vec2 vPos = GetPos();
 
-	if (KEY_HOLD(KEY::LEFT))
+	if (1 == m_iDir)
 	{
-		vPos.x -= 500 * fDT;
+		if (KEY_HOLD(KEY::LEFT))
+		{
+			vPos.x -= 500 * fDT;
+		}	
 	}
-	else if (KEY_HOLD(KEY::RIGHT))
+	else if (0 == m_iDir)
 	{
-		vPos.x += 500 * fDT;
+		if (KEY_HOLD(KEY::RIGHT))
+		{
+			vPos.x += 500 * fDT;
+		}		
 	}
+
 
 	SetPos(vPos);
 }
