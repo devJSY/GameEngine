@@ -35,6 +35,7 @@ enum class GROUP_TYPE
 	PLAYER,
 	MONSTER,
 	UI,
+	GROUND,
 
 	END = 32,
 };

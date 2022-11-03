@@ -32,6 +32,9 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CGravity.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CGround.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CKeyMgr.cpp"
 
 

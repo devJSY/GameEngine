@@ -8,6 +8,7 @@
 #include "CUI.h"
 #include "CPanelUI.h"
 #include "CBtnUI.h"
+#include "CGround.h"
 
 #include "CColliderMgr.h"
 #include "CSceneMgr.h"
@@ -34,7 +35,7 @@ void CScene_Start::render(HDC _dc)
 
 void CScene_Start::Enter()
 {
-	Vec2 vResolution = CCore::GetInst()->GetResolution();
+	
 
 	//CUI* PanelUI = new CPanelUI;
 	//PanelUI->SetName(L"PanelUI");
@@ -50,14 +51,25 @@ void CScene_Start::Enter()
 
 	//EnterAddObject(PanelUI, GROUP_TYPE::UI);
 
+	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 
-	CObject* player = new Kirby;
-	player->SetName(L"Kirby");
-	player->SetScale(Vec2(200.f, 200.f));
-	player->SetPos(vResolution /2.f);
+	CObject* pKirby = new Kirby;
+	pKirby->SetName(L"Kirby");
+	pKirby->SetPos(Vec2(640.f, 384.f));
+	pKirby->SetScale(Vec2(100.f, 100.f));
 
-	EnterAddObject(player, GROUP_TYPE::PLAYER);
+	EnterAddObject(pKirby, GROUP_TYPE::PLAYER);
+
+	CGround* pGround = new CGround;
+	pGround->SetName(L"Ground");
+	pGround->SetPos(Vec2(640.f, 584.f));
+	pGround->SetScale(Vec2(500.f, 60.f));
+
+	EnterAddObject(pGround, GROUP_TYPE::GROUND);
+
+	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::GROUND);
+
 	
 	start();
 }

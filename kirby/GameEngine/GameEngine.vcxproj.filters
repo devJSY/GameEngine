@@ -150,6 +150,9 @@
     <Filter Include="소스 파일\06. Component\Gravity">
       <UniqueIdentifier>{8b0114ea-91e2-486c-821c-bebb465c27e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\04. Object\Ground">
+      <UniqueIdentifier>{548b2e31-da59-45db-9da6-7d29f7429e52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -272,6 +275,9 @@
     <ClInclude Include="CGravity.h">
       <Filter>소스 파일\06. Component\Gravity</Filter>
     </ClInclude>
+    <ClInclude Include="CGround.h">
+      <Filter>소스 파일\04. Object\Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -372,6 +378,9 @@
     </ClCompile>
     <ClCompile Include="CGravity.cpp">
       <Filter>소스 파일\06. Component\Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="CGround.cpp">
+      <Filter>소스 파일\04. Object\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

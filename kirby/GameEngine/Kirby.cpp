@@ -6,6 +6,7 @@
 #include "CTexture.h"
 #include "CAnimator.h"
 #include "CAnimation.h"
+#include "CRigidBody.h"
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
@@ -19,27 +20,21 @@ Kirby::Kirby()
 	, m_fAccTime(0.f)
 	, m_fJumpTime(0.f)
 
-{
+{	
+	// ================
+	// Collider Create
+	// ================ 
 	CreateComponents(Component_TYPE::Collider);
 	// = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"Texture\\Player1.bmp");
 	m_pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"texture\\link.0.bmp");
 
+
+	// ================
+	// Animator Create
+	// ================ 
 	CreateComponents(Component_TYPE::Animator);
 	CAnimator* pAnimator = (CAnimator*)GetComponents(Component_TYPE::Animator);
 	pAnimator->SetIgnoreRGB({ 72, 104, 112 });
-
-	//pAnimator->CreateAnimation(L"WALK_LEFT", m_pTex, Vec2(0.f, 325.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	//pAnimator->CreateAnimation(L"WALK_RIGHT", m_pTex, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-
-	//pAnimator->CreateAnimation(L"IDLE_LEFT", m_pTex, Vec2(0.f, 65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.3f, 3);
-	//pAnimator->CreateAnimation(L"IDLE_RIGHT", m_pTex, Vec2(0.f, 195.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.3f, 3);
-
-
-	//pAnimator->FindAnimation(L"WALK_LEFT")->Save(L"animation\\player_walk_left.anim");
-	//pAnimator->FindAnimation(L"WALK_RIGHT")->Save(L"animation\\player_walk_right.anim");
-
-	//pAnimator->FindAnimation(L"IDLE_LEFT")->Save(L"animation\\player_idle_left.anim");
-	//pAnimator->FindAnimation(L"IDLE_RIGHT")->Save(L"animation\\player_idle_right.anim");	
 
 	pAnimator->LoadAnimation(L"animation\\Kirby\\IDLE\\IDLE_Left.anim");
 	pAnimator->LoadAnimation(L"animation\\Kirby\\IDLE\\IDLE_Right.anim");
@@ -54,6 +49,17 @@ Kirby::Kirby()
 	pAnimator->LoadAnimation(L"animation\\Kirby\\WALK\\WALK_Right.anim");
 
 	pAnimator->Play(L"IDLE_Right", true, false);
+
+	// ================
+	// Rigidbody Create
+	// ================ 
+	CreateComponents(Component_TYPE::RigidBody);
+
+
+	// ================
+	// Gravity Create
+	// ================ 
+	CreateComponents(Component_TYPE::Gravity);
 }
 
 Kirby::~Kirby()
@@ -66,6 +72,11 @@ void Kirby::update()
 	update_move();
 	update_animation();
 	update_gravity();
+
+	if (KEY_TAP(KEY::ENTER))
+	{
+		SetPos(Vec2(640.f, 384.f));
+	}
 
 }
 
@@ -91,6 +102,8 @@ void Kirby::render(HDC _dc)
 
 void Kirby::update_state()
 {
+	CRigidBody* pRigid = (CRigidBody*)GetComponents(Component_TYPE::RigidBody);
+
 	// 입력 체크
 	if (KEY_TAP(KEY::RIGHT))
 	{
@@ -130,6 +143,7 @@ void Kirby::update_state()
 		{
 			m_eStockState = m_eCurState;
 			m_eCurState = KIRBY_STATE::JUMP;
+			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
 		}
 	}
 	break;
@@ -160,6 +174,7 @@ void Kirby::update_state()
 			m_eStockState = KIRBY_STATE::IDLE; // 설정 시간 딜레이 제거를 위해서 IDLE상태로 변경
 			m_eCurState = KIRBY_STATE::JUMP;
 			m_fAccTime = 0.f;
+			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
 		}
 	}
 	break;
@@ -176,6 +191,7 @@ void Kirby::update_state()
 		{
 			m_eStockState = m_eCurState;
 			m_eCurState = KIRBY_STATE::JUMP;
+			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
 		}
 	}
 	break;
@@ -202,7 +218,7 @@ void Kirby::update_state()
 
 void Kirby::update_move()
 {
-	Vec2 vPos = GetPos();
+	CRigidBody* pRigid = (CRigidBody*)GetComponents(Component_TYPE::RigidBody);
 
 
 	switch (m_eCurState)
@@ -218,14 +234,14 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				vPos.x += 200 * fDT;
+				pRigid->AddVelocity(Vec2(200.f, 0.f));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				vPos.x -= 200 * fDT;
+				pRigid->AddForce(Vec2(-200.f, 0.f));
 			}
 		}
 	}
@@ -237,14 +253,14 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				vPos.x += 500 * fDT;
+				pRigid->AddForce(Vec2(500.f, 0.f));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				vPos.x -= 500 * fDT;
+				pRigid->AddForce(Vec2(-500.f, 0.f));
 			}
 		}
 	}
@@ -252,16 +268,26 @@ void Kirby::update_move()
 
 	case KIRBY_STATE::JUMP:
 	{
-		//vPos.y -= 50 * fDT;
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
+		{
+			if (KEY_HOLD(KEY::RIGHT))
+			{
+				pRigid->AddForce(Vec2(200.f, 0.f));
+			}
+		}
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
+		{
+			if (KEY_HOLD(KEY::LEFT))
+			{
+				pRigid->AddForce(Vec2(-200.f, 0.f));
+			}
+		}
 	}
 	break;
 
 	case KIRBY_STATE::DEAD:
 		break;
 	}
-
-
-	SetPos(vPos);
 }
 
 void Kirby::update_animation()
@@ -340,6 +366,15 @@ void Kirby::OnCollision(CCollider* _pOther)
 
 void Kirby::OnCollisionEnter(CCollider* _pOther)
 {
+	CObject* pOtherObj = _pOther->GetOwner();
+	if (L"Ground" == pOtherObj->GetName())
+	{
+		Vec2 vPos = GetPos();
+		if (vPos.y < pOtherObj->GetPos().y)
+		{
+			m_eCurState = KIRBY_STATE::IDLE;
+		}
+	}
 }
 
 void Kirby::OnCollisionExit(CCollider* _pOther)

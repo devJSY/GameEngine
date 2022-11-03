@@ -152,6 +152,7 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CEventMgr.h" />
     <ClInclude Include="CGravity.h" />
+    <ClInclude Include="CGround.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CObject.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
     <ClCompile Include="CGravity.cpp" />
+    <ClCompile Include="CGround.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CObject.cpp" />

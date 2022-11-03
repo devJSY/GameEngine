@@ -106,12 +106,12 @@ void CObject::CreateComponents(Component_TYPE _etype)
 
 		arr_Components[(UINT)Component_TYPE::Animator] = pAnimator;
 	}
-	else if (Component_TYPE::Rigidbody == _etype)
+	else if (Component_TYPE::RigidBody == _etype)
 	{
 		CRigidBody* pRigidBody = new CRigidBody;
 		pRigidBody->m_pOwner = this;
 
-		arr_Components[(UINT)Component_TYPE::Rigidbody] = pRigidBody;
+		arr_Components[(UINT)Component_TYPE::RigidBody] = pRigidBody;
 	}
 	else if (Component_TYPE::Gravity == _etype)
 	{
