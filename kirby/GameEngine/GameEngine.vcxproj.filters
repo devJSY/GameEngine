@@ -144,6 +144,12 @@
     <Filter Include="소스 파일\04. Object\AnimPlay">
       <UniqueIdentifier>{a0a5f3f0-68ae-4182-ba0e-5a8df722310f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\06. Component\RigidBody">
+      <UniqueIdentifier>{2cfdc745-4fd1-424b-82d8-4247ece2377a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\06. Component\Gravity">
+      <UniqueIdentifier>{8b0114ea-91e2-486c-821c-bebb465c27e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -260,6 +266,12 @@
     <ClInclude Include="CAnimPlayer.h">
       <Filter>소스 파일\04. Object\AnimPlay</Filter>
     </ClInclude>
+    <ClInclude Include="CRigidBody.h">
+      <Filter>소스 파일\06. Component\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CGravity.h">
+      <Filter>소스 파일\06. Component\Gravity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -354,6 +366,12 @@
     </ClCompile>
     <ClCompile Include="CAnimPlayer.cpp">
       <Filter>소스 파일\04. Object\AnimPlay</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidBody.cpp">
+      <Filter>소스 파일\06. Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CGravity.cpp">
+      <Filter>소스 파일\06. Component\Gravity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -105,6 +105,7 @@ void Kirby::update_state()
 	// 예외처리 키가 눌린상태에서 반대쪽키가 떼졌다면 눌려있는 키로 방향설정
 	if (KEY_HOLD(KEY::RIGHT) || KEY_HOLD(KEY::LEFT))
 	{
+		// HOLD 중이지 않은 반대키의 AWAY여부를 확인하여 방향 설정
 		if (KEY_AWAY(KEY::RIGHT))
 		{
 			m_iDir = (UINT)KIRBY_DIR::LEFT;
@@ -165,11 +166,10 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::RUN:
 	{
-		// 키입력이없을경우 상태변경
+		// 키입력이 없을경우 상태변경
 		if (!((KEY_HOLD(KEY::RIGHT)) || (KEY_HOLD(KEY::LEFT))))
 		{
-			m_eCurState = KIRBY_STATE::IDLE;
-								
+			m_eCurState = KIRBY_STATE::IDLE;								
 		}		
 
 		if (KEY_TAP(KEY::SPACE))

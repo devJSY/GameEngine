@@ -151,6 +151,7 @@
     <ClInclude Include="CComponent.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CEventMgr.h" />
+    <ClInclude Include="CGravity.h" />
     <ClInclude Include="CKeyMgr.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CObject.h" />
@@ -158,6 +159,7 @@
     <ClInclude Include="CPathMgr.h" />
     <ClInclude Include="CRes.h" />
     <ClInclude Include="CResMgr.h" />
+    <ClInclude Include="CRigidBody.h" />
     <ClInclude Include="CRoot.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
@@ -191,6 +193,7 @@
     <ClCompile Include="CComponent.cpp" />
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
+    <ClCompile Include="CGravity.cpp" />
     <ClCompile Include="CKeyMgr.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CObject.cpp" />
@@ -198,6 +201,7 @@
     <ClCompile Include="CPathMgr.cpp" />
     <ClCompile Include="CRes.cpp" />
     <ClCompile Include="CResMgr.cpp" />
+    <ClCompile Include="CRigidBody.cpp" />
     <ClCompile Include="CRoot.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />

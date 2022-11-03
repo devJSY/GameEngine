@@ -15,8 +15,8 @@ private:
     int     m_iCol;
 
 public:
-    virtual void Component_update();
-    virtual void Component_render(HDC _dc);
+   virtual void Component_update();
+   virtual void Component_render(HDC _dc);
 
 public:
     UINT GetID() { return m_iID; }

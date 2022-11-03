@@ -29,6 +29,9 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CEventMgr.cpp"
 
 
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CGravity.cpp"
+
+
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CKeyMgr.cpp"
 
 
@@ -48,6 +51,9 @@
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CResMgr.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CRigidBody.cpp"
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CRoot.cpp"

@@ -6,12 +6,15 @@ enum class Component_TYPE
 {
     Collider,
     Animator,
+    Rigidbody,
+    Gravity,
     END,
 };
 
 class CComponent;
 class CCollider;
 class CAnimator;
+
 
 class CObject :
     public CRoot
@@ -27,9 +30,11 @@ private:
 
 public:
     virtual void update();
-    virtual void Component_update() final;
     virtual void render(HDC _dc);
-    virtual void Component_render(HDC _dc) final;
+
+    void Component_update();
+    void Component_render(HDC _dc);
+
     virtual void start() = 0; // Scene Enter() Afert Call Func
 
     virtual void OnCollision(CCollider* _pOther) {};

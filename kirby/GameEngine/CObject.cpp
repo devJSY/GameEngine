@@ -4,6 +4,8 @@
 #include "CObject.h"
 #include "CComponent.h"
 #include "CCollider.h"
+#include "CRigidBody.h"
+#include "CGravity.h"
 #include "CAnimator.h"
 
 #include "CKeyMgr.h"
@@ -103,6 +105,20 @@ void CObject::CreateComponents(Component_TYPE _etype)
 		pAnimator->m_pOwner = this;
 
 		arr_Components[(UINT)Component_TYPE::Animator] = pAnimator;
+	}
+	else if (Component_TYPE::Rigidbody == _etype)
+	{
+		CRigidBody* pRigidBody = new CRigidBody;
+		pRigidBody->m_pOwner = this;
+
+		arr_Components[(UINT)Component_TYPE::Rigidbody] = pRigidBody;
+	}
+	else if (Component_TYPE::Gravity == _etype)
+	{
+		CGravity* pGravity = new CGravity;
+		pGravity->m_pOwner = this;
+
+		arr_Components[(UINT)Component_TYPE::Gravity] = pGravity;
 	}
 }
 
