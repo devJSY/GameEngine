@@ -18,8 +18,6 @@ Kirby::Kirby()
 	, m_eCurState(KIRBY_STATE::IDLE)
 	, m_eStockState(KIRBY_STATE::IDLE)
 	, m_fAccTime(0.f)
-	, m_fJumpTime(0.f)
-
 {	
 	// ================
 	// Collider Create
@@ -130,51 +128,141 @@ void Kirby::update_state()
 	}
 
 
+	//switch (m_eCurState)
+	//{
+	//case KIRBY_STATE::IDLE:
+	//{
+	//	if (KEY_HOLD(KEY::RIGHT) || KEY_HOLD(KEY::LEFT))
+	//	{
+	//		m_eCurState = KIRBY_STATE::WALK;
+	//	}
+
+	//	if (KEY_TAP(KEY::SPACE))
+	//	{
+	//		m_eStockState = m_eCurState;
+	//		m_eCurState = KIRBY_STATE::JUMP;
+	//		pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+	//	}
+	//}
+	//break;
+
+	//case KIRBY_STATE::WALK:
+	//{		
+	//	m_fAccTime += fDT;
+
+	//	// 동일한 키입력이 2번되었을때 RUN상태로 변환
+	//	if ((KEY_TAP(KEY::RIGHT) || KEY_TAP(KEY::LEFT)) && m_iPrevDir == m_iDir)
+	//	{
+	//		m_eCurState = KIRBY_STATE::RUN;
+	//		m_fAccTime = 0.f;
+	//	}		
+
+	//	// 추가입력 시간 확보
+	//	if (m_fAccTime > 0.3f)
+	//	{
+	//		if (!(KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT)))
+	//		{
+	//			m_eCurState = KIRBY_STATE::IDLE;
+	//			m_fAccTime = 0.f;
+	//		}
+	//	}
+
+	//	if (KEY_TAP(KEY::SPACE))
+	//	{
+	//		m_eStockState = KIRBY_STATE::IDLE; // 설정 시간 딜레이 제거를 위해서 IDLE상태로 변경
+	//		m_eCurState = KIRBY_STATE::JUMP;
+	//		m_fAccTime = 0.f;
+	//		pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+	//	}
+	//}
+	//break;
+
+	//case KIRBY_STATE::RUN:
+	//{
+	//	// 키입력이 없을경우 상태변경
+	//	if (!((KEY_HOLD(KEY::RIGHT)) || (KEY_HOLD(KEY::LEFT))))
+	//	{
+	//		m_eCurState = KIRBY_STATE::IDLE;								
+	//	}		
+
+	//	if (KEY_TAP(KEY::SPACE))
+	//	{
+	//		m_eStockState = m_eCurState;
+	//		m_eCurState = KIRBY_STATE::JUMP;
+	//		pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+	//	}
+	//}
+	//break;
+
+	//case KIRBY_STATE::JUMP:
+	//{
+	//	m_fJumpTime += fDT;
+
+	//	if (m_fJumpTime > 1.f)
+	//	{
+	//		m_fJumpTime = 0.f;
+	//		m_eCurState = m_eStockState;
+	//	}
+	//}
+	//break;
+
+	//case KIRBY_STATE::DEAD:
+	//	break;
+	//}
+
 	switch (m_eCurState)
 	{
 	case KIRBY_STATE::IDLE:
 	{
 		if (KEY_HOLD(KEY::RIGHT) || KEY_HOLD(KEY::LEFT))
 		{
+			State_Exit();
 			m_eCurState = KIRBY_STATE::WALK;
+			State_Enter();
 		}
 
 		if (KEY_TAP(KEY::SPACE))
 		{
+			State_Exit();
 			m_eStockState = m_eCurState;
 			m_eCurState = KIRBY_STATE::JUMP;
-			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+			State_Enter();
 		}
 	}
 	break;
 
 	case KIRBY_STATE::WALK:
-	{		
+	{
 		m_fAccTime += fDT;
 
 		// 동일한 키입력이 2번되었을때 RUN상태로 변환
 		if ((KEY_TAP(KEY::RIGHT) || KEY_TAP(KEY::LEFT)) && m_iPrevDir == m_iDir)
 		{
+			State_Exit();
 			m_eCurState = KIRBY_STATE::RUN;
+			State_Enter();
 			m_fAccTime = 0.f;
-		}		
+		}
 
 		// 추가입력 시간 확보
 		if (m_fAccTime > 0.3f)
 		{
 			if (!(KEY_HOLD(KEY::LEFT) || KEY_HOLD(KEY::RIGHT)))
 			{
+				State_Exit();
 				m_eCurState = KIRBY_STATE::IDLE;
+				State_Enter();
 				m_fAccTime = 0.f;
 			}
 		}
 
 		if (KEY_TAP(KEY::SPACE))
 		{
+			State_Exit();
 			m_eStockState = KIRBY_STATE::IDLE; // 설정 시간 딜레이 제거를 위해서 IDLE상태로 변경
 			m_eCurState = KIRBY_STATE::JUMP;
+			State_Enter();
 			m_fAccTime = 0.f;
-			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
 		}
 	}
 	break;
@@ -184,26 +272,28 @@ void Kirby::update_state()
 		// 키입력이 없을경우 상태변경
 		if (!((KEY_HOLD(KEY::RIGHT)) || (KEY_HOLD(KEY::LEFT))))
 		{
-			m_eCurState = KIRBY_STATE::IDLE;								
-		}		
+			State_Exit();
+			m_eCurState = KIRBY_STATE::IDLE;
+			State_Enter();
+		}
 
 		if (KEY_TAP(KEY::SPACE))
 		{
+			State_Exit();
 			m_eStockState = m_eCurState;
 			m_eCurState = KIRBY_STATE::JUMP;
-			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+			State_Enter();
 		}
 	}
 	break;
 
 	case KIRBY_STATE::JUMP:
 	{
-		m_fJumpTime += fDT;
-
-		if (m_fJumpTime > 1.f)
+		if (pRigid->GetVelocity().y == 0.f)
 		{
-			m_fJumpTime = 0.f;
+			State_Exit();
 			m_eCurState = m_eStockState;
+			State_Enter();
 		}
 	}
 	break;
@@ -234,14 +324,14 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				pRigid->AddVelocity(Vec2(200.f, 0.f));
+				pRigid->SetVelocity(Vec2(100.f, pRigid->GetVelocity().y));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				pRigid->AddForce(Vec2(-200.f, 0.f));
+				pRigid->SetVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
 			}
 		}
 	}
@@ -253,14 +343,14 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				pRigid->AddForce(Vec2(500.f, 0.f));
+				pRigid->SetVelocity(Vec2(300.f, pRigid->GetVelocity().y));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				pRigid->AddForce(Vec2(-500.f, 0.f));
+				pRigid->SetVelocity(Vec2(-300.f, pRigid->GetVelocity().y));
 			}
 		}
 	}
@@ -272,14 +362,14 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				pRigid->AddForce(Vec2(200.f, 0.f));
+				pRigid->SetVelocity(Vec2(100.f, pRigid->GetVelocity().y));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				pRigid->AddForce(Vec2(-200.f, 0.f));
+				pRigid->SetVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
 			}
 		}
 	}
@@ -357,6 +447,89 @@ void Kirby::update_animation()
 
 void Kirby::update_gravity()
 {
+	switch (m_eCurState)
+	{
+	case KIRBY_STATE::IDLE:
+		break;
+	case KIRBY_STATE::WALK:
+		break;
+	case KIRBY_STATE::RUN:
+		break;
+	case KIRBY_STATE::JUMP:
+		break;
+	case KIRBY_STATE::DEAD:
+		break;
+	default:
+		break;
+	}
+}
+
+void Kirby::State_Enter()
+{
+	CRigidBody* pRigid = (CRigidBody*)GetComponents(Component_TYPE::RigidBody);
+
+	switch (m_eCurState)
+	{
+	case KIRBY_STATE::IDLE:
+		break;
+	case KIRBY_STATE::WALK:
+	{
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
+		{
+			pRigid->AddVelocity(Vec2(100.f, pRigid->GetVelocity().y));
+		}
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
+		{
+			pRigid->AddVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
+		}
+	}
+	break;
+	case KIRBY_STATE::RUN:
+	{
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
+		{
+			pRigid->AddVelocity(Vec2(200.f, pRigid->GetVelocity().y));
+		}
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
+		{
+			pRigid->AddVelocity(Vec2(-200.f, pRigid->GetVelocity().y));
+		}
+	}
+	break;
+	case KIRBY_STATE::JUMP:
+	{
+		pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+	}
+	break;
+	case KIRBY_STATE::DEAD:
+		break;
+	default:
+		break;
+	}
+}
+
+void Kirby::State_Execute()
+{
+	switch (m_eCurState)
+	{
+	case KIRBY_STATE::IDLE:
+		break;
+	case KIRBY_STATE::WALK:
+		break;
+	case KIRBY_STATE::RUN:
+		break;
+	case KIRBY_STATE::JUMP:
+		break;
+	case KIRBY_STATE::DEAD:
+		break;
+	default:
+		break;
+	}
+}
+
+void Kirby::State_Exit()
+{
+
 }
 
 
@@ -366,15 +539,6 @@ void Kirby::OnCollision(CCollider* _pOther)
 
 void Kirby::OnCollisionEnter(CCollider* _pOther)
 {
-	CObject* pOtherObj = _pOther->GetOwner();
-	if (L"Ground" == pOtherObj->GetName())
-	{
-		Vec2 vPos = GetPos();
-		if (vPos.y < pOtherObj->GetPos().y)
-		{
-			m_eCurState = KIRBY_STATE::IDLE;
-		}
-	}
 }
 
 void Kirby::OnCollisionExit(CCollider* _pOther)

@@ -64,7 +64,7 @@ void CScene_Start::Enter()
 	CGround* pGround = new CGround;
 	pGround->SetName(L"Ground");
 	pGround->SetPos(Vec2(640.f, 584.f));
-	pGround->SetScale(Vec2(500.f, 60.f));
+	pGround->SetScale(Vec2(800.f, 60.f));
 
 	EnterAddObject(pGround, GROUP_TYPE::GROUND);
 

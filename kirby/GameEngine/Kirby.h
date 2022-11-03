@@ -29,7 +29,6 @@ class Kirby :
     KIRBY_STATE     m_eStockState;  // 상태 저장용 변수
 
     float           m_fAccTime;     // Run 키입력 딜레이 시간
-    float           m_fJumpTime;    // 체공 시간 
 
 public:
     virtual void update();
@@ -45,6 +44,11 @@ public:
     void update_move();         // 이동 적용
     void update_animation();    // 애니메이션 설정
     void update_gravity();      // 중력 적용
+
+public:
+    void State_Enter();
+    void State_Execute();
+    void State_Exit();
 
     CLONE(Kirby);
 
