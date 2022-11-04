@@ -12,6 +12,7 @@
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
 #include "CResMgr.h"
+#include "CColliderMgr.h"
 
 Kirby::Kirby()
 	: m_iDir(1)
@@ -215,6 +216,8 @@ void Kirby::update_state()
 	{
 	case KIRBY_STATE::IDLE:
 	{
+		State_Execute();
+
 		if (KEY_HOLD(KEY::RIGHT) || KEY_HOLD(KEY::LEFT))
 		{
 			State_Exit();
@@ -234,6 +237,8 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::WALK:
 	{
+		State_Execute();
+
 		m_fAccTime += fDT;
 
 		// 동일한 키입력이 2번되었을때 RUN상태로 변환
@@ -270,6 +275,8 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::RUN:
 	{
+		State_Execute();
+
 		// 키입력이 없을경우 상태변경
 		if (!((KEY_HOLD(KEY::RIGHT)) || (KEY_HOLD(KEY::LEFT))))
 		{
@@ -290,6 +297,8 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::JUMP:
 	{
+		State_Execute();
+
 		if (pRigid->GetVelocity().y == 0.f && ((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround())
 		{
 			State_Exit();
@@ -477,11 +486,11 @@ void Kirby::State_Enter()
 	{
 		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(100.f, 0.f));
+			pRigid->SetVelocity(Vec2(100.f, 0.f));
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(-100.f, 0.f));
+			pRigid->SetVelocity(Vec2(-100.f, 0.f));
 		}
 	}
 	break;
@@ -489,17 +498,17 @@ void Kirby::State_Enter()
 	{
 		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(200.f, 0.f));
+			pRigid->SetVelocity(Vec2(200.f, 0.f));
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(-200.f, 0.f));
+			pRigid->SetVelocity(Vec2(-200.f, 0.f));
 		}
 	}
 	break;
 	case KIRBY_STATE::JUMP:
 	{
-		pRigid->AddVelocity(Vec2(0.f, -500.f));
+		pRigid->SetVelocity(Vec2(0.f, -500.f));
 	}
 	break;
 	case KIRBY_STATE::DEAD:
@@ -511,6 +520,8 @@ void Kirby::State_Enter()
 
 void Kirby::State_Execute()
 {
+	CRigidBody* pRigid = (CRigidBody*)GetComponents(Component_TYPE::RigidBody);
+
 	switch (m_eCurState)
 	{
 	case KIRBY_STATE::IDLE:
@@ -520,6 +531,12 @@ void Kirby::State_Execute()
 	case KIRBY_STATE::RUN:
 		break;
 	case KIRBY_STATE::JUMP:
+	{
+		if (KEY_TAP(KEY::SPACE))
+		{
+			pRigid->SetVelocity(Vec2(0.f, -300.f));
+		}		
+	}
 		break;
 	case KIRBY_STATE::DEAD:
 		break;
@@ -550,9 +567,14 @@ void Kirby::OnCollision(CCollider* _pOther)
 
 		Vec2 vSetPos = GetPos();
 
-		if (diffPos < diffScale)
+		COLLIDER_DIR Check_Dir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)GetComponents(Component_TYPE::Collider)), _pOther);
+
+		if (true == Check_Dir.BOTTOM)
 		{
-			vSetPos.y -= (diffScale - diffPos);
+			if (diffPos < diffScale)
+			{
+				vSetPos.y -= (diffScale - diffPos);
+			}
 		}
 
 		SetPos(vSetPos);
@@ -578,9 +600,14 @@ void Kirby::OnCollisionEnter(CCollider* _pOther)
 
 		Vec2 vSetPos = GetPos();
 
-		if (diffPos < diffScale)
+		COLLIDER_DIR Check_Dir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)GetComponents(Component_TYPE::Collider)), _pOther);
+
+		if (true == Check_Dir.BOTTOM)
 		{
-			vSetPos.y -= (diffScale - diffPos);
+			if (diffPos < diffScale)
+			{
+				vSetPos.y -= (diffScale - diffPos);
+			}
 		}
 
 		SetPos(vSetPos);

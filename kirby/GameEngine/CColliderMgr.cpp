@@ -58,6 +58,7 @@ void CColliderMgr::CheckGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 	}
 }
 
+
 void CColliderMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 {
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
@@ -167,4 +168,48 @@ bool CColliderMgr::IsCollision(CCollider* _eLeft, CCollider* _eRight)
 	}
 
 	return false;
+}
+
+
+COLLIDER_DIR CColliderMgr::CollisionDIR(CCollider* _Check, CCollider* _Target)
+{
+	// 충동 된 상태가 아니라면 리턴
+	if (!IsCollision(_Check , _Target))
+	{
+		return COLLIDER_DIR{};
+	}
+
+	Vec2 CheckPos = _Check->GetFinalPos();
+	Vec2 TargetPos = _Target->GetFinalPos();
+
+	COLLIDER_DIR Check_Dir = {};
+
+	if (CheckPos.x < TargetPos.x)
+	{
+		Check_Dir.RIGHT = true;
+
+		if (CheckPos.y < TargetPos.y)
+		{
+			Check_Dir.BOTTOM = true;
+		}
+		else
+		{
+			Check_Dir.TOP = true;
+		}
+	}
+	else if (CheckPos.x >= TargetPos.x)
+	{
+		Check_Dir.LEFT = true;
+
+		if (CheckPos.y < TargetPos.y)
+		{
+			Check_Dir.BOTTOM = true;
+		}
+		else
+		{
+			Check_Dir.TOP = true;
+		}
+	}
+
+	return Check_Dir;
 }

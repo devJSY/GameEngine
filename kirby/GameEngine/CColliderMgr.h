@@ -10,6 +10,14 @@ union COLLIDER_ID
     ULONGLONG ID;
 };
 
+struct COLLIDER_DIR
+{
+    bool LEFT = false;
+    bool RIGHT = false;
+    bool TOP = false;
+    bool BOTTOM = false;
+};
+
 class CCollider;
 
 class CColliderMgr :
@@ -26,6 +34,8 @@ public:
     void update();
     void CheckGroup(GROUP_TYPE _eLeft, GROUP_TYPE _eRight);
     void Reset() { memset(m_arrCheck, 0, sizeof(UINT) * (UINT)GROUP_TYPE::END); }
+
+    COLLIDER_DIR CollisionDIR(CCollider* _Check, CCollider* _Target);
 
 private:
     void CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight);
