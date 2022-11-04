@@ -38,58 +38,58 @@ void CGround::render(HDC _dc)
 
 void CGround::OnCollisionEnter(CCollider* _pOther)
 {
-	CObject* pOtherObj = _pOther->GetOwner();
-	if (pOtherObj->GetName() == L"Kirby")
-	{
-		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 땅에 닿은것으로 설정
+	//CObject* pOtherObj = _pOther->GetOwner();
+	//if (pOtherObj->GetName() == L"Kirby")
+	//{
+	//	((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 땅에 닿은것으로 설정
 
-		Vec2 vObjPos = _pOther->GetFinalPos();
-		Vec2 vObjScale = _pOther->GetScale();
+	//	Vec2 vObjPos = _pOther->GetFinalPos();
+	//	Vec2 vObjScale = _pOther->GetScale();
 
-		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
-		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
+	//	Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+	//	Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
-		float fLen = abs(vObjPos.y - vPos.y);
-		float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
+	//	float fLen = abs(vObjPos.y - vPos.y);
+	//	float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
 
-		vObjPos = pOtherObj->GetPos();
-		vObjPos.y -= (fValue + 1);	// 오차된 차이값 만큼 더해줌 // 임시로 1픽셀 더 올려줌
+	//	vObjPos = pOtherObj->GetPos();
+	//	vObjPos.y -= (fValue);	// 오차된 차이값 만큼 더해줌 
 
-		pOtherObj->SetPos(vObjPos);
-	}
+	//	pOtherObj->SetPos(vObjPos);
+	//}
 }
 
 void CGround::OnCollision(CCollider* _pOther)
 {
-	CObject* pOtherObj = _pOther->GetOwner();
-	if (pOtherObj->GetName() == L"Kirby")
-	{
-		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 땅에 닿은것으로 설정
+	//CObject* pOtherObj = _pOther->GetOwner();
+	//if (pOtherObj->GetName() == L"Kirby")
+	//{
+	//	((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 땅에 닿은것으로 설정
 
-		Vec2 vObjPos = _pOther->GetFinalPos();
-		Vec2 vObjScale = _pOther->GetScale();
+	//	Vec2 vObjPos = _pOther->GetFinalPos();
+	//	Vec2 vObjScale = _pOther->GetScale();
 
-		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
-		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
+	//	Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+	//	Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
-		float fLen = abs(vObjPos.y - vPos.y);
-		float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
+	//	float fLen = abs(vObjPos.y - vPos.y);
+	//	float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
 
-		vObjPos = pOtherObj->GetPos();
-		vObjPos.y -= (fValue + 1);	// 오차된 차이값 만큼 더해줌 // 임시로 1픽셀 더 올려줌
+	//	vObjPos = pOtherObj->GetPos();
+	//	vObjPos.y -= (fValue);	// 오차된 차이값 만큼 더해줌
 
-		pOtherObj->SetPos(vObjPos);
-	}
+	//	pOtherObj->SetPos(vObjPos);
+	//}
 }
 
 
 void CGround::OnCollisionExit(CCollider* _pOther)
 {
-	CObject* pOtherObj = _pOther->GetOwner();
-	if (pOtherObj->GetName() == L"Kirby")
-	{
-		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(false);
+	//CObject* pOtherObj = _pOther->GetOwner();
+	//if (pOtherObj->GetName() == L"Kirby")
+	//{
+	//	((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(false);
 
-		Vec2 vPos = pOtherObj->GetPos();
-	}
+	//	Vec2 vPos = pOtherObj->GetPos();
+	//}
 }

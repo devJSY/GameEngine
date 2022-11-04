@@ -4,8 +4,8 @@
 
 enum class Component_TYPE
 {
-    Collider,
     Animator,
+    Collider,
     RigidBody,
     Gravity,
     END,

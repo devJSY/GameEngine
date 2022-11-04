@@ -8,7 +8,7 @@
 CRigidBody::CRigidBody()
 	: m_pOwner(nullptr)
 	, m_fMass(1.f)
-	, m_fFricCoeff(200.f)
+	, m_fFricCoeff(100.f)
 	, m_vMaxVelocity(Vec2(500.f, 1000.f))
 {
 }
@@ -79,6 +79,7 @@ void CRigidBody::Component_update()
 	// 추가 가속도 초기화
 	m_vAccel = Vec2(0.f, 0.f);
 	m_vAccelA = Vec2(0.f, 0.f);
+	m_vVelocity.x = 0.f; // x축 속도 제거
 }
 
 void CRigidBody::Move()

@@ -37,18 +37,32 @@ void CCollider::Component_update()
 
 void CCollider::Component_render(HDC _dc)
 {
-	SelectGDI p(_dc, PEN_TYPE::GREEN);
-	SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
-
 	Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(m_vFinalPos);
 
+	if (m_iCol)
+	{
+		SelectGDI p(_dc, PEN_TYPE::RED);
+		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
 
-	Rectangle(_dc
-		, int(vRenderPos.x - m_vScale.x / 2.f)
-		, int(vRenderPos.y - m_vScale.y / 2.f)
-		, int(vRenderPos.x + m_vScale.x / 2.f)
-		, int(vRenderPos.y + m_vScale.y / 2.f)
-	);
+		Rectangle(_dc
+			, int(vRenderPos.x - m_vScale.x / 2.f)
+			, int(vRenderPos.y - m_vScale.y / 2.f)
+			, int(vRenderPos.x + m_vScale.x / 2.f)
+			, int(vRenderPos.y + m_vScale.y / 2.f)
+		);
+	}
+	else
+	{
+		SelectGDI p(_dc, PEN_TYPE::GREEN);
+		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
+
+		Rectangle(_dc
+			, int(vRenderPos.x - m_vScale.x / 2.f)
+			, int(vRenderPos.y - m_vScale.y / 2.f)
+			, int(vRenderPos.x + m_vScale.x / 2.f)
+			, int(vRenderPos.y + m_vScale.y / 2.f)
+		);
+	}
 }
 
 void CCollider::OnCollision(CCollider* _pOther)

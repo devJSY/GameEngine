@@ -13,6 +13,7 @@ public:
 
 public:
     void SetGround(bool _b);
+    bool IsGround() { return m_bGround; }
 
 public:
     virtual void Component_update();

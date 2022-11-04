@@ -7,6 +7,7 @@
 #include "CAnimator.h"
 #include "CAnimation.h"
 #include "CRigidBody.h"
+#include "CGravity.h"
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
@@ -289,7 +290,7 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::JUMP:
 	{
-		if (pRigid->GetVelocity().y == 0.f)
+		if (pRigid->GetVelocity().y == 0.f && ((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround())
 		{
 			State_Exit();
 			m_eCurState = m_eStockState;
@@ -476,11 +477,11 @@ void Kirby::State_Enter()
 	{
 		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(100.f, pRigid->GetVelocity().y));
+			pRigid->AddVelocity(Vec2(100.f, 0.f));
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
+			pRigid->AddVelocity(Vec2(-100.f, 0.f));
 		}
 	}
 	break;
@@ -488,17 +489,17 @@ void Kirby::State_Enter()
 	{
 		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(200.f, pRigid->GetVelocity().y));
+			pRigid->AddVelocity(Vec2(200.f, 0.f));
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
-			pRigid->AddVelocity(Vec2(-200.f, pRigid->GetVelocity().y));
+			pRigid->AddVelocity(Vec2(-200.f, 0.f));
 		}
 	}
 	break;
 	case KIRBY_STATE::JUMP:
 	{
-		pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+		pRigid->AddVelocity(Vec2(0.f, -500.f));
 	}
 	break;
 	case KIRBY_STATE::DEAD:
@@ -535,15 +536,65 @@ void Kirby::State_Exit()
 
 void Kirby::OnCollision(CCollider* _pOther)
 {
+	CObject* pOtherObj = _pOther->GetOwner();
+	if (pOtherObj->GetName() == L"Ground")
+	{
+		Vec2 vObjPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+		Vec2 vObjScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
+
+		Vec2 vGroundPos = _pOther->GetFinalPos();
+		Vec2 vGroundScale = _pOther->GetScale();
+
+		float diffPos = abs(vObjPos.y - vGroundPos.y);
+		float diffScale = abs(vObjScale.y / 2.f + vGroundScale.y / 2.f);
+
+		Vec2 vSetPos = GetPos();
+
+		if (diffPos < diffScale)
+		{
+			vSetPos.y -= (diffScale - diffPos);
+		}
+
+		SetPos(vSetPos);
+	}
+
 }
 
 void Kirby::OnCollisionEnter(CCollider* _pOther)
 {
+	CObject* pOtherObj = _pOther->GetOwner();
+	if (pOtherObj->GetName() == L"Ground")
+	{
+		((CGravity*)GetComponents(Component_TYPE::Gravity))->SetGround(true); // ¶¥¿¡ ´êÀº°ÍÀ¸·Î ¼³Á¤
+
+		Vec2 vObjPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+		Vec2 vObjScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
+
+		Vec2 vGroundPos = _pOther->GetFinalPos();
+		Vec2 vGroundScale = _pOther->GetScale();
+
+		float diffPos = abs(vObjPos.y - vGroundPos.y);
+		float diffScale = abs(vObjScale.y / 2.f + vGroundScale.y / 2.f);
+
+		Vec2 vSetPos = GetPos();
+
+		if (diffPos < diffScale)
+		{
+			vSetPos.y -= (diffScale - diffPos);
+		}
+
+		SetPos(vSetPos);
+	}
 }
 
 void Kirby::OnCollisionExit(CCollider* _pOther)
 {
+	CObject* pOtherObj = _pOther->GetOwner();
+	if (pOtherObj->GetName() == L"Ground")
+	{
+		((CGravity*)GetComponents(Component_TYPE::Gravity))->SetGround(false);
 
+	}
 }
 
 void Kirby::start()
