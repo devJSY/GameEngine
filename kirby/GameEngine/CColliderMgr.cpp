@@ -180,36 +180,30 @@ COLLIDER_DIR CColliderMgr::CollisionDIR(CCollider* _Check, CCollider* _Target)
 	}
 
 	Vec2 CheckPos = _Check->GetFinalPos();
+	Vec2 CheckScale = _Check->GetScale();
+
 	Vec2 TargetPos = _Target->GetFinalPos();
+	Vec2 TargetScale = _Target->GetScale();
 
 	COLLIDER_DIR Check_Dir = {};
 
-	if (CheckPos.x < TargetPos.x)
-	{
-		Check_Dir.RIGHT = true;
-
-		if (CheckPos.y < TargetPos.y)
-		{
-			Check_Dir.BOTTOM = true;
-		}
-		else
-		{
-			Check_Dir.TOP = true;
-		}
-	}
-	else if (CheckPos.x >= TargetPos.x)
+	if (CheckPos.x > TargetPos.x)
 	{
 		Check_Dir.LEFT = true;
-
-		if (CheckPos.y < TargetPos.y)
-		{
-			Check_Dir.BOTTOM = true;
-		}
-		else
-		{
-			Check_Dir.TOP = true;
-		}
+	}
+	else if(CheckPos.x < TargetPos.x)
+	{
+		Check_Dir.RIGHT = true;
 	}
 
+	if (CheckPos.y > TargetPos.y)
+	{
+		Check_Dir.TOP = true;
+	}
+	else if (CheckPos.y < TargetPos.y)
+	{
+		Check_Dir.BOTTOM = true;
+	}
+	
 	return Check_Dir;
 }

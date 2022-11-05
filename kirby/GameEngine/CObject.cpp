@@ -60,6 +60,7 @@ CObject::~CObject()
 
 void CObject::update()
 {
+	m_vPrevPos = vPos;
 	// 기본 업데이트 없음
 }
 

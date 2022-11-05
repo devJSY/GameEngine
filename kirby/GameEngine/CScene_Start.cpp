@@ -68,6 +68,18 @@ void CScene_Start::Enter()
 
 	EnterAddObject(pGround, GROUP_TYPE::GROUND);
 
+	CGround* pGround2 = pGround->Clone();
+	pGround2->SetName(L"Ground2");
+	pGround2->SetPos(Vec2(900.f, 550.f));
+	pGround2->SetScale(Vec2(200.f, 200.f));
+
+	EnterAddObject(pGround2, GROUP_TYPE::GROUND);
+
+	CGround* pGround3 = pGround2->Clone();
+	pGround3->SetPos(Vec2(300.f, 250.f));
+
+	EnterAddObject(pGround3, GROUP_TYPE::GROUND);
+
 	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::GROUND);
 
 	

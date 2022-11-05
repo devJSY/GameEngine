@@ -28,6 +28,10 @@ private:
 
     bool                m_bAlive; // Dead Check
 
+
+    Vec2            m_vPrevPos;
+
+
 public:
     virtual void update();
     virtual void render(HDC _dc);
@@ -52,6 +56,8 @@ public:
     wstring& GetName() { return m_strName; }
 
     bool IsDead() { return !m_bAlive; }
+
+    Vec2 GetPrevPos() { return m_vPrevPos; }
 
 public:
     void CreateComponents(Component_TYPE _etype);
