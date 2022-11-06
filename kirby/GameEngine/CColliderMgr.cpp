@@ -206,36 +206,20 @@ COLLIDER_DIR CColliderMgr::CollisionDIR(CCollider* _Check, CCollider* _Target)
 		Check_Dir.BOTTOM = true;
 	}
 
-	int x = abs(CheckPos.x - TargetPos.x);
-	int y = abs(CheckPos.y - TargetPos.y);
-
-
+	// 충돌된 부위만큼의 위치값을 가져와서 절대값으로 비교
 	Vec2 vDiff = ((CheckScale + TargetScale) / 2.f) - (CheckPos - TargetPos).Vec2_abs();
 
-
-	//// 접촉된 면적 차이에 따라 상하 or 좌우 구분 
- //  	if (abs(CheckPos.x - TargetPos.x) > abs(CheckPos.y - TargetPos.y))
-	//{
-	//	Check_Dir.TOP = false;
-	//	Check_Dir.BOTTOM = false;
-	//}
-	//else
-	//{
-	//	Check_Dir.LEFT = false;
-	//	Check_Dir.RIGHT = false;		
-	//}
-
-	if (vDiff.x > vDiff.y)
-   {
+	if (abs(vDiff.x) > abs(vDiff.y))
+	{
 		Check_Dir.LEFT = false;
 		Check_Dir.RIGHT = false;
-   }
-   else
-   {
+	}
+	else
+	{
 		Check_Dir.TOP = false;
 		Check_Dir.BOTTOM = false;
 
-   }
+	}
 	
 	return Check_Dir;
 }

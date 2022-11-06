@@ -142,7 +142,7 @@ void Kirby::update_state()
 			State_Enter();
 		}
 
-		if (KEY_TAP(KEY::SPACE) || pRigid->GetVelocity().y != 0.f)
+		if (KEY_TAP(KEY::SPACE))
 		{
 			State_Exit();
 			m_eStockState = m_eCurState;
@@ -179,7 +179,7 @@ void Kirby::update_state()
 			}
 		}
 
-		if (KEY_TAP(KEY::SPACE) || pRigid->GetVelocity().y != 0.f)
+		if (KEY_TAP(KEY::SPACE))
 		{
 			State_Exit();
 			m_eStockState = KIRBY_STATE::IDLE; // 설정 시간 딜레이 제거를 위해서 IDLE상태로 변경
@@ -202,7 +202,7 @@ void Kirby::update_state()
 			State_Enter();
 		}
 
-		if (KEY_TAP(KEY::SPACE) || pRigid->GetVelocity().y != 0.f)
+		if (KEY_TAP(KEY::SPACE))
 		{
 			State_Exit();
 			m_eStockState = m_eCurState;

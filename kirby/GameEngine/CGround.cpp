@@ -67,15 +67,15 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 			pOtherObj->SetPos(vSetPos);
 		}
 		else if (ColDir.BOTTOM)
-		{
-			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
+		{	
+			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 충돌 시작시 그라운드 접촉 선언
 
 			float diffPos = abs(vObjPos.y - vPos.y);
 			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
 			Vec2 vSetPos = pOtherObj->GetPos();
 
-			vSetPos.y += (diffScale - diffPos) + 1;
+			vSetPos.y += (diffScale - diffPos);
 
 			pOtherObj->SetPos(vSetPos);
 		}
@@ -132,14 +132,12 @@ void CGround::OnCollision(CCollider* _pOther)
 		}
 		else if (ColDir.BOTTOM)
 		{
-			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
-
 			float diffPos = abs(vObjPos.y - vPos.y);
 			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
 			Vec2 vSetPos = pOtherObj->GetPos();
 
-			vSetPos.y -= (diffScale - diffPos) + 1;
+			vSetPos.y -= (diffScale - diffPos);
 
 			pOtherObj->SetPos(vSetPos);
 		}
