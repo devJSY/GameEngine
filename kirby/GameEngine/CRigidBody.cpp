@@ -19,19 +19,20 @@ CRigidBody::~CRigidBody()
 
 void CRigidBody::Component_update()
 {
-	// 힘의 크기
-	float fForce = m_vForce.Length();
+	// 힘 사용 X
+	//// 힘의 크기
+	//float fForce = m_vForce.Length();
 
-	if (0.f != fForce)
-	{
-		m_vForce.Normalize();
+	//if (0.f != fForce)
+	//{
+	//	m_vForce.Normalize();
 
-		// 가속도의 크기
-		float m_fAccel = fForce / m_fMass;
+	//	// 가속도의 크기
+	//	float m_fAccel = fForce / m_fMass;
 
-		// 가속도
-		m_vAccel = m_vForce * m_fAccel;
-	}
+	//	// 가속도
+	//	m_vAccel = m_vForce * m_fAccel;
+	//}
 
 	// 추가 가속도
 	m_vAccel += m_vAccelA;

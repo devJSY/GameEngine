@@ -47,8 +47,6 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 
 	if (pOtherObj->GetName() == L"Kirby")
 	{
-		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
-
 		Vec2 vObjPos = _pOther->GetFinalPos();
 		Vec2 vObjScale = _pOther->GetScale();
 
@@ -70,12 +68,14 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 		}
 		else if (ColDir.BOTTOM)
 		{
+			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
+
 			float diffPos = abs(vObjPos.y - vPos.y);
 			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
 			Vec2 vSetPos = pOtherObj->GetPos();
 
-			vSetPos.y += (diffScale - diffPos);
+			vSetPos.y += (diffScale - diffPos) + 1;
 
 			pOtherObj->SetPos(vSetPos);
 		}
@@ -111,8 +111,6 @@ void CGround::OnCollision(CCollider* _pOther)
 
 	if (pOtherObj->GetName() == L"Kirby")
 	{
-		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
-
 		Vec2 vObjPos = _pOther->GetFinalPos();
 		Vec2 vObjScale = _pOther->GetScale();
 
@@ -134,12 +132,14 @@ void CGround::OnCollision(CCollider* _pOther)
 		}
 		else if (ColDir.BOTTOM)
 		{
+			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
+
 			float diffPos = abs(vObjPos.y - vPos.y);
 			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
 			Vec2 vSetPos = pOtherObj->GetPos();
 
-			vSetPos.y -= (diffScale - diffPos);
+			vSetPos.y -= (diffScale - diffPos) + 1;
 
 			pOtherObj->SetPos(vSetPos);
 		}
