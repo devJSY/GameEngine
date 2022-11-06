@@ -142,7 +142,7 @@ void Kirby::update_state()
 			State_Enter();
 		}
 
-		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f || !((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround()))
+		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f))
 		{
 			State_Exit();
 			m_eStockState = m_eCurState;
@@ -179,7 +179,7 @@ void Kirby::update_state()
 			}
 		}
 
-		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f || !((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround()))
+		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f))
 		{
 			State_Exit();
 			m_eStockState = KIRBY_STATE::IDLE; // 설정 시간 딜레이 제거를 위해서 IDLE상태로 변경
@@ -202,7 +202,7 @@ void Kirby::update_state()
 			State_Enter();
 		}
 
-		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f || !((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround()))
+		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f))
 		{
 			State_Exit();
 			m_eStockState = m_eCurState;
@@ -468,6 +468,23 @@ void Kirby::State_Execute()
 
 void Kirby::State_Exit()
 {
+	CRigidBody* pRigid = (CRigidBody*)GetComponents(Component_TYPE::RigidBody);
+
+	switch (m_eCurState)
+	{
+	case KIRBY_STATE::IDLE:
+		break;
+	case KIRBY_STATE::WALK:
+		break;
+	case KIRBY_STATE::RUN:
+		break;
+	case KIRBY_STATE::JUMP:
+		break;
+	case KIRBY_STATE::DEAD:
+		break;
+	default:
+		break;
+	}
 
 }
 

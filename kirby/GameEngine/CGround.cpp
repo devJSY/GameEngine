@@ -70,6 +70,9 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 		{	
 			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 충돌 시작시 그라운드 접촉 선언
 
+			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, 0.f)); // 땅에 닿아있는 상태라면 0속도를 0으로 셋팅
+			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
+
 			float diffPos = abs(vObjPos.y - vPos.y);
 			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
@@ -132,6 +135,8 @@ void CGround::OnCollision(CCollider* _pOther)
 		}
 		else if (ColDir.BOTTOM)
 		{
+			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
+
 			float diffPos = abs(vObjPos.y - vPos.y);
 			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
