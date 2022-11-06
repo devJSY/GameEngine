@@ -142,7 +142,7 @@ void Kirby::update_state()
 			State_Enter();
 		}
 
-		if (KEY_TAP(KEY::SPACE))
+		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f || !((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround()))
 		{
 			State_Exit();
 			m_eStockState = m_eCurState;
@@ -179,7 +179,7 @@ void Kirby::update_state()
 			}
 		}
 
-		if (KEY_TAP(KEY::SPACE))
+		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f || !((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround()))
 		{
 			State_Exit();
 			m_eStockState = KIRBY_STATE::IDLE; // 설정 시간 딜레이 제거를 위해서 IDLE상태로 변경
@@ -202,7 +202,7 @@ void Kirby::update_state()
 			State_Enter();
 		}
 
-		if (KEY_TAP(KEY::SPACE))
+		if (KEY_TAP(KEY::SPACE) || (pRigid->GetVelocity().y != 0.f || !((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround()))
 		{
 			State_Exit();
 			m_eStockState = m_eCurState;
@@ -425,7 +425,11 @@ void Kirby::State_Enter()
 	break;
 	case KIRBY_STATE::JUMP:
 	{
-		pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+		// 점프키를 누러 진입한 경우 추가 속도
+		if (KEY_TAP(KEY::SPACE))
+		{
+			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
+		}	
 	}
 	break;
 	case KIRBY_STATE::DEAD:
@@ -470,66 +474,14 @@ void Kirby::State_Exit()
 
 void Kirby::OnCollision(CCollider* _pOther)
 {
-	//CObject* pOtherObj = _pOther->GetOwner();
-	//if (pOtherObj->GetName() == L"Ground")
-	//{
-	//	Vec2 vObjPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
-	//	Vec2 vObjScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
-
-	//	Vec2 vGroundPos = _pOther->GetFinalPos();
-	//	Vec2 vGroundScale = _pOther->GetScale();
-
-	//	float diffPos = abs(vObjPos.y - vGroundPos.y);
-	//	float diffScale = abs(vObjScale.y / 2.f + vGroundScale.y / 2.f);
-
-	//	Vec2 vSetPos = GetPos();
-
-	//	if (diffPos < diffScale)
-	//	{
-	//		vSetPos.y -= (diffScale - diffPos);
-	//	}
-	//
-
-	//	SetPos(vSetPos);
-	//}
-
 }
 
 void Kirby::OnCollisionEnter(CCollider* _pOther)
 {
-	//CObject* pOtherObj = _pOther->GetOwner();
-	//if (pOtherObj->GetName() == L"Ground")
-	//{
-	//	((CGravity*)GetComponents(Component_TYPE::Gravity))->SetGround(true); // 땅에 닿은것으로 설정
-
-	//	Vec2 vObjPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
-	//	Vec2 vObjScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
-
-	//	Vec2 vGroundPos = _pOther->GetFinalPos();
-	//	Vec2 vGroundScale = _pOther->GetScale();
-
-	//	float diffPos = abs(vObjPos.y - vGroundPos.y);
-	//	float diffScale = abs(vObjScale.y / 2.f + vGroundScale.y / 2.f);
-
-	//	Vec2 vSetPos = GetPos();
-
-	//	if (diffPos < diffScale)
-	//	{
-	//		vSetPos.y -= (diffScale - diffPos);
-	//	}		
-
-	//	SetPos(vSetPos);
-	//}
 }
 
 void Kirby::OnCollisionExit(CCollider* _pOther)
 {
-	//CObject* pOtherObj = _pOther->GetOwner();
-	//if (pOtherObj->GetName() == L"Ground")
-	//{
-	//	((CGravity*)GetComponents(Component_TYPE::Gravity))->SetGround(false);
-
-	//}
 }
 
 void Kirby::start()

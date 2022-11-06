@@ -21,6 +21,7 @@ void CGravity::SetGround(bool _b)
 	{
 		Vec2 vV = ((CRigidBody*)m_pOwner->GetComponents(Component_TYPE::RigidBody))->GetVelocity();
 		((CRigidBody*)m_pOwner->GetComponents(Component_TYPE::RigidBody))->SetVelocity(Vec2(vV.x, 0.f)); // 땅에 닿아있는 상태라면 0속도를 0으로 셋팅
+		((CRigidBody*)m_pOwner->GetComponents(Component_TYPE::RigidBody))->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
 	}
 }
 
