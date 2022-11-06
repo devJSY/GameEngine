@@ -55,7 +55,52 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
 		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
-		pOtherObj->SetPos(pOtherObj->GetPrevPos());		
+		COLLIDER_DIR ColDir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)pOtherObj->GetComponents(Component_TYPE::Collider)), ((CCollider*)GetComponents(Component_TYPE::Collider)));
+	
+		if (ColDir.TOP)
+		{
+			float diffPos = abs(vObjPos.y - vPos.y);
+			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.y -= (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}
+		else if (ColDir.BOTTOM)
+		{
+			float diffPos = abs(vObjPos.y - vPos.y);
+			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.y += (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}
+		else if (ColDir.LEFT)
+		{
+			float diffPos = abs(vObjPos.x - vPos.x);
+			float diffScale = abs(vObjScale.x / 2.f + vScale.x / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.x += (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}
+		else if (ColDir.RIGHT)
+		{
+			float diffPos = abs(vObjPos.x - vPos.x);
+			float diffScale = abs(vObjScale.x / 2.f + vScale.x / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.x -= (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}	
 	}
 }
 
@@ -66,13 +111,60 @@ void CGround::OnCollision(CCollider* _pOther)
 
 	if (pOtherObj->GetName() == L"Kirby")
 	{
+		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
+
 		Vec2 vObjPos = _pOther->GetFinalPos();
 		Vec2 vObjScale = _pOther->GetScale();
 
 		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
 		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
-		pOtherObj->SetPos(pOtherObj->GetPrevPos());
+		COLLIDER_DIR ColDir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)pOtherObj->GetComponents(Component_TYPE::Collider)), ((CCollider*)GetComponents(Component_TYPE::Collider)));
+
+		if (ColDir.TOP)
+		{
+			float diffPos = abs(vObjPos.y - vPos.y);
+			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.y += (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}
+		else if (ColDir.BOTTOM)
+		{
+			float diffPos = abs(vObjPos.y - vPos.y);
+			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.y -= (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}
+		else if (ColDir.LEFT)
+		{
+			float diffPos = abs(vObjPos.x - vPos.x);
+			float diffScale = abs(vObjScale.x / 2.f + vScale.x / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.x += (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}
+		else if (ColDir.RIGHT)
+		{
+			float diffPos = abs(vObjPos.x - vPos.x);
+			float diffScale = abs(vObjScale.x / 2.f + vScale.x / 2.f);
+
+			Vec2 vSetPos = pOtherObj->GetPos();
+
+			vSetPos.x -= (diffScale - diffPos);
+
+			pOtherObj->SetPos(vSetPos);
+		}
 	}
 }
 
