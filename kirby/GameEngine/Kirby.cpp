@@ -74,7 +74,7 @@ void Kirby::update()
 	update_animation();
 	update_gravity();
 
-	if (KEY_TAP(KEY::ENTER))
+	if (KEY_TAP(KEY::CTRL))
 	{
 		SetPos(Vec2(640.f, 384.f));
 	}

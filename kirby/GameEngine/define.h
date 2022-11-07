@@ -68,6 +68,10 @@ enum class PEN_TYPE
 	RED,
 	GREEN,
 	BLUE,
+	YELLOW,
+	PURPLE,
+	PINK,
+	BLACK,
 
 	END,
 };

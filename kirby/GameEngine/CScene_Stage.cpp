@@ -8,6 +8,7 @@
 
 #include "CCamera.h"
 #include "CColliderMgr.h"
+#include "CKeyMgr.h"
 
 
 CScene_Stage::CScene_Stage()
@@ -21,6 +22,11 @@ CScene_Stage::~CScene_Stage()
 void CScene_Stage::update()
 {
 	CScene::update();
+
+	if (KEY_AWAY(KEY::ENTER))
+	{
+		ChangeScene(SCENE_TYPE::START);
+	}
 }
 
 void CScene_Stage::render(HDC _dc)

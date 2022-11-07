@@ -9,6 +9,7 @@ private:
 
 public:
     virtual void start();
+    virtual void render(HDC _dc);
 
 public:
     virtual void MouseOn();
