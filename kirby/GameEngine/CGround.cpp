@@ -137,6 +137,8 @@ void CGround::OnCollision(CCollider* _pOther)
 		{
 			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
 
+			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
+
 			float diffPos = abs(vObjPos.y - vPos.y);
 			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
