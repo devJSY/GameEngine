@@ -6,7 +6,7 @@
 #include "GameEngine.h"
 #include "CScene.h"
 #include "CSceneMgr.h"
-#include "CScene_Animation_Tool.h"
+#include "CScene_AnimTool.h"
 
 #include "CCore.h"
 
@@ -182,7 +182,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
-            CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
+            CScene_AnimTool* pToolScene = dynamic_cast<CScene_AnimTool*>(pCurScene);
             assert(pToolScene);
 
             pToolScene->LoadTexture();

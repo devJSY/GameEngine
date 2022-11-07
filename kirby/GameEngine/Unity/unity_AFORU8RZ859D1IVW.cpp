@@ -68,7 +68,13 @@
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CSceneMgr.cpp"
 
 
-#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_Animation_Tool.cpp"
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_AnimTool.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_SceneTool.cpp"
+
+
+#include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_Stage.cpp"
 
 
 #include "C:\Users\JSY\Desktop\Github\GameEngine\kirby\GameEngine\CScene_Start.cpp"

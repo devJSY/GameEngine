@@ -5,7 +5,7 @@
 #include "CObject.h"
 #include "CTexture.h"
 #include "CScene.h"
-#include "CScene_Animation_Tool.h"
+#include "CScene_AnimTool.h"
 
 #include "CResMgr.h"
 #include "CKeyMgr.h"
@@ -33,12 +33,12 @@ void CCamera::init()
 
 void CCamera::update()
 {
-	// CScene_Animation_Tool 텍스쳐 이동 제한
+	// CScene_AnimTool 텍스쳐 이동 제한
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
 	if(L"Animation_Tool" == pCurScene->GetName())
 	{
-		CTexture* SceneTex = ((CScene_Animation_Tool*)pCurScene)->GetTexture();
+		CTexture* SceneTex = ((CScene_AnimTool*)pCurScene)->GetTexture();
 
 		UINT TexWidth = SceneTex->Width();
 		UINT TexHeight = SceneTex->Height();

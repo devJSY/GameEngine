@@ -14,7 +14,7 @@ struct AnimFrmData
 class CTexture;
 class CAnimation;
 
-class CScene_Animation_Tool :
+class CScene_AnimTool :
     public CScene
 {
 private:
@@ -48,7 +48,7 @@ public:
     CTexture* GetTexture() { return m_pTex; }
 
 public:
-    CScene_Animation_Tool();
-    ~CScene_Animation_Tool();
+    CScene_AnimTool();
+    ~CScene_AnimTool();
 };
 

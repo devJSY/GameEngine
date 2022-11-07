@@ -35,54 +35,43 @@ void CScene_Start::render(HDC _dc)
 
 void CScene_Start::Enter()
 {
-	
-
-	//CUI* PanelUI = new CPanelUI;
-	//PanelUI->SetName(L"PanelUI");
-	//PanelUI->SetScale(Vec2(500.f, 500.f));
-	//PanelUI->SetPos(Vec2(vResolution / 2.f - PanelUI->GetScale() / 2.f));
-
-	//CUI* BtnUI = new CBtnUI;
-	//BtnUI->SetName(L"BtnUI");
-	//BtnUI->SetScale(Vec2(200.f, 200.f));
-	//BtnUI->SetPos(PanelUI->GetScale() / 2.f - BtnUI->GetScale() / 2.f);
-
-	//PanelUI->AddChild(BtnUI);
-
-	//EnterAddObject(PanelUI, GROUP_TYPE::UI);
-
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 
-	CObject* pKirby = new Kirby;
-	pKirby->SetName(L"Kirby");
-	pKirby->SetPos(Vec2(640.f, 384.f));
-	pKirby->SetScale(Vec2(100.f, 100.f));
+	CUI* PanelUI = new CPanelUI;
+	PanelUI->SetName(L"PanelUI");
+	PanelUI->SetScale(Vec2(500.f, 500.f));
+	PanelUI->SetPos(Vec2(vResolution / 2.f - PanelUI->GetScale() / 2.f));
 
-	EnterAddObject(pKirby, GROUP_TYPE::PLAYER);
+	CBtnUI* BtnUI = new CBtnUI;
+	BtnUI->SetScale(Vec2(300.f, 50.f));
 
-	CGround* pGround = new CGround;
-	pGround->SetName(L"Ground");
-	pGround->SetPos(Vec2(640.f, 584.f));
-	pGround->SetScale(Vec2(800.f, 60.f));
 
-	EnterAddObject(pGround, GROUP_TYPE::GROUND);
+	CBtnUI* StageBtnUI = BtnUI->Clone();
+	StageBtnUI->SetName(L"StageBtnUI");
+	StageBtnUI->SetSceneType((UINT)SCENE_TYPE::STAGE_01);
+	StageBtnUI->SetPos(Vec2(100.f, 100.f));
 
-	CGround* pGround2 = pGround->Clone();
-	pGround2->SetName(L"Ground2");
-	pGround2->SetPos(Vec2(900.f, 550.f));
-	pGround2->SetScale(Vec2(200.f, 200.f));
+	CBtnUI* AnimToolBtnUI = BtnUI->Clone();
+	AnimToolBtnUI->SetName(L"AnimToolBtnUI");
+	AnimToolBtnUI->SetSceneType((UINT)SCENE_TYPE::Animation_Tool);
+	AnimToolBtnUI->SetPos(Vec2(100.f, 200.f));
 
-	EnterAddObject(pGround2, GROUP_TYPE::GROUND);
+	CBtnUI* SceneToolBtnUI = BtnUI->Clone();
+	SceneToolBtnUI->SetName(L"SceneToolBtnUI");
+	SceneToolBtnUI->SetSceneType((UINT)SCENE_TYPE::Scene_Tool);
+	SceneToolBtnUI->SetPos(Vec2(100.f, 300.f));
 
-	CGround* pGround3 = pGround2->Clone();
-	pGround3->SetPos(Vec2(300.f, 250.f));
 
-	EnterAddObject(pGround3, GROUP_TYPE::GROUND);
-
-	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::GROUND);
-
+	PanelUI->AddChild(StageBtnUI);
+	PanelUI->AddChild(AnimToolBtnUI);
+	PanelUI->AddChild(SceneToolBtnUI);
 	
+
+	EnterAddObject(PanelUI, GROUP_TYPE::UI);
+
+	delete BtnUI; // 기준 버튼 UI삭제
+
 	start();
 }
 

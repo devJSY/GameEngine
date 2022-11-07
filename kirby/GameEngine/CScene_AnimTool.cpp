@@ -1,5 +1,5 @@
 #include "global.h"
-#include "CScene_Animation_Tool.h"
+#include "CScene_AnimTool.h"
 
 #include "CKeyMgr.h"
 #include "CResMgr.h"
@@ -17,18 +17,18 @@
 #include "CAnimPlayer.h"
 
 
-CScene_Animation_Tool::CScene_Animation_Tool()
+CScene_AnimTool::CScene_AnimTool()
 	: m_pTex(nullptr)
 	, m_DragTrig(false)
 	, CurAinmData{}
 {
 }
 
-CScene_Animation_Tool::~CScene_Animation_Tool()
+CScene_AnimTool::~CScene_AnimTool()
 {
 }
 
-void CScene_Animation_Tool::update()
+void CScene_AnimTool::update()
 {
 	CScene::update();
 
@@ -121,7 +121,7 @@ void CScene_Animation_Tool::update()
 	}
 }
 
-void CScene_Animation_Tool::render(HDC _dc)
+void CScene_AnimTool::render(HDC _dc)
 {
 	// 텍스쳐 렌더링
 	if (nullptr != m_pTex)
@@ -192,7 +192,7 @@ void CScene_Animation_Tool::render(HDC _dc)
 	CScene::render(_dc);
 }
 
-void CScene_Animation_Tool::Enter()
+void CScene_AnimTool::Enter()
 {
 	m_pTex = CResMgr::GetInst()->LoadTexture(L"AnimTex", L"Texture\\KirbyRight.bmp");
 
@@ -207,7 +207,7 @@ void CScene_Animation_Tool::Enter()
 	EnterAddObject(PlayAnim, GROUP_TYPE::PLAYER);
 }
 
-void CScene_Animation_Tool::Exit()
+void CScene_AnimTool::Exit()
 {
 	// 기존에 저장했던 프레임 데이터 초기화
 	frameData.clear();
@@ -216,7 +216,7 @@ void CScene_Animation_Tool::Exit()
 	DeleteAll();
 }
 
-void CScene_Animation_Tool::SaveAnimation(const wchar_t* _FileName, float _fDuration)
+void CScene_AnimTool::SaveAnimation(const wchar_t* _FileName, float _fDuration)
 {
 	// 애니메이션 생성및 저장
 	CAnimation SaveAnim;
@@ -239,7 +239,7 @@ void CScene_Animation_Tool::SaveAnimation(const wchar_t* _FileName, float _fDura
 	SaveAnim.Save(AnimAddress);
 }
 
-void CScene_Animation_Tool::LoadAnimation(const wchar_t* _FileName)
+void CScene_AnimTool::LoadAnimation(const wchar_t* _FileName)
 {
 	wstring AnimAddress = L"animation\\";
 	AnimAddress += _FileName;
@@ -262,7 +262,7 @@ void CScene_Animation_Tool::LoadAnimation(const wchar_t* _FileName)
 	((CAnimPlayer*)PlayAnim)->SetAnimation(AnimAddress, _FileName, true);
 }
 
-void CScene_Animation_Tool::LoadTexture()
+void CScene_AnimTool::LoadTexture()
 {
 	wchar_t szName[256] = {};
 	OPENFILENAME ofn = {};
@@ -331,8 +331,8 @@ INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
-			// CScene_Animation_Tool 확인
-			CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
+			// CScene_AnimTool 확인
+			CScene_AnimTool* pToolScene = dynamic_cast<CScene_AnimTool*>(pCurScene);
 			assert(pToolScene);
 
 			pToolScene->SaveAnimation(AnimFileName, AnimDuration);
@@ -374,8 +374,8 @@ INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
-			// CScene_Animation_Tool 확인
-			CScene_Animation_Tool* pToolScene = dynamic_cast<CScene_Animation_Tool*>(pCurScene);
+			// CScene_AnimTool 확인
+			CScene_AnimTool* pToolScene = dynamic_cast<CScene_AnimTool*>(pCurScene);
 			assert(pToolScene);
 
 			pToolScene->LoadAnimation(AnimFileName);

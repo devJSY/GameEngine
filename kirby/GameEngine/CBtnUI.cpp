@@ -3,6 +3,7 @@
 
 CBtnUI::CBtnUI()
 	: CUI(false)
+	, m_SceneType(-1)
 {
 }
 
@@ -29,5 +30,12 @@ void CBtnUI::MouseLbtnUp()
 
 void CBtnUI::MouseLbtnClicked()
 {
-	ChangeScene(SCENE_TYPE::Animation_Tool);
+	if (-1 != m_SceneType)
+	{
+		ChangeScene(SCENE_TYPE(m_SceneType));
+	}	
+	else
+	{
+		assert(nullptr); // 설정된 SceneType가 없다면 에러
+	}
 }

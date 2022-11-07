@@ -132,9 +132,6 @@
     <Filter Include="소스 파일\03. Manager\UIMgr">
       <UniqueIdentifier>{9b263382-eaf8-479a-9324-bbc16d3b506f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\05. Scene\Scene_Animation_Tool">
-      <UniqueIdentifier>{09a8212a-d28c-4460-b919-a47007e17e84}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\04. Object\UI\PanelUI">
       <UniqueIdentifier>{af4bb4fb-7eca-436e-8ae1-c61979c22757}</UniqueIdentifier>
     </Filter>
@@ -152,6 +149,15 @@
     </Filter>
     <Filter Include="소스 파일\04. Object\Ground">
       <UniqueIdentifier>{548b2e31-da59-45db-9da6-7d29f7429e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\05. Scene\Scene_Stage">
+      <UniqueIdentifier>{0eae0811-c3f2-4285-8e49-6a5a488bce1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\05. Scene\Scene_SceneTool">
+      <UniqueIdentifier>{19d7c717-256e-440c-86af-fae26d62699f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\05. Scene\Scene_AnimTool">
+      <UniqueIdentifier>{09a8212a-d28c-4460-b919-a47007e17e84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -257,8 +263,8 @@
     <ClInclude Include="CUIMgr.h">
       <Filter>소스 파일\03. Manager\UIMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CScene_Animation_Tool.h">
-      <Filter>소스 파일\05. Scene\Scene_Animation_Tool</Filter>
+    <ClInclude Include="CScene_AnimTool.h">
+      <Filter>소스 파일\05. Scene\Scene_AnimTool</Filter>
     </ClInclude>
     <ClInclude Include="CBtnUI.h">
       <Filter>소스 파일\04. Object\UI\BtnUI</Filter>
@@ -277,6 +283,12 @@
     </ClInclude>
     <ClInclude Include="CGround.h">
       <Filter>소스 파일\04. Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Stage.h">
+      <Filter>소스 파일\05. Scene\Scene_Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_SceneTool.h">
+      <Filter>소스 파일\05. Scene\Scene_SceneTool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -361,8 +373,8 @@
     <ClCompile Include="CUIMgr.cpp">
       <Filter>소스 파일\03. Manager\UIMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CScene_Animation_Tool.cpp">
-      <Filter>소스 파일\05. Scene\Scene_Animation_Tool</Filter>
+    <ClCompile Include="CScene_AnimTool.cpp">
+      <Filter>소스 파일\05. Scene\Scene_AnimTool</Filter>
     </ClCompile>
     <ClCompile Include="CBtnUI.cpp">
       <Filter>소스 파일\04. Object\UI\BtnUI</Filter>
@@ -381,6 +393,12 @@
     </ClCompile>
     <ClCompile Include="CGround.cpp">
       <Filter>소스 파일\04. Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Stage.cpp">
+      <Filter>소스 파일\05. Scene\Scene_Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_SceneTool.cpp">
+      <Filter>소스 파일\05. Scene\Scene_SceneTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

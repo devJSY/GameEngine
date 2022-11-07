@@ -3,7 +3,9 @@
 
 #include "CScene.h"
 #include "CScene_Start.h"
-#include "CScene_Animation_Tool.h"
+#include "CScene_Stage.h"
+#include "CScene_AnimTool.h"
+#include "CScene_SceneTool.h"
 
 
 CSceneMgr::CSceneMgr()
@@ -30,9 +32,17 @@ void CSceneMgr::init()
 	StartScene->SetName(L"StartScene");
 	m_arrScene[(UINT)SCENE_TYPE::START] = StartScene;
 
-	CScene* Animation_Tool = new CScene_Animation_Tool;
+	CScene* Animation_Tool = new CScene_AnimTool;
 	Animation_Tool->SetName(L"Animation_Tool");
 	m_arrScene[(UINT)SCENE_TYPE::Animation_Tool] = Animation_Tool;
+
+	CScene* Scene_Tool = new CScene_SceneTool;
+	Scene_Tool->SetName(L"Scene_Tool");
+	m_arrScene[(UINT)SCENE_TYPE::Scene_Tool] = Scene_Tool;
+
+	CScene* Stage_01 = new CScene_Stage;
+	Stage_01->SetName(L"Stage_01");
+	m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = Stage_01;
 
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
 
