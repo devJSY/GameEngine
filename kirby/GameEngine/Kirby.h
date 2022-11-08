@@ -21,7 +21,7 @@ class CTexture;
 class Kirby :
     public CObject
 {
-    CTexture*       m_pTex;
+    //CTexture*       m_pTex;
 
     UINT            m_iDir;         // 플레이어 방향 정보 
     UINT            m_iPrevDir;     // 플레이어 이전 방향 정보

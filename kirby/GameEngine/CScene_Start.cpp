@@ -80,4 +80,5 @@ void CScene_Start::Enter()
 void CScene_Start::Exit()
 {
 	DeleteAll();
+	CColliderMgr::GetInst()->Reset(); // 충돌체크 리셋
 }

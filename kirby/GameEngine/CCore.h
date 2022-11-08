@@ -15,6 +15,7 @@ private:
 
 	// 메뉴
 	HMENU		m_hMenu; // Tool Scene 에서만 사용		
+
 public:
 	int init(HWND _hWnd, POINT _ptResolution);
 	void progress();
