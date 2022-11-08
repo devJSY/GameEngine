@@ -35,6 +35,8 @@ void CScene_Start::render(HDC _dc)
 
 void CScene_Start::Enter()
 {
+	CCore::GetInst()->DividMenu();
+
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(vResolution / 2.f);
 

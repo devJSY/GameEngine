@@ -21,6 +21,7 @@ CCore::CCore()
 	: m_hWnd(nullptr)
 	, m_hDC(nullptr)
 	, m_ptResolution{}
+	, m_hMenu(nullptr)
 {	
 }
 
@@ -28,6 +29,8 @@ CCore::~CCore()
 {
 	// 윈도우핸들, DC 삭제
 	ReleaseDC(m_hWnd, m_hDC);
+
+	DestroyMenu(m_hMenu);
 }
 
 
@@ -37,10 +40,14 @@ int CCore::init(HWND _hWnd, POINT _ptResloution)
 	m_hDC = GetDC(m_hWnd);
 	m_ptResolution = _ptResloution;
 
-	// 윈도우 크기, 위치 설정
-	RECT rt = { 0, 0, m_ptResolution.x, m_ptResolution.y };
-	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, true);
-	SetWindowPos(m_hWnd, HWND_TOP, 100, 100, rt.right- rt.left, rt.bottom - rt.top, 0);
+	// 해상도에 맞게 윈도우 크기 조정
+	ChangeWindowSize(Vec2((float)m_ptResolution.x, (float)m_ptResolution.y), false);
+
+	// 메뉴바 생성
+	m_hMenu = LoadMenu(nullptr, MAKEINTRESOURCEW(IDC_GAMEENGINE));
+
+	// 메뉴바 디폴트 off
+	DividMenu();
 
 	// 이중 버퍼링
 	m_pMemTex = CResMgr::GetInst()->CreateTexture(L"BackBuffer", (UINT)m_ptResolution.x, (UINT)m_ptResolution.y);
@@ -84,4 +91,23 @@ void CCore::progress()
 
 	// 이벤트 처리
 	CEventMgr::GetInst()->update();
+}
+
+void CCore::DockMenu()
+{
+	SetMenu(m_hWnd, m_hMenu);
+	ChangeWindowSize(GetResolution(), true);
+}
+
+void CCore::DividMenu()
+{
+	SetMenu(m_hWnd, nullptr);
+	ChangeWindowSize(GetResolution(), false);
+}
+
+void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
+{
+	RECT rt = { 0,0, (long)_vResolution.x, (long)_vResolution.y };
+	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, _bMenu);
+	SetWindowPos(m_hWnd, nullptr, 100, 100, rt.right - rt.left, rt.bottom - rt.top, 0);
 }

@@ -7,7 +7,12 @@ GDIMgr::GDIMgr()
 {}
 
 GDIMgr::~GDIMgr()
-{}
+{
+	for (int i = 0; i < (UINT)PEN_TYPE::END; ++i)
+	{
+		DeleteObject(m_arrPen[i]);
+	}
+}
 
 void GDIMgr::CreateBrushPen()
 {

@@ -194,6 +194,8 @@ void CScene_AnimTool::render(HDC _dc)
 
 void CScene_AnimTool::Enter()
 {
+	CCore::GetInst()->DockMenu();
+
 	m_pTex = CResMgr::GetInst()->LoadTexture(L"AnimTex", L"Texture\\KirbyRight.bmp");
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();

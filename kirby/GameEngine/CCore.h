@@ -13,9 +13,16 @@ private:
 
 	CTexture*	m_pMemTex;		// 이중 버퍼링 용 Texture
 
+	// 메뉴
+	HMENU		m_hMenu; // Tool Scene 에서만 사용		
 public:
-	int init(HWND _hWnd, POINT _ptResloution);
+	int init(HWND _hWnd, POINT _ptResolution);
 	void progress();
+
+public:
+	void DockMenu();
+	void DividMenu();
+	void ChangeWindowSize(Vec2 _vResolution, bool _bMenu);
 
 public:
 	HWND GetMainHwnd() { return m_hWnd; }

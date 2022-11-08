@@ -1,6 +1,7 @@
 #include "global.h"
 #include "CScene_SceneTool.h"
 
+#include "CCore.h"
 #include "CKeyMgr.h"
 
 void CScene_SceneTool::update()
@@ -19,6 +20,7 @@ void CScene_SceneTool::render(HDC _dc)
 
 void CScene_SceneTool::Enter()
 {
+	CCore::GetInst()->DockMenu();
 }
 
 void CScene_SceneTool::Exit()
