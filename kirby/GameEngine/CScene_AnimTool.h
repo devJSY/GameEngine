@@ -23,13 +23,13 @@ private:
     Vec2                    m_vTapPos;
     Vec2                    m_vAwayPos;
     bool                    m_DragTrig;
+    bool                    m_AnimAxis;
 
     Vec2                    vAccPos;
     Vec2                    vCamDist;
 
     AnimFrmData             CurAinmData;
     vector<AnimFrmData>     frameData;
-
     
     Vec2                    vPrevMousePos;
     Vec2                    vPrevCamLookAt;

@@ -21,6 +21,7 @@ CScene_AnimTool::CScene_AnimTool()
 	: m_pTex(nullptr)
 	, m_DragTrig(false)
 	, CurAinmData{}
+	, m_AnimAxis(0)
 {
 }
 
@@ -90,11 +91,25 @@ void CScene_AnimTool::update()
 			Vec2 vMouseDiff = MOUSE_POS - vPrevMousePos;
 			Vec2 vCamDiff = CCamera::GetInst()->GetLookAt() - vPrevCamLookAt; 
 
-			CurAinmData.vLT.x += vMouseDiff.x + vCamDiff.x;
-			CurAinmData.vRB.x += vMouseDiff.x + vCamDiff.x;
+			if (m_AnimAxis)
+			{
+				// X축 이동
+				CurAinmData.vLT.x += vMouseDiff.x + vCamDiff.x;
+				CurAinmData.vRB.x += vMouseDiff.x + vCamDiff.x;
+			}
+			else
+			{
+				// Y축 이동
+				CurAinmData.vLT.y += vMouseDiff.y + vCamDiff.y;
+				CurAinmData.vRB.y += vMouseDiff.y + vCamDiff.y;
+			}
 		}
 	}
 
+	if (KEY_AWAY(KEY::R))
+	{
+		m_AnimAxis = !m_AnimAxis;
+	}
 
 	if (KEY_AWAY(KEY::SPACE))
 	{
