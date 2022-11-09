@@ -23,7 +23,7 @@ void CScene_Stage::update()
 {
 	CScene::update();
 
-	if (KEY_AWAY(KEY::ENTER))
+	if (KEY_AWAY(KEY::LSHIFT))
 	{
 		ChangeScene(SCENE_TYPE::START);
 	}

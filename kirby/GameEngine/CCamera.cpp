@@ -36,44 +36,48 @@ void CCamera::update()
 	// CScene_AnimTool 텍스쳐 이동 제한
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
-	if(L"Animation_Tool" == pCurScene->GetName())
+	if(L"Animation_Tool" == pCurScene->GetName() || L"Scene_Tool" == pCurScene->GetName())
 	{
 		CTexture* SceneTex = ((CScene_AnimTool*)pCurScene)->GetTexture();
 
-		UINT TexWidth = SceneTex->Width();
-		UINT TexHeight = SceneTex->Height();
-
-		Vec2 vResolution = CCore::GetInst()->GetResolution();
-		Vec2 vLT = m_vLookAt - vResolution / 2.f;
-
-		// x Axis Left Move Limit
-		if (vLT.x > 0)
+		if (nullptr != SceneTex)
 		{
-			if (KEY_HOLD(KEY::A))
-				m_vLookAt.x -= m_fMoveSpeed * fDT;
+			UINT TexWidth = SceneTex->Width();
+			UINT TexHeight = SceneTex->Height();
+
+			Vec2 vResolution = CCore::GetInst()->GetResolution();
+			Vec2 vLT = m_vLookAt - vResolution / 2.f;
+
+			// x Axis Left Move Limit
+			if (vLT.x > 0)
+			{
+				if (KEY_HOLD(KEY::A))
+					m_vLookAt.x -= m_fMoveSpeed * fDT;
+			}
+
+			// x Axis right Move Limit
+			if (vLT.x < (TexWidth - vResolution.x))
+			{
+				if (KEY_HOLD(KEY::D))
+					m_vLookAt.x += m_fMoveSpeed * fDT;
+			}
+
+			// y Axis top Move Limit
+			if (vLT.y > 0)
+			{
+				if (KEY_HOLD(KEY::W))
+					m_vLookAt.y -= m_fMoveSpeed * fDT;
+			}
+
+			// y Axis bottom Move Limit
+			if (vLT.y < (TexHeight - vResolution.y))
+			{
+				if (KEY_HOLD(KEY::S))
+					m_vLookAt.y += m_fMoveSpeed * fDT;
+			}
 		}
-		
-		// x Axis right Move Limit
-		if (vLT.x < (TexWidth - vResolution.x))
-		{
-			if (KEY_HOLD(KEY::D))
-				m_vLookAt.x += m_fMoveSpeed * fDT;
-		}
-
-		// y Axis top Move Limit
-		if (vLT.y > 0)
-		{
-			if (KEY_HOLD(KEY::W))
-				m_vLookAt.y -= m_fMoveSpeed * fDT;
-		}
-
-		// y Axis bottom Move Limit
-		if (vLT.y < (TexHeight - vResolution.y))
-		{
-			if (KEY_HOLD(KEY::S))
-				m_vLookAt.y += m_fMoveSpeed * fDT;
-		}	
 	}
+
 
 	if (m_pTargetObj)
 	{

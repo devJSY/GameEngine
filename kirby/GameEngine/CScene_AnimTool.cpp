@@ -130,7 +130,7 @@ void CScene_AnimTool::update()
 	// 이전 프레임 마우스 위치 
 	vPrevMousePos = MOUSE_POS;
 
-	if (KEY_AWAY(KEY::ENTER))
+	if (KEY_AWAY(KEY::LSHIFT))
 	{
 		ChangeScene(SCENE_TYPE::START);
 	}

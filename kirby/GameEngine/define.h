@@ -31,7 +31,8 @@
 
 enum class GROUP_TYPE
 {
-	NON_DEFINE,
+	BackGround,
+	ForeGround,
 	PLAYER,
 	MONSTER,
 	UI,
