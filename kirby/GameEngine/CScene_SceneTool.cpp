@@ -6,13 +6,12 @@
 #include "CKeyMgr.h"
 #include "CPathMgr.h"
 #include "CCamera.h"
-
 #include "CTexture.h"
 #include "CAnimation.h"
 
 CScene_SceneTool::CScene_SceneTool()
-	: m_BackGround(nullptr)
-	, m_ForeGround(nullptr)
+	: m_TexBackGround(nullptr)
+	, m_TexForeGround(nullptr)
 	, m_BackGroundAnim(nullptr)
 	, m_ForeGroundAnim(nullptr)
 {
@@ -20,6 +19,15 @@ CScene_SceneTool::CScene_SceneTool()
 
 CScene_SceneTool::~CScene_SceneTool()
 {
+	if (nullptr != m_BackGroundAnim)
+	{
+		delete m_BackGroundAnim;
+	}
+
+	if (nullptr != m_ForeGroundAnim)
+	{
+		delete m_ForeGroundAnim;
+	}
 }
 
 void CScene_SceneTool::update()
@@ -39,7 +47,26 @@ void CScene_SceneTool::update()
 
 void CScene_SceneTool::render(HDC _dc)
 {
-	CScene::render(_dc);
+	// 텍스쳐 렌더링
+	if (nullptr != m_TexBackGround)
+	{
+		tAnimFrm tAnim = m_BackGroundAnim->GetFrame(0);
+
+		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
+
+		BitBlt(_dc
+			, (int)vRenderPos.x
+			, (int)vRenderPos.y
+			, (int)tAnim.vSlice.x
+			, (int)tAnim.vSlice.y
+			, m_TexBackGround->GetDC()
+			, (int)tAnim.vLT.x
+			, (int)tAnim.vLT.y
+			, SRCCOPY);
+	}
+
+	//CScene::render(_dc);
+
 	
 }
 
@@ -50,6 +77,7 @@ void CScene_SceneTool::Enter()
 	// 카메라 위치 초기화
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
+	CCamera::GetInst()->SetMovsSpeed(800.f);
 }
 
 void CScene_SceneTool::Exit()
@@ -79,7 +107,12 @@ void CScene_SceneTool::LoadBackGround()
 	if (GetOpenFileName(&ofn))
 	{
 		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
-		m_BackGround = CResMgr::GetInst()->LoadTexture(L"BackGround", L"Texture\\BackGround.bmp");
+		m_TexBackGround = CResMgr::GetInst()->LoadTexture(L"BackGround", L"Texture\\BackGround.bmp");
+
+		if (nullptr != m_BackGroundAnim)
+		{
+			delete m_BackGroundAnim;
+		}
 
 		m_BackGroundAnim = new CAnimation;
 

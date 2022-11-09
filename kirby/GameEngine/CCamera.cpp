@@ -6,6 +6,8 @@
 #include "CTexture.h"
 #include "CScene.h"
 #include "CScene_AnimTool.h"
+#include "CScene_SceneTool.h"
+#include "CAnimation.h"
 
 #include "CResMgr.h"
 #include "CKeyMgr.h"
@@ -36,15 +38,14 @@ void CCamera::update()
 	// CScene_AnimTool 텍스쳐 이동 제한
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
-	if(L"Animation_Tool" == pCurScene->GetName() || L"Scene_Tool" == pCurScene->GetName())
+	if(L"Animation_Tool" == pCurScene->GetName())
 	{
-		CTexture* SceneTex = ((CScene_AnimTool*)pCurScene)->GetTexture();
-
+		CTexture* SceneTex = ((CScene_AnimTool*)pCurScene)->GetTexture();	
+		UINT TexWidth = SceneTex->Width();
+		UINT TexHeight = SceneTex->Height();
+	
 		if (nullptr != SceneTex)
 		{
-			UINT TexWidth = SceneTex->Width();
-			UINT TexHeight = SceneTex->Height();
-
 			Vec2 vResolution = CCore::GetInst()->GetResolution();
 			Vec2 vLT = m_vLookAt - vResolution / 2.f;
 
@@ -77,6 +78,50 @@ void CCamera::update()
 			}
 		}
 	}
+	else if (L"Scene_Tool" == pCurScene->GetName())
+	{
+		CTexture* SceneTex = ((CScene_SceneTool*)pCurScene)->GetBackGroundTex();
+
+		if (nullptr != SceneTex)
+		{
+			tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetBackGroundAnim()->GetFrame(0);
+
+			UINT iWidth = tAnim.vSlice.x;
+			UINT iHeight = tAnim.vSlice.y;
+
+			Vec2 vResolution = CCore::GetInst()->GetResolution();
+			Vec2 vLT = m_vLookAt - vResolution / 2.f;
+
+			// x Axis Left Move Limit
+			if (vLT.x > 0)
+			{
+				if (KEY_HOLD(KEY::A))
+					m_vLookAt.x -= m_fMoveSpeed * fDT;
+			}
+
+			// x Axis right Move Limit
+			if (vLT.x < (iWidth - vResolution.x))
+			{
+				if (KEY_HOLD(KEY::D))
+					m_vLookAt.x += m_fMoveSpeed * fDT;
+			}
+
+			// y Axis top Move Limit
+			if (vLT.y > 0)
+			{
+				if (KEY_HOLD(KEY::W))
+					m_vLookAt.y -= m_fMoveSpeed * fDT;
+			}
+
+			// y Axis bottom Move Limit
+			if (vLT.y < (iHeight - vResolution.y))
+			{
+				if (KEY_HOLD(KEY::S))
+					m_vLookAt.y += m_fMoveSpeed * fDT;
+			}
+		}
+	}
+
 
 
 	if (m_pTargetObj)
@@ -161,14 +206,4 @@ void CCamera::CalDiff()
 	m_vDiff = m_vCurLookAt - vCenter;
 
 	m_vPrevLookAt = m_vCurLookAt;
-
-	if (KEY_HOLD(KEY::Z))
-	{
-		m_Zoom += Vec2(500.f, 500.f);
-	}
-
-	if (KEY_HOLD(KEY::C))
-	{
-		m_Zoom -= Vec2(500.f, 500.f);
-	}
 }

@@ -33,8 +33,6 @@ private:
     list<tCamEffect>  m_listCamEffect;
     CTexture*         m_pVeilTex;
 
-    Vec2              m_Zoom;
-
 public:
     void init();
     void update();
