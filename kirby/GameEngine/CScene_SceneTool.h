@@ -13,6 +13,9 @@ private:
     CAnimation*      m_BackGroundAnim;
     CAnimation*      m_ForeGroundAnim;
 
+    HDC              m_tempdc;
+    HBITMAP          m_temphBit;        
+
 
 
 

@@ -7,6 +7,7 @@
 #include "CScene.h"
 #include "CSceneMgr.h"
 #include "CScene_AnimTool.h"
+#include "CScene_SceneTool.h"
 
 #include "CCore.h"
 
@@ -188,6 +189,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             pToolScene->LoadTexture();
         }
             break;
+        case ID_SCENE_BACKGROUND:
+        {
+            CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+            CScene_SceneTool* pToolScene = dynamic_cast<CScene_SceneTool*>(pCurScene);
+            assert(pToolScene);
+
+            pToolScene->LoadBackGround();
+        }
+        break;
+        case ID_SCENE_FOREGROUND:
+        {
+            CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+            CScene_SceneTool* pToolScene = dynamic_cast<CScene_SceneTool*>(pCurScene);
+            assert(pToolScene);
+
+            pToolScene->LoadForeGround();
+        }
+        break;
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);
         }

@@ -86,8 +86,8 @@ void CCamera::update()
 		{
 			tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetBackGroundAnim()->GetFrame(0);
 
-			UINT iWidth = tAnim.vSlice.x;
-			UINT iHeight = tAnim.vSlice.y;
+			UINT iWidth = (UINT)tAnim.vSlice.x;
+			UINT iHeight = (UINT)tAnim.vSlice.y;
 
 			Vec2 vResolution = CCore::GetInst()->GetResolution();
 			Vec2 vLT = m_vLookAt - vResolution / 2.f;
