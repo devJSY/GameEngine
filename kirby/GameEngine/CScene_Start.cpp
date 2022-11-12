@@ -13,10 +13,13 @@
 #include "CColliderMgr.h"
 #include "CSceneMgr.h"
 #include "CCamera.h"
-
+#include "CResMgr.h"
 
 CScene_Start::CScene_Start()
+	: m_TexBackGround(nullptr)
 {
+	m_TexBackGround = CResMgr::GetInst()->LoadTexture(L"StartScene", L"Texture\\StartScene.bmp");
+
 }
 
 CScene_Start::~CScene_Start()
@@ -30,6 +33,17 @@ void CScene_Start::update()
 
 void CScene_Start::render(HDC _dc)
 {
+	Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
+	Vec2 vResolution = CCore::GetInst()->GetResolution();
+
+	BitBlt(_dc
+		, (int)vRenderPos.x
+		, (int)vRenderPos.y
+		, (int)vResolution.x
+		, (int)vResolution.y
+		, m_TexBackGround->GetDC()
+		, 0, 0 , SRCCOPY);
+
 	CScene::render(_dc);
 }
 

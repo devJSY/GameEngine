@@ -5,6 +5,7 @@ class CScene_Start :
     public CScene
 {
 private:
+    CTexture* m_TexBackGround;
 
 public:
     virtual void update();

@@ -58,8 +58,8 @@ void CScene_SceneTool::render(HDC _dc)
 		BitBlt(_dc
 			, (int)vRenderPos.x
 			, (int)vRenderPos.y
-			, (int)vResolution.x - vRenderPos.x // 현재 화면만큼만 잘라내서 가져옴
-			, (int)vResolution.y - vRenderPos.y
+			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+			, (int)(vResolution.y + abs(vRenderPos.y))
 			, m_TexBackGround->GetDC()
 			, (int)tAnim.vLT.x
 			, (int)tAnim.vLT.y
@@ -76,13 +76,13 @@ void CScene_SceneTool::render(HDC _dc)
 		TransparentBlt(_dc
 			, (int)vRenderPos.x
 			, (int)vRenderPos.y
-			, (int)vResolution.x - vRenderPos.x // 현재 화면만큼만 잘라내서 가져옴
-			, (int)vResolution.y - vRenderPos.y
+			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+			, (int)(vResolution.y + abs(vRenderPos.y))
 			, m_TexForeGround->GetDC()
 			, (int)tAnim.vLT.x
 			, (int)tAnim.vLT.y
-			, (int)vResolution.x - vRenderPos.x // 현재 화면만큼만 잘라내서 가져옴
-			, (int)vResolution.y - vRenderPos.y
+			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+			, (int)(vResolution.y + abs(vRenderPos.y))
 			, RGB(0, 18, 127));
 	}
 
@@ -90,9 +90,7 @@ void CScene_SceneTool::render(HDC _dc)
 
 
 
-	//CScene::render(_dc);
-
-	
+	//CScene::render(_dc);	
 }
 
 void CScene_SceneTool::Enter()

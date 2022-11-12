@@ -80,46 +80,58 @@ void CCamera::update()
 	}
 	else if (L"Scene_Tool" == pCurScene->GetName())
 	{
-		CTexture* SceneTex = ((CScene_SceneTool*)pCurScene)->GetBackGroundTex();
+		if (KEY_HOLD(KEY::A))
+			m_vLookAt.x -= m_fMoveSpeed * fDT;
 
-		if (nullptr != SceneTex)
-		{
-			tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetBackGroundAnim()->GetFrame(0);
+		if (KEY_HOLD(KEY::D))
+			m_vLookAt.x += m_fMoveSpeed * fDT;
 
-			UINT iWidth = (UINT)tAnim.vSlice.x;
-			UINT iHeight = (UINT)tAnim.vSlice.y;
+		if (KEY_HOLD(KEY::W))
+			m_vLookAt.y -= m_fMoveSpeed * fDT;
 
-			Vec2 vResolution = CCore::GetInst()->GetResolution();
-			Vec2 vLT = m_vLookAt - vResolution / 2.f;
+		if (KEY_HOLD(KEY::S))
+			m_vLookAt.y += m_fMoveSpeed * fDT;
 
-			// x Axis Left Move Limit
-			if (vLT.x > 0)
-			{
-				if (KEY_HOLD(KEY::A))
-					m_vLookAt.x -= m_fMoveSpeed * fDT;
-			}
+		//CTexture* SceneTex = ((CScene_SceneTool*)pCurScene)->GetBackGroundTex();
 
-			// x Axis right Move Limit
-			if (vLT.x < (iWidth - vResolution.x))
-			{
-				if (KEY_HOLD(KEY::D))
-					m_vLookAt.x += m_fMoveSpeed * fDT;
-			}
+		//if (nullptr != SceneTex)
+		//{
+		//	tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetBackGroundAnim()->GetFrame(0);
 
-			// y Axis top Move Limit
-			if (vLT.y > 0)
-			{
-				if (KEY_HOLD(KEY::W))
-					m_vLookAt.y -= m_fMoveSpeed * fDT;
-			}
+		//	UINT iWidth = (UINT)tAnim.vSlice.x;
+		//	UINT iHeight = (UINT)tAnim.vSlice.y;
 
-			// y Axis bottom Move Limit
-			if (vLT.y < (iHeight - vResolution.y))
-			{
-				if (KEY_HOLD(KEY::S))
-					m_vLookAt.y += m_fMoveSpeed * fDT;
-			}
-		}
+		//	Vec2 vResolution = CCore::GetInst()->GetResolution();
+		//	Vec2 vLT = m_vLookAt - vResolution / 2.f;
+
+		//	// x Axis Left Move Limit
+		//	if (vLT.x > 0)
+		//	{
+		//		if (KEY_HOLD(KEY::A))
+		//			m_vLookAt.x -= m_fMoveSpeed * fDT;
+		//	}
+
+		//	// x Axis right Move Limit
+		//	if (vLT.x < (iWidth - vResolution.x))
+		//	{
+		//		if (KEY_HOLD(KEY::D))
+		//			m_vLookAt.x += m_fMoveSpeed * fDT;
+		//	}
+
+		//	// y Axis top Move Limit
+		//	if (vLT.y > 0)
+		//	{
+		//		if (KEY_HOLD(KEY::W))
+		//			m_vLookAt.y -= m_fMoveSpeed * fDT;
+		//	}
+
+		//	// y Axis bottom Move Limit
+		//	if (vLT.y < (iHeight - vResolution.y))
+		//	{
+		//		if (KEY_HOLD(KEY::S))
+		//			m_vLookAt.y += m_fMoveSpeed * fDT;
+		//	}
+		//}
 	}
 
 
