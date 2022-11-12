@@ -42,11 +42,6 @@ void CScene_SceneTool::update()
 
 void CScene_SceneTool::render(HDC _dc)
 {
-	
-
-
-
-
 	// 텍스쳐 렌더링
 	if (nullptr != m_TexBackGround)
 	{
@@ -73,17 +68,41 @@ void CScene_SceneTool::render(HDC _dc)
 		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
 
-		TransparentBlt(_dc
-			, (int)vRenderPos.x
-			, (int)vRenderPos.y
-			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
-			, (int)(vResolution.y + abs(vRenderPos.y))
-			, m_TexForeGround->GetDC()
-			, (int)tAnim.vLT.x
-			, (int)tAnim.vLT.y
-			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
-			, (int)(vResolution.y + abs(vRenderPos.y))
-			, RGB(0, 18, 127));
+		//TransparentBlt(_dc
+		//	, (int)vRenderPos.x
+		//	, (int)vRenderPos.y
+		//	, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+		//	, (int)(vResolution.y + abs(vRenderPos.y))
+		//	, m_TexForeGround->GetDC()
+		//	, (int)tAnim.vLT.x
+		//	, (int)tAnim.vLT.y
+		//	, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+		//	, (int)(vResolution.y + abs(vRenderPos.y))
+		//	, RGB(0, 18, 127));
+
+		int widthsize = 255;
+		int heightsize = 255;
+
+		int iidx = vResolution.x / widthsize;
+		int jidx = vResolution.x / heightsize;
+
+		for (int i = 0; i < 2; ++i)
+		{
+			for (int j = 0; j < 2; ++j)
+			{
+				TransparentBlt(_dc
+					, (int)i * 255
+					, (int)j * 255
+					, (int)widthsize 
+					, (int)heightsize
+					, m_TexForeGround->GetDC()
+					, (int)0
+					, (int)0
+					, (int)widthsize
+					, (int)heightsize
+					, RGB(255, 0, 255));
+			}
+		}
 	}
 
 
@@ -170,7 +189,7 @@ void CScene_SceneTool::LoadForeGround()
 	if (GetOpenFileName(&ofn))
 	{
 		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
-		m_TexForeGround = CResMgr::GetInst()->LoadTexture(L"ForeGround", L"Texture\\ForeGround.bmp");
+		m_TexForeGround = CResMgr::GetInst()->LoadTexture(L"treebossmap", L"Texture\\treebossmap.bmp");
 
 		if (nullptr != m_ForeGroundAnim)
 		{
