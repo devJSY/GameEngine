@@ -15,6 +15,7 @@ private:
 
     Vec2                     m_SceneOffset;
 
+    Vec2                    vPrevMousePos;
 
 public:
     virtual void update();

@@ -8,6 +8,7 @@
 #include "CCamera.h"
 #include "CTexture.h"
 #include "CAnimation.h"
+#include "SelectGDI.h"
 
 CScene_SceneTool::CScene_SceneTool()
 	: m_TexBackGround(nullptr)
@@ -42,6 +43,13 @@ void CScene_SceneTool::update()
 	{
 		m_vTexForeGround.clear();
 	}
+
+	if (KEY_HOLD(KEY::LBTN))
+	{
+		m_SceneOffset.y -= MOUSE_POS.y - vPrevMousePos.y;
+	}
+
+	vPrevMousePos = MOUSE_POS;	
 }
 
 void CScene_SceneTool::render(HDC _dc)
@@ -65,9 +73,7 @@ void CScene_SceneTool::render(HDC _dc)
 			, (int)tAnim.vLT.x
 			, (int)tAnim.vLT.y
 			, SRCCOPY);
-	}
-
-	TextOut(_dc, 0, 0, TEXT("Hellow World!"), 13);
+	}	
 
 	if (0 != m_vTexForeGround.size())
 	{
@@ -79,8 +85,6 @@ void CScene_SceneTool::render(HDC _dc)
 
 			Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
 			Vec2 vResolution = CCore::GetInst()->GetResolution();
-
-			m_SceneOffset = Vec2(0.f, 230.f);
 
 			TransparentBlt(_dc
 				, (int)vRenderPos.x
@@ -95,8 +99,6 @@ void CScene_SceneTool::render(HDC _dc)
 				, RGB(0, 18, 127));
 		}
 	}
-
-
 
 
 

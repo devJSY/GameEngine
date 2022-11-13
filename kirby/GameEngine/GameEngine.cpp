@@ -209,6 +209,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             pToolScene->LoadForeGround();
         }
         break;
+        case ID_SCENE_SAVE:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCENE_SAVE), hWnd, AnimSave);
+            break;
+        case ID_SCENE_LOAD:
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCENE_LOAD), hWnd, AnimLoad);
+            break;
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);
         }
