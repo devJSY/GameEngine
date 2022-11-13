@@ -15,12 +15,12 @@
 #define IDR_MAINFRAME                   128
 #define IDD_ANIM_LOAD                   130
 #define IDD_ANIM_SAVE                   131
-#define IDD_ANIM_SAVE1                  132
 #define IDD_SCENE_LOAD                  133
 #define IDC_ANIM_NAME                   1000
 #define IDC_FRAME_COUNT                 1001
 #define IDC_ANIM_ADDRESS                1002
 #define IDC_ANIM_DURATION               1004
+#define IDC_SCENE_ADDRESS               1010
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_ANIM                         32773
@@ -44,7 +44,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32785
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

@@ -9,9 +9,12 @@ class CScene_SceneTool :
 {
 private:
     CTexture*                m_TexBackGround;
-    vector<CTexture*>        m_vTexForeGround;
+    CTexture*                m_TexForeGround;
     CAnimation*              m_BackGroundAnim;
     CAnimation*              m_ForeGroundAnim;
+
+    wstring                 m_BackGroundPath;
+    wstring                 m_ForeGroundPath;
 
     Vec2                     m_SceneOffset;
 
@@ -30,17 +33,13 @@ public:
 
 public:
     CTexture* GetBackGroundTex() { return m_TexBackGround; }
-    CTexture* GetForeGroundTex(int _idx) 
-    { 
-        if (0 == m_vTexForeGround.size())
-        {
-            return nullptr;
-        }
-
-        return m_vTexForeGround[_idx]; 
-    }
+    CTexture* GetForeGroundTex() { return m_TexForeGround; }
     CAnimation* GetBackGroundAnim() { return m_BackGroundAnim; }
     CAnimation* GetForeGroundAnim() { return m_ForeGroundAnim; }
+
+public:
+    void Save(const wstring& _strName);
+    void Load(const wstring& _strName);
 
 
 public:

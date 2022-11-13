@@ -10,6 +10,9 @@
 #include "CAnimation.h"
 #include "SelectGDI.h"
 
+
+#include "CSceneMgr.h"
+
 CScene_SceneTool::CScene_SceneTool()
 	: m_TexBackGround(nullptr)
 	, m_BackGroundAnim(nullptr)
@@ -37,11 +40,6 @@ void CScene_SceneTool::update()
 	if (KEY_AWAY(KEY::LSHIFT))
 	{
 		ChangeScene(SCENE_TYPE::START);
-	}
-
-	if (KEY_TAP(KEY::CTRL))
-	{
-		m_vTexForeGround.clear();
 	}
 
 	if (KEY_HOLD(KEY::LBTN))
@@ -75,29 +73,24 @@ void CScene_SceneTool::render(HDC _dc)
 			, SRCCOPY);
 	}	
 
-	if (0 != m_vTexForeGround.size())
+	if (nullptr != m_TexForeGround)
 	{
-		for (size_t i = 0; i < m_vTexForeGround.size(); ++i)
-		{
-			CTexture* TexForeGround = m_vTexForeGround[i];
+		tAnimFrm tAnim = m_ForeGroundAnim->GetFrame(0);
 
-			tAnimFrm tAnim = m_ForeGroundAnim->GetFrame(0);
+		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
+		Vec2 vResolution = CCore::GetInst()->GetResolution();
 
-			Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
-			Vec2 vResolution = CCore::GetInst()->GetResolution();
-
-			TransparentBlt(_dc
-				, (int)vRenderPos.x
-				, (int)vRenderPos.y
-				, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
-				, (int)(vResolution.y + abs(vRenderPos.y))
-				, TexForeGround->GetDC()
-				, (int)(tAnim.vLT.x + m_SceneOffset.x)
-				, (int)(tAnim.vLT.y + m_SceneOffset.y)
-				, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
-				, (int)(vResolution.y + abs(vRenderPos.y))
-				, RGB(0, 18, 127));
-		}
+		TransparentBlt(_dc
+			, (int)vRenderPos.x
+			, (int)vRenderPos.y
+			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+			, (int)(vResolution.y + abs(vRenderPos.y))
+			, m_TexForeGround->GetDC()
+			, (int)(tAnim.vLT.x + m_SceneOffset.x)
+			, (int)(tAnim.vLT.y + m_SceneOffset.y)
+			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+			, (int)(vResolution.y + abs(vRenderPos.y))
+			, RGB(0, 18, 127));
 	}
 
 
@@ -141,7 +134,7 @@ void CScene_SceneTool::LoadBackGround()
 	// Modal
 	if (GetOpenFileName(&ofn))
 	{
-		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
+		m_BackGroundPath = CPathMgr::GetInst()->GetRelativePath(szName);
 		m_TexBackGround = CResMgr::GetInst()->LoadTexture(L"BackGround", L"Texture\\BackGround.bmp");
 
 		if (nullptr != m_BackGroundAnim)
@@ -151,7 +144,7 @@ void CScene_SceneTool::LoadBackGround()
 
 		m_BackGroundAnim = new CAnimation;
 
-		m_BackGroundAnim->Load(strRelativePath);
+		m_BackGroundAnim->Load(m_BackGroundPath);
 
 		// 카메라 위치 초기화
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
@@ -181,8 +174,8 @@ void CScene_SceneTool::LoadForeGround()
 	// Modal
 	if (GetOpenFileName(&ofn))
 	{
-		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
-		CTexture* TexForeGround = CResMgr::GetInst()->LoadTexture(L"ForeGround", L"Texture\\ForeGround.bmp");
+		m_ForeGroundPath = CPathMgr::GetInst()->GetRelativePath(szName);
+		m_TexForeGround = CResMgr::GetInst()->LoadTexture(L"ForeGround", L"Texture\\ForeGround.bmp");
 
 		if (nullptr != m_ForeGroundAnim)
 		{
@@ -191,12 +184,301 @@ void CScene_SceneTool::LoadForeGround()
 
 		m_ForeGroundAnim = new CAnimation;
 
-		m_ForeGroundAnim->Load(strRelativePath);
-
-		m_vTexForeGround.push_back(TexForeGround);
+		m_ForeGroundAnim->Load(m_ForeGroundPath);
 
 		// 카메라 위치 초기화
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
 		CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
 	}
+}
+
+
+void CScene_SceneTool::Save(const wstring& _strName)
+{
+	wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
+	strFilePath += L"Animation\\Scene\\";
+	strFilePath += _strName;
+	strFilePath += L".sce";
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFilePath.c_str(), L"wb");	// 파일 스트림 wb 방식으로 열기
+	assert(pFile);
+
+	// 이름 (데이터 직렬화)
+	fprintf(pFile, "[Scene Name]\n");
+	string strName = string(_strName.begin(), _strName.end());
+	fprintf(pFile, strName.c_str());
+	fprintf(pFile, "\n");
+
+	// 텍스쳐
+	fprintf(pFile, "[BackGround Texture Name]\n");
+	strName = string(m_TexBackGround->GetKey().begin(), m_TexBackGround->GetKey().end());
+	fprintf(pFile, strName.c_str());
+	fprintf(pFile, "\n");
+
+	fprintf(pFile, "[BackGround Texture Path]\n");
+	strName = string(m_TexBackGround->GetRelativePath().begin(), m_TexBackGround->GetRelativePath().end());
+	fprintf(pFile, strName.c_str());
+	fprintf(pFile, "\n");
+
+	fprintf(pFile, "[ForeGround Texture Name]\n");
+	strName = string(m_TexForeGround->GetKey().begin(), m_TexForeGround->GetKey().end());
+	fprintf(pFile, strName.c_str());
+	fprintf(pFile, "\n");
+
+	fprintf(pFile, "[ForeGround Texture Path]\n");
+	strName = string(m_TexForeGround->GetRelativePath().begin(), m_TexForeGround->GetRelativePath().end());
+	fprintf(pFile, strName.c_str());
+	fprintf(pFile, "\n");
+
+	// ========
+	fprintf(pFile, "[BackGround Path]\n");
+	strName = string(m_BackGroundPath.begin(), m_BackGroundPath.end());
+	fprintf(pFile, strName.c_str());
+	fprintf(pFile, "\n");
+
+	fprintf(pFile, "[ForeGround Path Path]\n");
+	strName = string(m_ForeGroundPath.begin(), m_ForeGroundPath.end());
+	fprintf(pFile, strName.c_str());
+	fprintf(pFile, "\n");
+
+	// ========
+	fprintf(pFile, "[Scene Offset]\n");
+	fprintf(pFile, "%f %f\n", m_SceneOffset.x, m_SceneOffset.y);
+
+
+	fclose(pFile);	// 파일 스트림 종료
+}
+
+void CScene_SceneTool::Load(const wstring& _strName)
+{
+	//wstring strFilePath = CPathMgr::GetInst()->GetContentPath();
+	//strFilePath += L"Animation\\Scene";
+
+	//FILE* pFile = nullptr;
+	//_wfopen_s(&pFile, strFilePath.c_str(), L"rb");	// 파일 스트림 rb 방식으로 오픈
+	//assert(pFile);
+
+	//// 이름 (데이터 직렬화)
+	//string str;
+	//char szBuff[256] = {};
+
+	//FScanf(szBuff, pFile);
+	//FScanf(szBuff, pFile);
+	//str = szBuff;
+
+
+	//// 참조하는 텍스쳐 이름 및 경로
+	//FScanf(szBuff, pFile);
+	//FScanf(szBuff, pFile);
+
+	//str = szBuff;
+	//wstring strTexKey = wstring(str.begin(), str.end());
+
+	//FScanf(szBuff, pFile);
+	//FScanf(szBuff, pFile);
+
+	//str = szBuff;
+	//wstring strResPath = wstring(str.begin(), str.end());
+
+	//m_pTex = CResMgr::GetInst()->LoadTexture(strTexKey, strResPath);
+
+	//// 프레임 개수
+	//FScanf(szBuff, pFile);
+	//int iFameCount = 0;
+	//fscanf_s(pFile, "%d", &iFameCount);
+
+	//// 모든 프레임 정보
+	//tAnimFrm frm = {};
+	//for (int i = 0; i < iFameCount; ++i)
+	//{
+	//	POINT pt = {};
+
+	//	while (true)
+	//	{
+	//		FScanf(szBuff, pFile);
+
+	//		if (!strcmp("[Frame Index]", szBuff))
+	//		{
+	//			fscanf_s(pFile, "%d", &pt.x);
+	//		}
+	//		else if (!strcmp("[Left Top]", szBuff))
+	//		{
+	//			fscanf_s(pFile, "%d", &pt.x);
+	//			fscanf_s(pFile, "%d", &pt.y);
+
+	//			frm.vLT = pt;
+	//		}
+	//		else if (!strcmp("[Slice Size]", szBuff))
+	//		{
+	//			fscanf_s(pFile, "%d", &pt.x);
+	//			fscanf_s(pFile, "%d", &pt.y);
+
+	//			frm.vSlice = pt;
+	//		}
+	//		else if (!strcmp("[Offset]", szBuff))
+	//		{
+	//			fscanf_s(pFile, "%d", &pt.x);
+	//			fscanf_s(pFile, "%d", &pt.y);
+
+	//			frm.vOffset = pt;
+	//		}
+	//		else if (!strcmp("[Duration]", szBuff))
+	//		{
+	//			fscanf_s(pFile, "%f", &frm.fDuration);
+	//			break;
+	//		}
+	//	}
+
+	//	m_vecFrm.push_back(frm);
+	//}
+
+	//fclose(pFile); // 파일 스트림 종료
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//// 이름 (데이터 직렬화)
+	//fprintf(pFile, "[Scene Name]\n");
+	//string strName = string(_strName.begin(), _strName.end());
+	//fprintf(pFile, strName.c_str());
+	//fprintf(pFile, "\n");
+
+	//// 텍스쳐
+	//fprintf(pFile, "[BackGround Texture Name]\n");
+	//strName = string(m_TexBackGround->GetKey().begin(), m_TexBackGround->GetKey().end());
+	//fprintf(pFile, strName.c_str());
+	//fprintf(pFile, "\n");
+
+	//fprintf(pFile, "[BackGround Texture Path]\n");
+	//strName = string(m_TexBackGround->GetRelativePath().begin(), m_TexBackGround->GetRelativePath().end());
+	//fprintf(pFile, strName.c_str());
+	//fprintf(pFile, "\n");
+
+	//fprintf(pFile, "[ForeGround Texture Name]\n");
+	//strName = string(m_TexForeGround->GetKey().begin(), m_TexForeGround->GetKey().end());
+	//fprintf(pFile, strName.c_str());
+	//fprintf(pFile, "\n");
+
+	//fprintf(pFile, "[ForeGround Texture Path]\n");
+	//strName = string(m_TexForeGround->GetRelativePath().begin(), m_TexForeGround->GetRelativePath().end());
+	//fprintf(pFile, strName.c_str());
+	//fprintf(pFile, "\n");
+
+	//// ========
+	//fprintf(pFile, "[BackGround Path]\n");
+	//strName = string(m_BackGroundPath.begin(), m_BackGroundPath.end());
+	//fprintf(pFile, strName.c_str());
+	//fprintf(pFile, "\n");
+
+	//fprintf(pFile, "[ForeGround Path Path]\n");
+	//strName = string(m_ForeGroundPath.begin(), m_ForeGroundPath.end());
+	//fprintf(pFile, strName.c_str());
+	//fprintf(pFile, "\n");
+
+	//// ========
+	//fprintf(pFile, "[Scene Offset]\n");
+	//fprintf(pFile, "%d %d\n", m_SceneOffset.x, m_SceneOffset.y);
+
+
+	//fclose(pFile);	// 파일 스트림 종료
+}
+
+
+// ======================
+// Scene Tool Window Proc
+// ======================
+INT_PTR CALLBACK SceneSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK)
+		{
+			wchar_t AnimFileName[256] = {};
+
+			GetDlgItemText(hDlg, IDC_SCENE_ADDRESS, AnimFileName, 256);
+
+			// 입력이 없었을경우 아무것도 안하고 종료
+			if ('\0' == AnimFileName[0])
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			}
+
+			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+			// CScene_AnimTool 확인
+			CScene_SceneTool* pToolScene = dynamic_cast<CScene_SceneTool*>(pCurScene);
+			assert(pToolScene);
+
+			pToolScene->Save(AnimFileName);
+
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		else if (LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
+}
+
+INT_PTR CALLBACK SceneLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK)
+		{
+			wchar_t AnimFileName[256] = {};
+
+			GetDlgItemText(hDlg, IDC_SCENE_ADDRESS, AnimFileName, 256);
+
+			// 입력이 없었을경우 아무것도 안하고 종료
+			if ('\0' == AnimFileName[0])
+			{
+				EndDialog(hDlg, LOWORD(wParam));
+				return (INT_PTR)TRUE;
+			}
+
+			CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
+
+			// CScene_AnimTool 확인
+			CScene_SceneTool* pToolScene = dynamic_cast<CScene_SceneTool*>(pCurScene);
+			assert(pToolScene);
+
+			pToolScene->Load(AnimFileName);
+
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		else if (LOWORD(wParam) == IDCANCEL)
+		{
+			EndDialog(hDlg, LOWORD(wParam));
+			return (INT_PTR)TRUE;
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
 }

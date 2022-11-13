@@ -92,7 +92,7 @@ void CCamera::update()
 		//if (KEY_HOLD(KEY::S))
 		//	m_vLookAt.y += m_fMoveSpeed * fDT;
 
-		CTexture* SceneTex = ((CScene_SceneTool*)pCurScene)->GetForeGroundTex(0);
+		CTexture* SceneTex = ((CScene_SceneTool*)pCurScene)->GetForeGroundTex();
 
 		if (nullptr != SceneTex)
 		{

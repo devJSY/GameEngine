@@ -156,6 +156,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 INT_PTR CALLBACK AnimSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 INT_PTR CALLBACK AnimLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK SceneSave(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK SceneLoad(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -210,10 +212,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
         case ID_SCENE_SAVE:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCENE_SAVE), hWnd, AnimSave);
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCENE_SAVE), hWnd, SceneSave);
             break;
         case ID_SCENE_LOAD:
-            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCENE_LOAD), hWnd, AnimLoad);
+            DialogBox(hInst, MAKEINTRESOURCE(IDD_SCENE_LOAD), hWnd, SceneLoad);
             break;
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);
