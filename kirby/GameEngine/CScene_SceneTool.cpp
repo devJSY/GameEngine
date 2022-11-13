@@ -11,7 +11,6 @@
 
 CScene_SceneTool::CScene_SceneTool()
 	: m_TexBackGround(nullptr)
-	, m_TexForeGround(nullptr)
 	, m_BackGroundAnim(nullptr)
 	, m_ForeGroundAnim(nullptr)
 {
@@ -38,6 +37,11 @@ void CScene_SceneTool::update()
 	{
 		ChangeScene(SCENE_TYPE::START);
 	}
+
+	if (KEY_TAP(KEY::CTRL))
+	{
+		m_vTexForeGround.clear();
+	}
 }
 
 void CScene_SceneTool::render(HDC _dc)
@@ -47,7 +51,9 @@ void CScene_SceneTool::render(HDC _dc)
 	{
 		tAnimFrm tAnim = m_BackGroundAnim->GetFrame(0);
 
-		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
+		//Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
+
+		Vec2 vRenderPos = Vec2(0.f, 0.f);	// ( 0 , 0 ) 부터 고정 렌더링
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
 
 		BitBlt(_dc
@@ -61,47 +67,32 @@ void CScene_SceneTool::render(HDC _dc)
 			, SRCCOPY);
 	}
 
-	if (nullptr != m_TexForeGround)
+	TextOut(_dc, 0, 0, TEXT("Hellow World!"), 13);
+
+	if (0 != m_vTexForeGround.size())
 	{
-		tAnimFrm tAnim = m_ForeGroundAnim->GetFrame(0);
-
-		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
-		Vec2 vResolution = CCore::GetInst()->GetResolution();
-
-		//TransparentBlt(_dc
-		//	, (int)vRenderPos.x
-		//	, (int)vRenderPos.y
-		//	, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
-		//	, (int)(vResolution.y + abs(vRenderPos.y))
-		//	, m_TexForeGround->GetDC()
-		//	, (int)tAnim.vLT.x
-		//	, (int)tAnim.vLT.y
-		//	, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
-		//	, (int)(vResolution.y + abs(vRenderPos.y))
-		//	, RGB(0, 18, 127));
-
-		int widthsize = 255;
-		int heightsize = 255;
-
-		int iidx = vResolution.x / widthsize;
-		int jidx = vResolution.x / heightsize;
-
-		for (int i = 0; i < 2; ++i)
+		for (size_t i = 0; i < m_vTexForeGround.size(); ++i)
 		{
-			for (int j = 0; j < 2; ++j)
-			{
-				TransparentBlt(_dc
-					, (int)i * 255
-					, (int)j * 255
-					, (int)widthsize 
-					, (int)heightsize
-					, m_TexForeGround->GetDC()
-					, (int)0
-					, (int)0
-					, (int)widthsize
-					, (int)heightsize
-					, RGB(255, 0, 255));
-			}
+			CTexture* TexForeGround = m_vTexForeGround[i];
+
+			tAnimFrm tAnim = m_ForeGroundAnim->GetFrame(0);
+
+			Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
+			Vec2 vResolution = CCore::GetInst()->GetResolution();
+
+			m_SceneOffset = Vec2(0.f, 230.f);
+
+			TransparentBlt(_dc
+				, (int)vRenderPos.x
+				, (int)vRenderPos.y
+				, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+				, (int)(vResolution.y + abs(vRenderPos.y))
+				, TexForeGround->GetDC()
+				, (int)(tAnim.vLT.x + m_SceneOffset.x)
+				, (int)(tAnim.vLT.y + m_SceneOffset.y)
+				, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
+				, (int)(vResolution.y + abs(vRenderPos.y))
+				, RGB(0, 18, 127));
 		}
 	}
 
@@ -189,7 +180,7 @@ void CScene_SceneTool::LoadForeGround()
 	if (GetOpenFileName(&ofn))
 	{
 		wstring strRelativePath = CPathMgr::GetInst()->GetRelativePath(szName);
-		m_TexForeGround = CResMgr::GetInst()->LoadTexture(L"treebossmap", L"Texture\\treebossmap.bmp");
+		CTexture* TexForeGround = CResMgr::GetInst()->LoadTexture(L"ForeGround", L"Texture\\ForeGround.bmp");
 
 		if (nullptr != m_ForeGroundAnim)
 		{
@@ -199,6 +190,8 @@ void CScene_SceneTool::LoadForeGround()
 		m_ForeGroundAnim = new CAnimation;
 
 		m_ForeGroundAnim->Load(strRelativePath);
+
+		m_vTexForeGround.push_back(TexForeGround);
 
 		// 카메라 위치 초기화
 		Vec2 vResolution = CCore::GetInst()->GetResolution();

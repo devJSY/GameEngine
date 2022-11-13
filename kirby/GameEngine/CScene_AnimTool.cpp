@@ -138,8 +138,6 @@ void CScene_AnimTool::update()
 
 void CScene_AnimTool::render(HDC _dc)
 {
-	
-
 	// 텍스쳐 렌더링
 	if (nullptr != m_pTex)
 	{
