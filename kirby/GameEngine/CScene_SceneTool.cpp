@@ -104,9 +104,7 @@ void CScene_SceneTool::render(HDC _dc)
 			, RGB(0, 18, 127));
 	}
 
-
-
-	//CScene::render(_dc);	
+	CScene::render(_dc);	
 }
 
 void CScene_SceneTool::Enter()
