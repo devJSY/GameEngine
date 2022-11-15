@@ -14,34 +14,21 @@
 #include "CSceneMgr.h"
 
 CScene_SceneTool::CScene_SceneTool()
-	: m_TexBackGround(nullptr)
-	, m_TexForeGround(nullptr)
-	, m_BackGroundAnim(nullptr)
-	, m_ForeGroundAnim(nullptr)
+	: m_tStageConf{}
 {
 }
 
 CScene_SceneTool::~CScene_SceneTool()
 {
-	if (nullptr != m_TexBackGround)
+	if (nullptr != m_tStageConf.BackGroundAnim)
 	{
-		delete m_BackGroundAnim;
-
-		m_BackGroundAnim = nullptr;
+		delete m_tStageConf.BackGroundAnim;
 	}
 
-	if (nullptr != m_ForeGroundAnim)
+	if (nullptr != m_tStageConf.ForeGroundAnim)
 	{
-		delete m_ForeGroundAnim;
-
-		m_ForeGroundAnim = nullptr;
+		delete m_tStageConf.ForeGroundAnim;
 	}
-
-	m_BackGroundPath = L"";
-	m_ForeGroundPath = L"";
-
-	m_SceneOffset = Vec2(0.f, 0.f);
-	vPrevMousePos = Vec2(0.f, 0.f);
 }
 
 void CScene_SceneTool::update()
@@ -55,20 +42,18 @@ void CScene_SceneTool::update()
 
 	if (KEY_HOLD(KEY::LBTN))
 	{
-		m_SceneOffset.y -= MOUSE_POS.y - vPrevMousePos.y;
+		m_tStageConf.SceneOffset.y -= MOUSE_POS.y - m_vPrevMousePos.y;
 	}
 
-	vPrevMousePos = MOUSE_POS;	
+	m_vPrevMousePos = MOUSE_POS;	
 }
 
 void CScene_SceneTool::render(HDC _dc)
 {
 	// 텍스쳐 렌더링
-	if (nullptr != m_TexBackGround)
+	if (nullptr != m_tStageConf.BackGroundAnim)
 	{
-		tAnimFrm tAnim = m_BackGroundAnim->GetFrame(0);
-
-		//Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
+		tAnimFrm tAnim = m_tStageConf.BackGroundAnim->GetFrame(0);
 
 		Vec2 vRenderPos = Vec2(0.f, 0.f);	// ( 0 , 0 ) 부터 고정 렌더링
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
@@ -78,15 +63,15 @@ void CScene_SceneTool::render(HDC _dc)
 			, (int)vRenderPos.y
 			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
 			, (int)(vResolution.y + abs(vRenderPos.y))
-			, m_TexBackGround->GetDC()
+			, m_tStageConf.TexBackGround->GetDC()
 			, (int)tAnim.vLT.x
 			, (int)tAnim.vLT.y
 			, SRCCOPY);
 	}	
 
-	if (nullptr != m_TexForeGround)
+	if (nullptr != m_tStageConf.ForeGroundAnim)
 	{
-		tAnimFrm tAnim = m_ForeGroundAnim->GetFrame(0);
+		tAnimFrm tAnim = m_tStageConf.ForeGroundAnim->GetFrame(0);
 
 		Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(Vec2(0.f, 0.f));	// ( 0 , 0 ) 부터 텍스쳐 렌더링
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
@@ -96,9 +81,9 @@ void CScene_SceneTool::render(HDC _dc)
 			, (int)vRenderPos.y
 			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
 			, (int)(vResolution.y + abs(vRenderPos.y))
-			, m_TexForeGround->GetDC()
-			, (int)(tAnim.vLT.x + m_SceneOffset.x)
-			, (int)(tAnim.vLT.y + m_SceneOffset.y)
+			, m_tStageConf.TexForeGround->GetDC()
+			, (int)(tAnim.vLT.x + m_tStageConf.SceneOffset.x)
+			, (int)(tAnim.vLT.y + m_tStageConf.SceneOffset.y)
 			, (int)(vResolution.x + abs(vRenderPos.x)) // 현재 화면만큼만 잘라내서 가져옴
 			, (int)(vResolution.y + abs(vRenderPos.y))
 			, RGB(0, 18, 127));
@@ -119,11 +104,6 @@ void CScene_SceneTool::Enter()
 
 void CScene_SceneTool::Exit()
 {
-	m_BackGroundPath = L"";
-	m_ForeGroundPath = L"";
-
-	m_SceneOffset = Vec2(0.f, 0.f);
-	vPrevMousePos = Vec2(0.f, 0.f);
 }
 
 void CScene_SceneTool::LoadBackGround()
@@ -148,17 +128,17 @@ void CScene_SceneTool::LoadBackGround()
 	// Modal
 	if (GetOpenFileName(&ofn))
 	{
-		m_BackGroundPath = CPathMgr::GetInst()->GetRelativePath(szName);
-		m_TexBackGround = CResMgr::GetInst()->LoadTexture(L"BackGround", L"Texture\\BackGround.bmp");
+		m_tStageConf.BackGroundPath = CPathMgr::GetInst()->GetRelativePath(szName);
+		m_tStageConf.TexBackGround = CResMgr::GetInst()->LoadTexture(L"BackGround", L"Texture\\BackGround.bmp");
 
-		if (nullptr != m_BackGroundAnim)
+		if (nullptr != m_tStageConf.BackGroundAnim)
 		{
-			delete m_BackGroundAnim;
+			delete m_tStageConf.BackGroundAnim;
 		}
 
-		m_BackGroundAnim = new CAnimation;
+		m_tStageConf.BackGroundAnim = new CAnimation;
 
-		m_BackGroundAnim->Load(m_BackGroundPath);
+		m_tStageConf.BackGroundAnim->Load(m_tStageConf.BackGroundPath);
 
 		// 카메라 위치 초기화
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
@@ -188,17 +168,20 @@ void CScene_SceneTool::LoadForeGround()
 	// Modal
 	if (GetOpenFileName(&ofn))
 	{
-		m_ForeGroundPath = CPathMgr::GetInst()->GetRelativePath(szName);
-		m_TexForeGround = CResMgr::GetInst()->LoadTexture(L"ForeGround", L"Texture\\ForeGround.bmp");
+		m_tStageConf.ForeGroundPath = CPathMgr::GetInst()->GetRelativePath(szName);
+		m_tStageConf.TexForeGround = CResMgr::GetInst()->LoadTexture(L"ForeGround", L"Texture\\ForeGround.bmp");
 
-		if (nullptr != m_ForeGroundAnim)
+		if (nullptr != m_tStageConf.ForeGroundAnim)
 		{
-			delete m_ForeGroundAnim;
+			delete m_tStageConf.ForeGroundAnim;
 		}
 
-		m_ForeGroundAnim = new CAnimation;
+		m_tStageConf.ForeGroundAnim = new CAnimation;
 
-		m_ForeGroundAnim->Load(m_ForeGroundPath);
+		m_tStageConf.ForeGroundAnim->Load(m_tStageConf.ForeGroundPath);
+
+		// Offset 초기화
+		m_tStageConf.SceneOffset = Vec2(0.f, 0.f);
 
 		// 카메라 위치 초기화
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
@@ -226,39 +209,39 @@ void CScene_SceneTool::Save(const wstring& _strName)
 
 	// BackGround 텍스쳐
 	fprintf(pFile, "[BackGround Texture Name]\n");
-	strName = string(m_TexBackGround->GetKey().begin(), m_TexBackGround->GetKey().end());
+	strName = string(m_tStageConf.TexBackGround->GetKey().begin(), m_tStageConf.TexBackGround->GetKey().end());
 	fprintf(pFile, strName.c_str());
 	fprintf(pFile, "\n");
 
 	fprintf(pFile, "[BackGround Texture Path]\n");
-	strName = string(m_TexBackGround->GetRelativePath().begin(), m_TexBackGround->GetRelativePath().end());
+	strName = string(m_tStageConf.TexBackGround->GetRelativePath().begin(), m_tStageConf.TexBackGround->GetRelativePath().end());
 	fprintf(pFile, strName.c_str());
 	fprintf(pFile, "\n");
 
 	fprintf(pFile, "[BackGround Path]\n");
-	strName = string(m_BackGroundPath.begin(), m_BackGroundPath.end());
+	strName = string(m_tStageConf.BackGroundPath.begin(), m_tStageConf.BackGroundPath.end());
 	fprintf(pFile, strName.c_str());
 	fprintf(pFile, "\n");
 
 	// ForeGround 텍스쳐
 	fprintf(pFile, "[ForeGround Texture Name]\n");
-	strName = string(m_TexForeGround->GetKey().begin(), m_TexForeGround->GetKey().end());
+	strName = string(m_tStageConf.TexForeGround->GetKey().begin(), m_tStageConf.TexForeGround->GetKey().end());
 	fprintf(pFile, strName.c_str());
 	fprintf(pFile, "\n");
 
 	fprintf(pFile, "[ForeGround Texture Path]\n");
-	strName = string(m_TexForeGround->GetRelativePath().begin(), m_TexForeGround->GetRelativePath().end());
+	strName = string(m_tStageConf.TexForeGround->GetRelativePath().begin(), m_tStageConf.TexForeGround->GetRelativePath().end());
 	fprintf(pFile, strName.c_str());
 	fprintf(pFile, "\n");
 
 	fprintf(pFile, "[ForeGround Path Path]\n");
-	strName = string(m_ForeGroundPath.begin(), m_ForeGroundPath.end());
+	strName = string(m_tStageConf.ForeGroundPath.begin(), m_tStageConf.ForeGroundPath.end());
 	fprintf(pFile, strName.c_str());
 	fprintf(pFile, "\n");
 
 	// ========
 	fprintf(pFile, "[Scene Offset]\n");
-	fprintf(pFile, "%f %f\n", m_SceneOffset.x, m_SceneOffset.y);
+	fprintf(pFile, "%f %f\n", m_tStageConf.SceneOffset.x, m_tStageConf.SceneOffset.y);
 
 
 	fclose(pFile);	// 파일 스트림 종료
@@ -297,22 +280,22 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	wstring wScenePath = wstring(ScenePath.begin(), ScenePath.end());
 
 	// 텍스쳐 설정
-	m_TexBackGround = CResMgr::GetInst()->LoadTexture(wstr, wScenePath);
+	m_tStageConf.TexBackGround = CResMgr::GetInst()->LoadTexture(wstr, wScenePath);
 
 	// BackGround Path 
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
-	m_BackGroundPath = wstring(ScenePath.begin(), ScenePath.end());
+	m_tStageConf.BackGroundPath = wstring(ScenePath.begin(), ScenePath.end());
 
-	if (nullptr != m_BackGroundAnim)
+	if (nullptr != m_tStageConf.BackGroundAnim)
 	{
-		delete m_BackGroundAnim;
+		delete m_tStageConf.BackGroundAnim;
 	}
 
-	m_BackGroundAnim = new CAnimation;
+	m_tStageConf.BackGroundAnim = new CAnimation;
 
-	m_BackGroundAnim->Load(m_BackGroundPath);
+	m_tStageConf.BackGroundAnim->Load(m_tStageConf.BackGroundPath);
 
 	// ForeGround
 	FScanf(szBuff, pFile);
@@ -327,25 +310,25 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	wScenePath = wstring(ScenePath.begin(), ScenePath.end());
 
 	// 텍스쳐 설정
-	m_TexForeGround = CResMgr::GetInst()->LoadTexture(wstr, wScenePath);
+	m_tStageConf.TexForeGround = CResMgr::GetInst()->LoadTexture(wstr, wScenePath);
 
 	// BackGround Path 
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
-	m_ForeGroundPath = wstring(ScenePath.begin(), ScenePath.end());
+	m_tStageConf.ForeGroundPath = wstring(ScenePath.begin(), ScenePath.end());
 
-	if (nullptr != m_ForeGroundAnim)
+	if (nullptr != m_tStageConf.ForeGroundAnim)
 	{
-		delete m_ForeGroundAnim;
+		delete m_tStageConf.ForeGroundAnim;
 	}
 
-	m_ForeGroundAnim = new CAnimation;
+	m_tStageConf.ForeGroundAnim = new CAnimation;
 
-	m_ForeGroundAnim->Load(m_ForeGroundPath);
+	m_tStageConf.ForeGroundAnim->Load(m_tStageConf.ForeGroundPath);
 
 	FScanf(szBuff, pFile);
-	fscanf_s(pFile, "%f %f", &m_SceneOffset.x, &m_SceneOffset.y);
+	fscanf_s(pFile, "%f %f", &m_tStageConf.SceneOffset.x, &m_tStageConf.SceneOffset.y);
 	
 	fclose(pFile);	// 파일 스트림 종료
 }

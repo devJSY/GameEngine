@@ -7,6 +7,7 @@ enum class KIRBY_STATE
     WALK,
     RUN,
     JUMP,
+    DOUBLEJUMP,
     DEAD,
 };
 

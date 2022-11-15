@@ -25,14 +25,14 @@ private:
     bool                    m_DragTrig;
     bool                    m_AnimAxis;
 
-    Vec2                    vAccPos;
-    Vec2                    vCamDist;
+    Vec2                    m_vAccPos;
+    Vec2                    m_vCamDist;
 
-    AnimFrmData             CurAinmData;
-    vector<AnimFrmData>     frameData;
+    AnimFrmData             m_CurAinmData;
+    vector<AnimFrmData>     m_frameData;
     
-    Vec2                    vPrevMousePos;
-    Vec2                    vPrevCamLookAt;
+    Vec2                    m_vPrevMousePos;
+    Vec2                    m_vPrevCamLookAt;
         
 public:
     virtual void update();

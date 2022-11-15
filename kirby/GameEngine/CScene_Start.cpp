@@ -9,6 +9,7 @@
 #include "CPanelUI.h"
 #include "CBtnUI.h"
 #include "CGround.h"
+#include "CTexture.h"
 
 #include "CColliderMgr.h"
 #include "CSceneMgr.h"
@@ -18,8 +19,6 @@
 CScene_Start::CScene_Start()
 	: m_TexBackGround(nullptr)
 {
-	m_TexBackGround = CResMgr::GetInst()->LoadTexture(L"StartScene", L"Texture\\StartScene.bmp");
-
 }
 
 CScene_Start::~CScene_Start()
@@ -49,6 +48,8 @@ void CScene_Start::render(HDC _dc)
 
 void CScene_Start::Enter()
 {
+	m_TexBackGround = CResMgr::GetInst()->LoadTexture(L"StartScene", L"Texture\\StartScene.bmp");
+
 	CCore::GetInst()->DividMenu();
 
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
@@ -94,5 +95,5 @@ void CScene_Start::Enter()
 void CScene_Start::Exit()
 {
 	DeleteAll();
-	CColliderMgr::GetInst()->Reset(); // 面倒眉农 府悸
+	CColliderMgr::GetInst()->Reset(); // 面倒眉农 府悸	
 }

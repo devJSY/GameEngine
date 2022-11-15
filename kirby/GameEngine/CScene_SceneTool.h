@@ -4,21 +4,24 @@
 class CTexture;
 class CAnimation;
 
+struct tStageConf
+{
+    CTexture*               TexBackGround;
+    CTexture*               TexForeGround;
+    CAnimation*             BackGroundAnim;
+    CAnimation*             ForeGroundAnim;
+    wstring                 BackGroundPath;
+    wstring                 ForeGroundPath;
+    Vec2                    SceneOffset;
+    vector<CObject*>        vecObj;
+};
+
 class CScene_SceneTool :
     public CScene
 {
 private:
-    CTexture*                m_TexBackGround;
-    CTexture*                m_TexForeGround;
-    CAnimation*              m_BackGroundAnim;
-    CAnimation*              m_ForeGroundAnim;
-
-    wstring                 m_BackGroundPath;
-    wstring                 m_ForeGroundPath;
-
-    Vec2                     m_SceneOffset;
-
-    Vec2                    vPrevMousePos;
+    tStageConf              m_tStageConf;
+    Vec2                    m_vPrevMousePos;
 
 public:
     virtual void update();
@@ -32,10 +35,10 @@ public:
     void LoadForeGround();
 
 public:
-    CTexture* GetBackGroundTex() { return m_TexBackGround; }
-    CTexture* GetForeGroundTex() { return m_TexForeGround; }
-    CAnimation* GetBackGroundAnim() { return m_BackGroundAnim; }
-    CAnimation* GetForeGroundAnim() { return m_ForeGroundAnim; }
+    CTexture* GetBackGroundTex() { return m_tStageConf.TexBackGround; }
+    CTexture* GetForeGroundTex() { return m_tStageConf.TexForeGround; }
+    CAnimation* GetBackGroundAnim() { return m_tStageConf.BackGroundAnim; }
+    CAnimation* GetForeGroundAnim() { return m_tStageConf.ForeGroundAnim; }
 
 public:
     void Save(const wstring& _strName);

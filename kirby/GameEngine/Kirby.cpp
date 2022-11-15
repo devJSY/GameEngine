@@ -42,6 +42,9 @@ Kirby::Kirby()
 	pAnimator->LoadAnimation(L"animation\\Kirby\\JUMP\\JUMP_Left.anim");
 	pAnimator->LoadAnimation(L"animation\\Kirby\\JUMP\\JUMP_Right.anim");
 
+	pAnimator->LoadAnimation(L"animation\\Kirby\\DOUBLE_JUMP\\DOUBLE_JUMP_Left.anim");
+	pAnimator->LoadAnimation(L"animation\\Kirby\\DOUBLE_JUMP\\DOUBLE_JUMP_Right.anim");
+
 	pAnimator->LoadAnimation(L"animation\\Kirby\\RUN\\RUN_Left.anim");
 	pAnimator->LoadAnimation(L"animation\\Kirby\\RUN\\RUN_Right.anim");
 
@@ -214,6 +217,24 @@ void Kirby::update_state()
 
 	case KIRBY_STATE::JUMP:
 	{
+		if (pRigid->GetVelocity().y == 0.f && ((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround())
+		{
+			State_Exit();
+			m_eCurState = m_eStockState;
+			State_Enter();
+		}
+
+		if (KEY_TAP(KEY::SPACE))
+		{
+			State_Exit();
+			m_eCurState = KIRBY_STATE::DOUBLEJUMP;
+			State_Enter();
+		}
+	}
+	break;
+
+	case KIRBY_STATE::DOUBLEJUMP:
+	{
 		State_Execute();
 
 		if (pRigid->GetVelocity().y == 0.f && ((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround())
@@ -251,14 +272,14 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				pRigid->SetVelocity(Vec2(100.f, pRigid->GetVelocity().y));
+				pRigid->SetVelocity(Vec2(200.f, pRigid->GetVelocity().y));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				pRigid->SetVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
+				pRigid->SetVelocity(Vec2(-200.f, pRigid->GetVelocity().y));
 			}
 		}
 	}
@@ -270,14 +291,14 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				pRigid->SetVelocity(Vec2(300.f, pRigid->GetVelocity().y));
+				pRigid->SetVelocity(Vec2(500.f, pRigid->GetVelocity().y));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				pRigid->SetVelocity(Vec2(-300.f, pRigid->GetVelocity().y));
+				pRigid->SetVelocity(Vec2(-500.f, pRigid->GetVelocity().y));
 			}
 		}
 	}
@@ -289,14 +310,32 @@ void Kirby::update_move()
 		{
 			if (KEY_HOLD(KEY::RIGHT))
 			{
-				pRigid->SetVelocity(Vec2(100.f, pRigid->GetVelocity().y));
+				pRigid->SetVelocity(Vec2(200.f, pRigid->GetVelocity().y));
 			}
 		}
 		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
 		{
 			if (KEY_HOLD(KEY::LEFT))
 			{
-				pRigid->SetVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
+				pRigid->SetVelocity(Vec2(-200.f, pRigid->GetVelocity().y));
+			}
+		}
+	}
+	break;
+	case KIRBY_STATE::DOUBLEJUMP:
+	{
+		if ((UINT)KIRBY_DIR::RIGHT == m_iDir)
+		{
+			if (KEY_HOLD(KEY::RIGHT))
+			{
+				pRigid->SetVelocity(Vec2(200.f, pRigid->GetVelocity().y));
+			}
+		}
+		else if ((UINT)KIRBY_DIR::LEFT == m_iDir)
+		{
+			if (KEY_HOLD(KEY::LEFT))
+			{
+				pRigid->SetVelocity(Vec2(-200.f, pRigid->GetVelocity().y));
 			}
 		}
 	}
@@ -366,6 +405,18 @@ void Kirby::update_animation()
 		}
 	}
 	break;
+	case KIRBY_STATE::DOUBLEJUMP:
+	{
+		if ((UINT)KIRBY_DIR::LEFT == m_iDir)
+		{
+			pAnimator->Play(L"DOUBLE_JUMP_Left", true, false);
+		}
+		else
+		{
+			pAnimator->Play(L"DOUBLE_JUMP_Right", true, false);
+		}
+	}
+	break;
 
 	case KIRBY_STATE::DEAD:
 		break;
@@ -432,6 +483,15 @@ void Kirby::State_Enter()
 		}	
 	}
 	break;
+	case KIRBY_STATE::DOUBLEJUMP:
+	{
+		// 점프키를 누러 진입한 경우 추가 속도
+		if (KEY_TAP(KEY::SPACE))
+		{
+			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -300.f));
+		}
+	}
+	break;
 	case KIRBY_STATE::DEAD:
 		break;
 	default:
@@ -452,13 +512,15 @@ void Kirby::State_Execute()
 	case KIRBY_STATE::RUN:
 		break;
 	case KIRBY_STATE::JUMP:
+		break;
+	case KIRBY_STATE::DOUBLEJUMP:
 	{
 		if (KEY_TAP(KEY::SPACE))
 		{
 			pRigid->SetVelocity(Vec2(0.f, -300.f));
-		}		
+		}
 	}
-		break;
+	break;
 	case KIRBY_STATE::DEAD:
 		break;
 	default:
@@ -479,6 +541,8 @@ void Kirby::State_Exit()
 	case KIRBY_STATE::RUN:
 		break;
 	case KIRBY_STATE::JUMP:
+		break;
+	case KIRBY_STATE::DOUBLEJUMP:
 		break;
 	case KIRBY_STATE::DEAD:
 		break;

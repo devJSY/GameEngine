@@ -8,15 +8,7 @@ class CScene_Stage :
     public CScene
 {
 private:
-    CTexture*           m_TexBackGround;
-    CTexture*           m_TexForeGround;
-    CAnimation*         m_BackGroundAnim;
-    CAnimation*         m_ForeGroundAnim;
-
-    wstring             m_BackGroundPath;
-    wstring             m_ForeGroundPath;
-
-    Vec2                m_SceneOffset;
+    tStageConf         m_tStageConf;
 
 public:
     virtual void update();

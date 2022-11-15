@@ -20,7 +20,7 @@
 CScene_AnimTool::CScene_AnimTool()
 	: m_pTex(nullptr)
 	, m_DragTrig(false)
-	, CurAinmData{}
+	, m_CurAinmData{}
 	, m_AnimAxis(0)
 {
 }
@@ -37,9 +37,9 @@ void CScene_AnimTool::update()
 	{
 		m_vTapPos = MOUSE_POS;
 		m_DragTrig = true;
-		vAccPos = CCamera::GetInst()->GetLookAt();	// 클릭 당시 위치 값 저장
+		m_vAccPos = CCamera::GetInst()->GetLookAt();	// 클릭 당시 위치 값 저장
 
-		CurAinmData = {};	// 재 클릭시 현재 애니메이션 초기화
+		m_CurAinmData = {};	// 재 클릭시 현재 애니메이션 초기화
 	}
 
 	if (KEY_AWAY(KEY::RBTN))
@@ -48,60 +48,55 @@ void CScene_AnimTool::update()
 		m_DragTrig = false;
 
 		// 슬라이스 사이즈 저장
-		CurAinmData.vSlice = (m_vTapPos - m_vAwayPos) - vCamDist;
-		CurAinmData.vSlice.Vec2_abs();
+		m_CurAinmData.vSlice = (m_vTapPos - m_vAwayPos) - m_vCamDist;
+		m_CurAinmData.vSlice.Vec2_abs();
 
 		// 좌상단 절대값 저장
-		CurAinmData.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos - vCamDist);
-		//CurAinmData.vLT.Vec2_abs();
+		m_CurAinmData.vLT = CCamera::GetInst()->GetRealPos(m_vTapPos - m_vCamDist);
 
 		// 우하단 절대값 저장
-		CurAinmData.vRB = CCamera::GetInst()->GetRealPos(m_vAwayPos);
-		//CurAinmData.vRB.Vec2_abs();		
+		m_CurAinmData.vRB = CCamera::GetInst()->GetRealPos(m_vAwayPos);		
 
 		// 드래그 위치에 따라 좌상단, 우하단 위치 결정
-		if (CurAinmData.vLT.x > CurAinmData.vRB.x )
+		if (m_CurAinmData.vLT.x > m_CurAinmData.vRB.x )
 		{
-			float fTemp = CurAinmData.vLT.x;
-			CurAinmData.vLT.x = CurAinmData.vRB.x;
-			CurAinmData.vRB.x = fTemp;
+			float fTemp = m_CurAinmData.vLT.x;
+			m_CurAinmData.vLT.x = m_CurAinmData.vRB.x;
+			m_CurAinmData.vRB.x = fTemp;
 		}
 
-		if (CurAinmData.vLT.y > CurAinmData.vRB.y)
+		if (m_CurAinmData.vLT.y > m_CurAinmData.vRB.y)
 		{
-			float fTemp = CurAinmData.vLT.y;
-			CurAinmData.vLT.y = CurAinmData.vRB.y;
-			CurAinmData.vRB.y = fTemp;
+			float fTemp = m_CurAinmData.vLT.y;
+			m_CurAinmData.vLT.y = m_CurAinmData.vRB.y;
+			m_CurAinmData.vRB.y = fTemp;
 		}
-
-		// 마우스 좌표에 따른 지정한 범위의 프레임 데이터 벡터에 저장
-		//frameData.push_back(CurAinmData);
 	}
 
 	// 프레임 드래그 이동 처리
 	Vec2 vMousePos = MOUSE_POS;
-	Vec2 CurAnimvLT = CCamera::GetInst()->GetRenderPos(CurAinmData.vLT);
-	Vec2 CurAnimvRB = CCamera::GetInst()->GetRenderPos(CurAinmData.vRB);	
+	Vec2 CurAnimvLT = CCamera::GetInst()->GetRenderPos(m_CurAinmData.vLT);
+	Vec2 CurAnimvRB = CCamera::GetInst()->GetRenderPos(m_CurAinmData.vRB);	
 
 	if (CurAnimvLT.x <= vMousePos.x && vMousePos.x <= CurAnimvRB.x
 		&& CurAnimvLT.y <= vMousePos.y && vMousePos.y <= CurAnimvRB.y)
 	{
 		if (KEY_HOLD(KEY::LBTN))
 		{
-			Vec2 vMouseDiff = MOUSE_POS - vPrevMousePos;
-			Vec2 vCamDiff = CCamera::GetInst()->GetLookAt() - vPrevCamLookAt; 
+			Vec2 vMouseDiff = MOUSE_POS - m_vPrevMousePos;
+			Vec2 vCamDiff = CCamera::GetInst()->GetLookAt() - m_vPrevCamLookAt; 
 
 			if (m_AnimAxis)
 			{
 				// X축 이동
-				CurAinmData.vLT.x += vMouseDiff.x + vCamDiff.x;
-				CurAinmData.vRB.x += vMouseDiff.x + vCamDiff.x;
+				m_CurAinmData.vLT.x += vMouseDiff.x + vCamDiff.x;
+				m_CurAinmData.vRB.x += vMouseDiff.x + vCamDiff.x;
 			}
 			else
 			{
 				// Y축 이동
-				CurAinmData.vLT.y += vMouseDiff.y + vCamDiff.y;
-				CurAinmData.vRB.y += vMouseDiff.y + vCamDiff.y;
+				m_CurAinmData.vLT.y += vMouseDiff.y + vCamDiff.y;
+				m_CurAinmData.vRB.y += vMouseDiff.y + vCamDiff.y;
 			}
 		}
 	}
@@ -113,22 +108,22 @@ void CScene_AnimTool::update()
 
 	if (KEY_AWAY(KEY::SPACE))
 	{
-		frameData.push_back(CurAinmData);
+		m_frameData.push_back(m_CurAinmData);
 	}
 
 	if (KEY_AWAY(KEY::CTRL))
 	{
-		frameData.clear();
+		m_frameData.clear();
 	}
 
 	// 클릭 당시 위치값과 현재 위치값의 차이, 즉 카메라 이동량을 구함
-	vCamDist = CCamera::GetInst()->GetLookAt() - vAccPos;
+	m_vCamDist = CCamera::GetInst()->GetLookAt() - m_vAccPos;
 
 	// 이전 프레임 카메라 위치
-	vPrevCamLookAt = CCamera::GetInst()->GetLookAt();	
+	m_vPrevCamLookAt = CCamera::GetInst()->GetLookAt();	
 
 	// 이전 프레임 마우스 위치 
-	vPrevMousePos = MOUSE_POS;
+	m_vPrevMousePos = MOUSE_POS;
 
 	if (KEY_AWAY(KEY::LSHIFT))
 	{
@@ -165,20 +160,20 @@ void CScene_AnimTool::render(HDC _dc)
 		Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
 
 		Rectangle(_dc
-			, (int)(m_vTapPos.x - vCamDist.x)	// 클릭한 순간 부터 카메라 영향 받음
-			, (int)(m_vTapPos.y - vCamDist.y)	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)(m_vTapPos.x - m_vCamDist.x)	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)(m_vTapPos.y - m_vCamDist.y)	// 클릭한 순간 부터 카메라 영향 받음
 			, (int)vMousePos.x
 			, (int)vMousePos.y);
 	}
 
 	// 생성한 프레임 렌더링
-	for (size_t i = 0; i < frameData.size(); ++i)
+	for (size_t i = 0; i < m_frameData.size(); ++i)
 	{
 		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
 		SelectGDI p(_dc, PEN_TYPE::GREEN);
 
-		Vec2 vLT = CCamera::GetInst()->GetRenderPos(frameData[i].vLT);
-		Vec2 vRB = CCamera::GetInst()->GetRenderPos(frameData[i].vRB);
+		Vec2 vLT = CCamera::GetInst()->GetRenderPos(m_frameData[i].vLT);
+		Vec2 vRB = CCamera::GetInst()->GetRenderPos(m_frameData[i].vRB);
 
 		Rectangle(_dc
 			, (int)vLT.x	
@@ -188,13 +183,13 @@ void CScene_AnimTool::render(HDC _dc)
 	}
 
 	// 현재 선택 영역 렌더링
-	if (CurAinmData.vLT != Vec2(0.f, 0.f))
+	if (m_CurAinmData.vLT != Vec2(0.f, 0.f))
 	{
 		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
 		SelectGDI p(_dc, PEN_TYPE::RED);
 		
-		Vec2 vLT = CCamera::GetInst()->GetRenderPos(CurAinmData.vLT);
-		Vec2 vRB = CCamera::GetInst()->GetRenderPos(CurAinmData.vRB);
+		Vec2 vLT = CCamera::GetInst()->GetRenderPos(m_CurAinmData.vLT);
+		Vec2 vRB = CCamera::GetInst()->GetRenderPos(m_CurAinmData.vRB);
 
 		Rectangle(_dc
 			, (int)vLT.x
@@ -226,8 +221,8 @@ void CScene_AnimTool::Enter()
 void CScene_AnimTool::Exit()
 {
 	// 기존에 저장했던 프레임 데이터 초기화
-	frameData.clear();
-	CurAinmData = {};
+	m_frameData.clear();
+	m_CurAinmData = {};
 
 	DeleteAll();
 }
@@ -243,12 +238,12 @@ void CScene_AnimTool::SaveAnimation(const wchar_t* _FileName, float _fDuration)
 
 	SaveAnim.SetTexture(m_pTex);
 
-	for (size_t i = 0; i < frameData.size(); ++i)
+	for (size_t i = 0; i < m_frameData.size(); ++i)
 	{
-		frameData[i].vLT = frameData[i].vLT.Vec2_abs();
-		frameData[i].vRB = frameData[i].vRB.Vec2_abs();
+		m_frameData[i].vLT = m_frameData[i].vLT.Vec2_abs();
+		m_frameData[i].vRB = m_frameData[i].vRB.Vec2_abs();
 
-		SaveAnim.AddFrameVec(frameData[i].vLT, frameData[i].vSlice, _fDuration);
+		SaveAnim.AddFrameVec(m_frameData[i].vLT, m_frameData[i].vSlice, _fDuration);
 	}
 	
 	SaveAnim.SetName(_FileName);
@@ -308,8 +303,8 @@ void CScene_AnimTool::LoadTexture()
 		CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
 
 		// 기존에 저장했던 프레임 데이터 초기화
-		frameData.clear();
-		CurAinmData = {};
+		m_frameData.clear();
+		m_CurAinmData = {};
 	}
 }
 
