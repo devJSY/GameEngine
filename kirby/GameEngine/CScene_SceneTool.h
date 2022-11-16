@@ -20,19 +20,20 @@ class CScene_SceneTool :
     public CScene
 {
 private:
+    // Scene
     tStageConf              m_tStageConf;
+    Vec2                    m_vPrevMousePos;
 
+    // Tile
+    vector<CObject*>        m_vTile;
     Vec2                    m_vTapPos;
     Vec2                    m_vAwayPos;
     Vec2                    m_vAccPos;
     Vec2                    m_vCamDist;
-
     bool                    m_DragTrig;
 
-    Vec2                    m_vPrevMousePos;
+   
 
-    Vec2                    _TempLT;
-    Vec2                    _TempRB;
 
 public:
     virtual void update();
@@ -57,6 +58,7 @@ public:
 
 public:
     void TileDetectCheck(Vec2 _vLT, Vec2 _vRB);
+
 
 public:
     CScene_SceneTool();

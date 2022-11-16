@@ -169,6 +169,7 @@
     <ClInclude Include="CScene_Stage.h" />
     <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CTexture.h" />
+    <ClInclude Include="CTile.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIMgr.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="CScene_Stage.cpp" />
     <ClCompile Include="CScene_Start.cpp" />
     <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIMgr.cpp" />

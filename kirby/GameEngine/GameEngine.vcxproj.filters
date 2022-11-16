@@ -159,6 +159,9 @@
     <Filter Include="소스 파일\05. Scene\Scene_AnimTool">
       <UniqueIdentifier>{09a8212a-d28c-4460-b919-a47007e17e84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\04. Object\Tile">
+      <UniqueIdentifier>{23cced50-70e8-4a16-adc4-05b03da48ac0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -290,6 +293,9 @@
     <ClInclude Include="CScene_SceneTool.h">
       <Filter>소스 파일\05. Scene\Scene_SceneTool</Filter>
     </ClInclude>
+    <ClInclude Include="CTile.h">
+      <Filter>소스 파일\04. Object\Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -399,6 +405,9 @@
     </ClCompile>
     <ClCompile Include="CScene_SceneTool.cpp">
       <Filter>소스 파일\05. Scene\Scene_SceneTool</Filter>
+    </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>소스 파일\04. Object\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,16 +1,17 @@
 #include "global.h"
-
 #include "CScene_SceneTool.h"
+
+#include "CTexture.h"
+#include "CAnimation.h"
+#include "CTile.h"
+
+
 #include "CResMgr.h"
 #include "CCore.h"
 #include "CKeyMgr.h"
 #include "CPathMgr.h"
 #include "CCamera.h"
-#include "CTexture.h"
-#include "CAnimation.h"
 #include "SelectGDI.h"
-
-
 #include "CSceneMgr.h"
 
 CScene_SceneTool::CScene_SceneTool()
@@ -144,13 +145,7 @@ void CScene_SceneTool::render(HDC _dc)
 			, (int)vMousePos.y);
 	}
 
-	Rectangle(_dc
-		, (int)_TempLT.x - m_vCamDist.x
-		, (int)_TempLT.y - m_vCamDist.y
-		, (int)_TempRB.x - m_vCamDist.x
-		, (int)_TempRB.y - m_vCamDist.y);
-
-	//CScene::render(_dc);	
+	CScene::render(_dc);	
 }
 
 void CScene_SceneTool::Enter()
@@ -161,6 +156,24 @@ void CScene_SceneTool::Enter()
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
 	CCamera::GetInst()->SetMovsSpeed(800.f);
+
+	CTile* pTile = nullptr;
+	
+	for (int i = 0; i < 160; ++i)
+	{
+		for (int j = 0; j < 24 ; ++j)
+		{
+			pTile = new CTile;
+
+			pTile->SetScale(Vec2(TILE_SIZE, TILE_SIZE));
+			pTile->SetPos(Vec2(TILE_SIZE * i + (TILE_SIZE / 2.f), TILE_SIZE * j + (TILE_SIZE / 2.f)));
+
+			m_vTile.push_back(pTile);
+
+			EnterAddObject(pTile, GROUP_TYPE::GROUND);
+		}
+	}
+	
 }
 
 void CScene_SceneTool::Exit()
@@ -398,9 +411,6 @@ void CScene_SceneTool::TileDetectCheck(Vec2 _vLT, Vec2 _vRB)
 {
 	Vec2 vLT = _vLT;
 	Vec2 vRB = _vRB;
-
-	_TempLT = _vLT;
-	_TempRB = _vRB;
 
 
 }
