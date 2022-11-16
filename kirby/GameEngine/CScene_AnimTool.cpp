@@ -78,6 +78,7 @@ void CScene_AnimTool::update()
 	Vec2 CurAnimvLT = CCamera::GetInst()->GetRenderPos(m_CurAinmData.vLT);
 	Vec2 CurAnimvRB = CCamera::GetInst()->GetRenderPos(m_CurAinmData.vRB);	
 
+	// 클릭한 부분이 프레임 내부이다
 	if (CurAnimvLT.x <= vMousePos.x && vMousePos.x <= CurAnimvRB.x
 		&& CurAnimvLT.y <= vMousePos.y && vMousePos.y <= CurAnimvRB.y)
 	{

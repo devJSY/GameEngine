@@ -20,6 +20,12 @@ public:
     void Load(const wstring& _strName);
 
 public:
+    CTexture* GetBackGroundTex() { return m_tStageConf.TexBackGround; }
+    CTexture* GetForeGroundTex() { return m_tStageConf.TexForeGround; }
+    CAnimation* GetBackGroundAnim() { return m_tStageConf.BackGroundAnim; }
+    CAnimation* GetForeGroundAnim() { return m_tStageConf.ForeGroundAnim; }
+
+public:
     CScene_Stage();
     ~CScene_Stage();
 };

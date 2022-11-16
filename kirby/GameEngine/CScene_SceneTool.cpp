@@ -15,6 +15,7 @@
 
 CScene_SceneTool::CScene_SceneTool()
 	: m_tStageConf{}
+	, m_DragTrig(false)
 {
 }
 
@@ -45,7 +46,45 @@ void CScene_SceneTool::update()
 		m_tStageConf.SceneOffset.y -= MOUSE_POS.y - m_vPrevMousePos.y;
 	}
 
-	m_vPrevMousePos = MOUSE_POS;	
+	// 오브젝트 생성
+	if (KEY_TAP(KEY::RBTN))
+	{
+		m_DragTrig = true;
+		m_vTapPos = MOUSE_POS;
+		m_vAccPos = CCamera::GetInst()->GetLookAt();	// 클릭 당시 위치 값 저장
+	}
+
+	if (KEY_AWAY(KEY::RBTN))
+	{
+		m_DragTrig = false;
+		m_vAwayPos = MOUSE_POS;
+
+		Vec2 vLT = m_vTapPos;
+		Vec2 vRB = m_vAwayPos;
+
+		// 드래그 위치에 따라 좌상단, 우하단 위치 결정
+		if (vLT.x > vRB.x)
+		{
+			float fTemp = vLT.x;
+			vLT.x = vRB.x;
+			vRB.x = fTemp;
+		}
+
+		if (vLT.y > vRB.y)
+		{
+			float fTemp = vLT.y;
+			vLT.y = vRB.y;
+			vRB.y = fTemp;
+		}
+
+		vRB += m_vCamDist;
+
+		TileDetectCheck(vLT, vRB);
+	}
+
+	
+	m_vPrevMousePos = MOUSE_POS;
+	m_vCamDist = CCamera::GetInst()->GetLookAt() - m_vAccPos;
 }
 
 void CScene_SceneTool::render(HDC _dc)
@@ -67,7 +106,7 @@ void CScene_SceneTool::render(HDC _dc)
 			, (int)tAnim.vLT.x
 			, (int)tAnim.vLT.y
 			, SRCCOPY);
-	}	
+	}
 
 	if (nullptr != m_tStageConf.ForeGroundAnim)
 	{
@@ -89,7 +128,29 @@ void CScene_SceneTool::render(HDC _dc)
 			, RGB(0, 18, 127));
 	}
 
-	CScene::render(_dc);	
+	if (m_DragTrig)
+	{
+		Vec2 vMousePos = MOUSE_POS;
+
+		SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
+		SelectGDI p(_dc, PEN_TYPE::RED);
+
+		Vec2 vTagPos = CCamera::GetInst()->GetRenderPos(m_vTapPos);
+
+		Rectangle(_dc
+			, (int)(m_vTapPos.x - m_vCamDist.x)	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)(m_vTapPos.y - m_vCamDist.y)	// 클릭한 순간 부터 카메라 영향 받음
+			, (int)vMousePos.x
+			, (int)vMousePos.y);
+	}
+
+	Rectangle(_dc
+		, (int)_TempLT.x - m_vCamDist.x
+		, (int)_TempLT.y - m_vCamDist.y
+		, (int)_TempRB.x - m_vCamDist.x
+		, (int)_TempRB.y - m_vCamDist.y);
+
+	//CScene::render(_dc);	
 }
 
 void CScene_SceneTool::Enter()
@@ -331,6 +392,17 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	fscanf_s(pFile, "%f %f", &m_tStageConf.SceneOffset.x, &m_tStageConf.SceneOffset.y);
 	
 	fclose(pFile);	// 파일 스트림 종료
+}
+
+void CScene_SceneTool::TileDetectCheck(Vec2 _vLT, Vec2 _vRB)
+{
+	Vec2 vLT = _vLT;
+	Vec2 vRB = _vRB;
+
+	_TempLT = _vLT;
+	_TempRB = _vRB;
+
+
 }
 
 

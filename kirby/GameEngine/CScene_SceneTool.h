@@ -13,7 +13,7 @@ struct tStageConf
     wstring                 BackGroundPath;
     wstring                 ForeGroundPath;
     Vec2                    SceneOffset;
-    vector<CObject*>        vecObj;
+    //vector<CObject*>        vecObj;
 };
 
 class CScene_SceneTool :
@@ -21,7 +21,18 @@ class CScene_SceneTool :
 {
 private:
     tStageConf              m_tStageConf;
+
+    Vec2                    m_vTapPos;
+    Vec2                    m_vAwayPos;
+    Vec2                    m_vAccPos;
+    Vec2                    m_vCamDist;
+
+    bool                    m_DragTrig;
+
     Vec2                    m_vPrevMousePos;
+
+    Vec2                    _TempLT;
+    Vec2                    _TempRB;
 
 public:
     virtual void update();
@@ -44,6 +55,8 @@ public:
     void Save(const wstring& _strName);
     void Load(const wstring& _strName);
 
+public:
+    void TileDetectCheck(Vec2 _vLT, Vec2 _vRB);
 
 public:
     CScene_SceneTool();

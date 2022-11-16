@@ -7,6 +7,7 @@
 #include "CScene.h"
 #include "CScene_AnimTool.h"
 #include "CScene_SceneTool.h"
+#include "CScene_Stage.h"
 #include "CAnimation.h"
 
 #include "CResMgr.h"
@@ -132,6 +133,9 @@ void CCamera::update()
 					m_vLookAt.y += m_fMoveSpeed * fDT;
 			}
 		}
+	}
+	else if (L"Stage_01" == pCurScene->GetName())
+	{
 	}
 
 
