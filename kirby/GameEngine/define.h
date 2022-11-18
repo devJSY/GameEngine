@@ -39,6 +39,7 @@ enum class GROUP_TYPE
 	MONSTER,
 	UI,
 	GROUND,
+	TILE,
 
 	END = 32,
 };

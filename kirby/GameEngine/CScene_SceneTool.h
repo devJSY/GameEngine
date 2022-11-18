@@ -58,6 +58,7 @@ public:
 
 public:
     void TileDetectCheck(Vec2 _vLT, Vec2 _vRB);
+    void TileVecGenerate(float _Width, float _Height);
 
 
 public:

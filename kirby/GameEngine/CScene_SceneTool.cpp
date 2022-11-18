@@ -65,6 +65,7 @@ void CScene_SceneTool::update()
 		Vec2 vLT = m_vTapPos;
 		Vec2 vRB = m_vAwayPos;
 		
+		// 카메라 이동거리 만큼 체크박스 확장 적용
 		vRB += m_vCamDist;
 
 		// 드래그 위치에 따라 좌상단, 우하단 위치 결정
@@ -80,9 +81,11 @@ void CScene_SceneTool::update()
 			float fTemp = vLT.y;
 			vLT.y = vRB.y;
 			vRB.y = fTemp;
-		}
+		}	
 
-		
+		// 카메라 이동거리 더해준만큼 다시 빼서 체크박스 위치 조정
+		vLT -= m_vCamDist;
+		vRB -= m_vCamDist;
 
 		TileDetectCheck(vLT, vRB);
 	}
@@ -161,28 +164,6 @@ void CScene_SceneTool::Enter()
 	CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
 	CCamera::GetInst()->SetMovsSpeed(800.f);
 
-	CTile* pTile = nullptr;
-
-	for (int i = 0; i < 160; ++i)
-	{
-		for (int j = 0; j < 10 ; ++j)
-		{
-			pTile = new CTile;
-
-			pTile->SetScale(Vec2(TILE_SIZE, TILE_SIZE));
-			pTile->SetPos(Vec2(TILE_SIZE * i + (TILE_SIZE / 2.f), TILE_SIZE * j + (TILE_SIZE / 2.f)));
-			int Idx = i * 10 + j;
-			wstring TileName = L"Tile_";
-			TileName += std::to_wstring(Idx);
-			pTile->SetName(TileName);
-
-
-			m_vTile.push_back(pTile);
-
-			EnterAddObject(pTile, GROUP_TYPE::GROUND);
-		}
-	}
-
 	// BackGround 초기화
 	m_tStageConf.BackGroundPath = L"Animation\\BackGround\\1.anim";
 	m_tStageConf.TexBackGround = CResMgr::GetInst()->LoadTexture(L"BackGround", L"Texture\\BackGround.bmp");
@@ -208,7 +189,9 @@ void CScene_SceneTool::Enter()
 	m_tStageConf.ForeGroundAnim = new CAnimation;
 
 	m_tStageConf.ForeGroundAnim->Load(m_tStageConf.ForeGroundPath);
-	
+
+
+	TileVecGenerate(m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.x, m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.y);
 }
 
 void CScene_SceneTool::Exit()
@@ -221,10 +204,6 @@ void CScene_SceneTool::TileDetectCheck(Vec2 _vLT, Vec2 _vRB)
 	Vec2 vLT = _vLT;
 	Vec2 vRB = _vRB;
 
-	// 이동한 거리만큼 빼줌
-	vLT -= m_vCamDist;
-	vRB -= m_vCamDist;
-
 	for (size_t i = 0; i < m_vTile.size(); ++i)
 	{
 		Vec2 vPos = CCamera::GetInst()->GetRenderPos(m_vTile[i]->GetPos());
@@ -232,10 +211,6 @@ void CScene_SceneTool::TileDetectCheck(Vec2 _vLT, Vec2 _vRB)
 		if (vLT.x < vPos.x && vRB.x > vPos.x
 			&& vLT.y < vPos.y && vRB.y > vPos.y)
 		{
-			//((CTile*)m_vTile[i])->Checking();
-
-			wstring TileName = m_vTile[i]->GetName();
-
 			if (KEY_HOLD(KEY::CTRL))
 			{
 				((CTile*)m_vTile[i])->CheckingFalse();
@@ -244,6 +219,42 @@ void CScene_SceneTool::TileDetectCheck(Vec2 _vLT, Vec2 _vRB)
 			{
 				((CTile*)m_vTile[i])->CheckingTrue();
 			}
+		}
+	}
+}
+
+void CScene_SceneTool::TileVecGenerate(float _Width, float _Height)
+{
+	// 기존 타일 초기화
+	if (!m_vTile.empty())
+	{
+		DeleteGroup(GROUP_TYPE::TILE);
+		m_vTile.clear();
+	}
+
+	UINT iWidth = _Width / TILE_SIZE;
+	UINT iHeight = _Height / TILE_SIZE;
+
+	CTile* pTile = nullptr;
+
+	for (int i = 0; i < iWidth; ++i)
+	{
+		for (int j = 0; j < iHeight; ++j)
+		{
+			pTile = new CTile;
+
+			pTile->SetScale(Vec2(TILE_SIZE, TILE_SIZE));
+			pTile->SetPos(Vec2(TILE_SIZE * i + (TILE_SIZE / 2.f), TILE_SIZE * j + (TILE_SIZE / 2.f)));
+
+			int Idx = i * 10 + j;
+			wstring TileName = L"Tile_";
+			TileName += std::to_wstring(Idx);
+			pTile->SetName(TileName);
+
+
+			m_vTile.push_back(pTile);
+
+			EnterAddObject(pTile, GROUP_TYPE::TILE);
 		}
 	}
 }
@@ -339,6 +350,9 @@ void CScene_SceneTool::LoadForeGround()
 		// 카메라 위치 초기화
 		Vec2 vResolution = CCore::GetInst()->GetResolution();
 		CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
+
+		// 타일 재생성
+		TileVecGenerate(m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.x, m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.y);
 	}
 }
 
