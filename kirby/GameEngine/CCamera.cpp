@@ -107,19 +107,19 @@ void CCamera::update()
 					m_vLookAt.x += m_fMoveSpeed * fDT;
 			}
 
-			//// y Axis top Move Limit
-			//if (vLT.y > 0)
-			//{
-			//	if (KEY_HOLD(KEY::W))
-			//		m_vLookAt.y -= m_fMoveSpeed * fDT;
-			//}
+			// y Axis top Move Limit
+			if (vLT.y > 0)
+			{
+				if (KEY_HOLD(KEY::W))
+					m_vLookAt.y -= m_fMoveSpeed * fDT;
+			}
 
-			//// y Axis bottom Move Limit
-			//if (vLT.y < (iHeight - vResolution.y))
-			//{
-			//	if (KEY_HOLD(KEY::S))
-			//		m_vLookAt.y += m_fMoveSpeed * fDT;
-			//}
+			// y Axis bottom Move Limit
+			if (vLT.y < (iHeight - vResolution.y))
+			{
+				if (KEY_HOLD(KEY::S))
+					m_vLookAt.y += m_fMoveSpeed * fDT;
+			}
 		}
 	}
 	else if (L"Stage_01" == pCurScene->GetName())

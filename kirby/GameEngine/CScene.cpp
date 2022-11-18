@@ -1,5 +1,7 @@
 #include "global.h"
 #include "CScene.h"
+#include "CCore.h"
+#include "CCamera.h"
 
 #include "CObject.h"
 
@@ -49,7 +51,7 @@ void CScene::render(HDC _dc)
 	{
 		for (size_t j = 0; j < m_arrObj[i].size(); ++j)
 		{
-			if (!m_arrObj[i][j]->IsDead())
+			if (!m_arrObj[i][j]->IsDead() && IsRenderArea(m_arrObj[i][j]))
 			{
 				m_arrObj[i][j]->render(_dc);
 				 
@@ -105,4 +107,20 @@ void CScene::DeleteAll()
 void CScene::DeleteGroup(GROUP_TYPE _eTarget)
 {
 	Safe_Delete_Vec(m_arrObj[(UINT)_eTarget]);
+}
+
+bool CScene::IsRenderArea(CObject* _pobj)
+{
+	Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(_pobj->GetPos());
+	Vec2 vScale = _pobj->GetScale();
+	Vec2 vResolution = CCore::GetInst()->GetResolution();
+
+	
+	if (vRenderPos.x > 0.f && (vRenderPos.x + (vScale.x / 2.f)) - TILE_SIZE < vResolution.x
+		&& vRenderPos.y > 0.f && (vRenderPos.y + (vScale.y / 2.f)) - TILE_SIZE < vResolution.y)
+	{
+		return true;
+	}
+
+	return false;	
 }

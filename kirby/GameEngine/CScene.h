@@ -43,6 +43,9 @@ public:
     }
 
 public:
+    bool IsRenderArea(CObject* _pobj);
+
+public:
     CScene();
     virtual ~CScene();
 };
