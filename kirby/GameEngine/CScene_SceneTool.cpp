@@ -64,6 +64,8 @@ void CScene_SceneTool::update()
 
 		Vec2 vLT = m_vTapPos;
 		Vec2 vRB = m_vAwayPos;
+		
+		vRB += m_vCamDist;
 
 		// 드래그 위치에 따라 좌상단, 우하단 위치 결정
 		if (vLT.x > vRB.x)
@@ -80,7 +82,7 @@ void CScene_SceneTool::update()
 			vRB.y = fTemp;
 		}
 
-		vRB += m_vCamDist;
+		
 
 		TileDetectCheck(vLT, vRB);
 	}
@@ -219,10 +221,13 @@ void CScene_SceneTool::TileDetectCheck(Vec2 _vLT, Vec2 _vRB)
 	Vec2 vLT = _vLT;
 	Vec2 vRB = _vRB;
 
+	// 이동한 거리만큼 빼줌
+	vLT -= m_vCamDist;
+	vRB -= m_vCamDist;
+
 	for (size_t i = 0; i < m_vTile.size(); ++i)
 	{
 		Vec2 vPos = CCamera::GetInst()->GetRenderPos(m_vTile[i]->GetPos());
-		//Vec2 vPos = m_vTile[i]->GetPos();
 
 		if (vLT.x < vPos.x && vRB.x > vPos.x
 			&& vLT.y < vPos.y && vRB.y > vPos.y)
