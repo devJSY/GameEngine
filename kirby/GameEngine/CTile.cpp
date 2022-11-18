@@ -6,6 +6,7 @@
 #include "CCore.h"
 
 CTile::CTile()
+	: m_Checked(false)
 {
 }
 
@@ -30,4 +31,15 @@ void CTile::render(HDC _dc)
 		, int(vRenderPos.y - vScale.y / 2.f)
 		, int(vRenderPos.x + vScale.x / 2.f)
 		, int(vRenderPos.y + vScale.y / 2.f));
+
+	if (m_Checked)
+	{
+		SelectGDI b(_dc, BRUSH_TYPE::WHITE);
+
+		Ellipse(_dc
+			, int(vRenderPos.x - vScale.x / 2.f)
+			, int(vRenderPos.y - vScale.y / 2.f)
+			, int(vRenderPos.x + vScale.x / 2.f)
+			, int(vRenderPos.y + vScale.y / 2.f));
+	}
 }

@@ -38,8 +38,6 @@ void CGround::render(HDC _dc)
 		, int(vRenderPos.y - vScale.y / 2.f)
 		, int(vRenderPos.x + vScale.x / 2.f)
 		, int(vRenderPos.y + vScale.y / 2.f));
-
-	CCollider* pRigid = (CCollider*)GetComponents(Component_TYPE::Collider);
 }
 
 void CGround::OnCollisionEnter(CCollider* _pOther)

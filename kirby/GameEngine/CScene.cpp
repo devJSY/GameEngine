@@ -115,7 +115,7 @@ bool CScene::IsRenderArea(CObject* _pobj)
 	Vec2 vScale = _pobj->GetScale();
 	Vec2 vResolution = CCore::GetInst()->GetResolution();
 
-	
+	// 타일사이즈만큼 한칸더 그리기
 	if (vRenderPos.x > 0.f && (vRenderPos.x + (vScale.x / 2.f)) - TILE_SIZE < vResolution.x
 		&& vRenderPos.y > 0.f && (vRenderPos.y + (vScale.y / 2.f)) - TILE_SIZE < vResolution.y)
 	{

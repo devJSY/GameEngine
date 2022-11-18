@@ -18,6 +18,32 @@ CScene_SceneTool::CScene_SceneTool()
 	: m_tStageConf{}
 	, m_DragTrig(false)
 {
+	// BackGround 초기화
+	m_tStageConf.BackGroundPath = L"Animation\\BackGround\\1.anim";
+	m_tStageConf.TexBackGround = CResMgr::GetInst()->LoadTexture(L"BackGround", L"Texture\\BackGround.bmp");
+
+	if (nullptr != m_tStageConf.BackGroundAnim)
+	{
+		delete m_tStageConf.BackGroundAnim;
+	}
+
+	m_tStageConf.BackGroundAnim = new CAnimation;
+
+	m_tStageConf.BackGroundAnim->Load(m_tStageConf.BackGroundPath);
+
+	// ForeGround 초기화
+	m_tStageConf.ForeGroundPath = L"Animation\\ForeGround\\1\\1.anim";
+	m_tStageConf.TexForeGround = CResMgr::GetInst()->LoadTexture(L"ForeGround", L"Texture\\ForeGround.bmp");
+
+	if (nullptr != m_tStageConf.ForeGroundAnim)
+	{
+		delete m_tStageConf.ForeGroundAnim;
+	}
+
+	m_tStageConf.ForeGroundAnim = new CAnimation;
+
+	m_tStageConf.ForeGroundAnim->Load(m_tStageConf.ForeGroundPath);
+
 }
 
 CScene_SceneTool::~CScene_SceneTool()
@@ -412,7 +438,26 @@ void CScene_SceneTool::TileDetectCheck(Vec2 _vLT, Vec2 _vRB)
 	Vec2 vLT = _vLT;
 	Vec2 vRB = _vRB;
 
+	for (size_t i = 0; i < m_vTile.size(); ++i)
+	{
+		//Vec2 vPos = CCamera::GetInst()->GetRenderPos(m_vTile[i]->GetPos());
+		Vec2 vPos = m_vTile[i]->GetPos();
 
+		if (vLT.x < vPos.x && vRB.x > vPos.x
+			&& vLT.y < vPos.y && vRB.y > vPos.y)
+		{
+			//((CTile*)m_vTile[i])->Checking();
+
+			if (KEY_HOLD(KEY::CTRL))
+			{
+				((CTile*)m_vTile[i])->CheckingFalse();
+			}
+			else
+			{
+				((CTile*)m_vTile[i])->CheckingTrue();
+			}
+		}
+	}
 }
 
 
