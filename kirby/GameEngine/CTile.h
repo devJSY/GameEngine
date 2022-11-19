@@ -17,6 +17,9 @@ public:
     void Checking() { m_Checked = !m_Checked; }
     void CheckingTrue() { m_Checked = true; }
     void CheckingFalse() { m_Checked = false; }
+
+public:
+    bool IsChecked() { return m_Checked; }
   
 
 public:

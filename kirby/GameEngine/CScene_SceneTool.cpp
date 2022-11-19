@@ -196,6 +196,8 @@ void CScene_SceneTool::Enter()
 
 void CScene_SceneTool::Exit()
 {
+	// 생성했던 오브젝트 삭제
+	DeleteAll();
 }
 
 
@@ -232,8 +234,8 @@ void CScene_SceneTool::TileVecGenerate(float _Width, float _Height)
 		m_vTile.clear();
 	}
 
-	UINT iWidth = _Width / TILE_SIZE;
-	UINT iHeight = _Height / TILE_SIZE;
+	int iWidth = (int)(_Width / TILE_SIZE);
+	int iHeight = (int)(_Height / TILE_SIZE);
 
 	CTile* pTile = nullptr;
 
@@ -246,7 +248,7 @@ void CScene_SceneTool::TileVecGenerate(float _Width, float _Height)
 			pTile->SetScale(Vec2(TILE_SIZE, TILE_SIZE));
 			pTile->SetPos(Vec2(TILE_SIZE * i + (TILE_SIZE / 2.f), TILE_SIZE * j + (TILE_SIZE / 2.f)));
 
-			int Idx = i * 10 + j;
+			int Idx = i * iHeight + j;
 			wstring TileName = L"Tile_";
 			TileName += std::to_wstring(Idx);
 			pTile->SetName(TileName);
@@ -254,7 +256,7 @@ void CScene_SceneTool::TileVecGenerate(float _Width, float _Height)
 
 			m_vTile.push_back(pTile);
 
-			EnterAddObject(pTile, GROUP_TYPE::TILE);
+			CreateObject(pTile, GROUP_TYPE::TILE);
 		}
 	}
 }
@@ -372,44 +374,81 @@ void CScene_SceneTool::Save(const wstring& _strName)
 	fprintf(pFile, "[Scene Name]\n");
 	string strName = string(_strName.begin(), _strName.end());
 	fprintf(pFile, strName.c_str());
-	fprintf(pFile, "\n");
+	fprintf(pFile, "\n\n");
 
 	// BackGround 텍스쳐
 	fprintf(pFile, "[BackGround Texture Name]\n");
 	strName = string(m_tStageConf.TexBackGround->GetKey().begin(), m_tStageConf.TexBackGround->GetKey().end());
 	fprintf(pFile, strName.c_str());
-	fprintf(pFile, "\n");
+	fprintf(pFile, "\n\n");
 
 	fprintf(pFile, "[BackGround Texture Path]\n");
 	strName = string(m_tStageConf.TexBackGround->GetRelativePath().begin(), m_tStageConf.TexBackGround->GetRelativePath().end());
 	fprintf(pFile, strName.c_str());
-	fprintf(pFile, "\n");
+	fprintf(pFile, "\n\n");
 
 	fprintf(pFile, "[BackGround Path]\n");
 	strName = string(m_tStageConf.BackGroundPath.begin(), m_tStageConf.BackGroundPath.end());
 	fprintf(pFile, strName.c_str());
-	fprintf(pFile, "\n");
+	fprintf(pFile, "\n\n");
 
 	// ForeGround 텍스쳐
 	fprintf(pFile, "[ForeGround Texture Name]\n");
 	strName = string(m_tStageConf.TexForeGround->GetKey().begin(), m_tStageConf.TexForeGround->GetKey().end());
 	fprintf(pFile, strName.c_str());
-	fprintf(pFile, "\n");
+	fprintf(pFile, "\n\n");
 
 	fprintf(pFile, "[ForeGround Texture Path]\n");
 	strName = string(m_tStageConf.TexForeGround->GetRelativePath().begin(), m_tStageConf.TexForeGround->GetRelativePath().end());
 	fprintf(pFile, strName.c_str());
-	fprintf(pFile, "\n");
+	fprintf(pFile, "\n\n");
 
-	fprintf(pFile, "[ForeGround Path Path]\n");
+	fprintf(pFile, "[ForeGround Path]\n");
 	strName = string(m_tStageConf.ForeGroundPath.begin(), m_tStageConf.ForeGroundPath.end());
 	fprintf(pFile, strName.c_str());
-	fprintf(pFile, "\n");
+	fprintf(pFile, "\n\n");
 
-	// ========
+	// ============
+	// Scene Offset
+	// ============
 	fprintf(pFile, "[Scene Offset]\n");
 	fprintf(pFile, "%f %f\n", m_tStageConf.SceneOffset.x, m_tStageConf.SceneOffset.y);
+	fprintf(pFile, "\n");
 
+
+	// ===========
+	// Tile Object
+	// ===========
+	fprintf(pFile, "[Tile Object Count]\n");
+	UINT TileCount = 0;
+	for (size_t i = 0; i < m_vTile.size(); ++i)
+	{
+		if (((CTile*)m_vTile[i])->IsChecked())
+		{
+			++TileCount;
+		}
+	}
+	fprintf(pFile, "%d\n", TileCount);
+	fprintf(pFile, "\n");
+
+	for (size_t i = 0; i < m_vTile.size(); ++i)
+	{
+		if (((CTile*)m_vTile[i])->IsChecked())
+		{
+			fprintf(pFile, "[Tile Name]\n");
+			string strName = string(m_vTile[i]->GetName().begin(), m_vTile[i]->GetName().end());
+			fprintf(pFile, strName.c_str());
+			fprintf(pFile, "\n");
+
+			fprintf(pFile, "[Tile Position]\n");
+			fprintf(pFile, "%f %f\n", m_vTile[i]->GetPos().x, m_vTile[i]->GetPos().y);
+
+			fprintf(pFile, "[Tile Scale]\n");
+			fprintf(pFile, "%d %d\n", (int)m_vTile[i]->GetScale().x, (int)m_vTile[i]->GetScale().y);
+
+			fprintf(pFile, "\n");
+		}
+	}
 
 	fclose(pFile);	// 파일 스트림 종료
 }
@@ -433,15 +472,19 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	str = szBuff;
+	FScanf(szBuff, pFile);
 
-	// BackGround
+	// BackGround Texture Name
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	str = szBuff;
+	FScanf(szBuff, pFile);
 
+	// BackGround Texture Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 
 	wstring wstr = wstring(str.begin(), str.end());
 	wstring wScenePath = wstring(ScenePath.begin(), ScenePath.end());
@@ -453,7 +496,9 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 	m_tStageConf.BackGroundPath = wstring(ScenePath.begin(), ScenePath.end());
+	
 
 	if (nullptr != m_tStageConf.BackGroundAnim)
 	{
@@ -464,14 +509,17 @@ void CScene_SceneTool::Load(const wstring& _strName)
 
 	m_tStageConf.BackGroundAnim->Load(m_tStageConf.BackGroundPath);
 
-	// ForeGround
+	// ForeGround Texture Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	str = szBuff;
+	FScanf(szBuff, pFile);
 
+	// ForeGround Texture Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 
 	wstr = wstring(str.begin(), str.end());
 	wScenePath = wstring(ScenePath.begin(), ScenePath.end());
@@ -479,10 +527,11 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	// 텍스쳐 설정
 	m_tStageConf.TexForeGround = CResMgr::GetInst()->LoadTexture(wstr, wScenePath);
 
-	// BackGround Path 
+	// ForeGround Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 	m_tStageConf.ForeGroundPath = wstring(ScenePath.begin(), ScenePath.end());
 
 	if (nullptr != m_tStageConf.ForeGroundAnim)
@@ -494,8 +543,45 @@ void CScene_SceneTool::Load(const wstring& _strName)
 
 	m_tStageConf.ForeGroundAnim->Load(m_tStageConf.ForeGroundPath);
 
+	// Scene Offset
 	FScanf(szBuff, pFile);
 	fscanf_s(pFile, "%f %f", &m_tStageConf.SceneOffset.x, &m_tStageConf.SceneOffset.y);
+	FScanf(szBuff, pFile);
+
+
+	// ===========
+	// Tile Object
+	// ===========
+
+	// 타일 재생성
+	TileVecGenerate(m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.x, m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.y);
+
+
+
+	FScanf(szBuff, pFile);
+	FScanf(szBuff, pFile);
+	int TileCount = 0;
+	fscanf_s(pFile, "%d", &TileCount);
+	FScanf(szBuff, pFile);
+	FScanf(szBuff, pFile);
+
+	for (int i = 0; i < TileCount; ++i)
+	{
+		FScanf(szBuff, pFile);
+		FScanf(szBuff, pFile);
+		str = szBuff;
+		std::size_t pos = str.rfind('_');
+		std::string extension = str.substr(pos + 1);
+
+		int idx = std::stoi(extension); // convert to int
+		m_vTile[idx]->CheckingTrue();
+
+		FScanf(szBuff, pFile);
+		FScanf(szBuff, pFile);
+		FScanf(szBuff, pFile);
+		FScanf(szBuff, pFile);
+		FScanf(szBuff, pFile);
+	}
 	
 	fclose(pFile);	// 파일 스트림 종료
 }

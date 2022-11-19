@@ -16,6 +16,8 @@ struct tStageConf
     //vector<CObject*>        vecObj;
 };
 
+class CTile;
+
 class CScene_SceneTool :
     public CScene
 {
@@ -25,7 +27,7 @@ private:
     Vec2                    m_vPrevMousePos;
 
     // Tile
-    vector<CObject*>        m_vTile;
+    vector<CTile*>        m_vTile;
     Vec2                    m_vTapPos;
     Vec2                    m_vAwayPos;
     Vec2                    m_vAccPos;
