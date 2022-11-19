@@ -27,7 +27,7 @@ private:
     Vec2                    m_vPrevMousePos;
 
     // Tile
-    vector<CTile*>        m_vTile;
+    vector<CTile*>          m_vTile;
     Vec2                    m_vTapPos;
     Vec2                    m_vAwayPos;
     Vec2                    m_vAccPos;

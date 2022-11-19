@@ -152,6 +152,8 @@ void CScene_SceneTool::render(HDC _dc)
 			, (int)vMousePos.y);
 	}
 
+	m_vTile;
+
 	CScene::render(_dc);	
 }
 
@@ -547,7 +549,7 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	FScanf(szBuff, pFile);
 	fscanf_s(pFile, "%f %f", &m_tStageConf.SceneOffset.x, &m_tStageConf.SceneOffset.y);
 	FScanf(szBuff, pFile);
-
+	FScanf(szBuff, pFile);
 
 	// ===========
 	// Tile Object
@@ -556,26 +558,30 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	// 타일 재생성
 	TileVecGenerate(m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.x, m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.y);
 
-
-
-	FScanf(szBuff, pFile);
-	FScanf(szBuff, pFile);
 	int TileCount = 0;
-	fscanf_s(pFile, "%d", &TileCount);
+
+	FScanf(szBuff, pFile);// [Tile Object Count]
+	fscanf_s(pFile, "%d", &TileCount);  // Tile Object Count 읽기
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 
+	int Idx;
+	string strIdx;
+	size_t skipPos;
+
+	// Tile Checking 
 	for (int i = 0; i < TileCount; ++i)
 	{
-		FScanf(szBuff, pFile);
-		FScanf(szBuff, pFile);
+		FScanf(szBuff, pFile); // [Tile Name] 
+		FScanf(szBuff, pFile); // Tile Name 읽기
 		str = szBuff;
-		std::size_t pos = str.rfind('_');
-		std::string extension = str.substr(pos + 1);
+		skipPos = str.rfind('_'); // 이름중 Tile_ 생략
+		strIdx = str.substr(skipPos + 1);
 
-		int idx = std::stoi(extension); // convert to int
-		m_vTile[idx]->CheckingTrue();
+		Idx = std::stoi(strIdx); // convert to int
+		m_vTile[Idx]->CheckingTrue();
 
+		// 나머지 데이터 생략
 		FScanf(szBuff, pFile);
 		FScanf(szBuff, pFile);
 		FScanf(szBuff, pFile);
