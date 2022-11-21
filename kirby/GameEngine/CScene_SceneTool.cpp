@@ -590,6 +590,11 @@ void CScene_SceneTool::Load(const wstring& _strName)
 	}
 	
 	fclose(pFile);	// 파일 스트림 종료
+
+
+	// 카메라 위치 최기화
+	Vec2 vResolution = CCore::GetInst()->GetResolution();
+	CCamera::GetInst()->SetLookAt(Vec2(vResolution / 2.f));
 }
 
 

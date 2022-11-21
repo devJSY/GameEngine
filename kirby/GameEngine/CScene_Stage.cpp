@@ -104,13 +104,6 @@ void CScene_Stage::Enter()
 
 	EnterAddObject(pKirby, GROUP_TYPE::PLAYER);
 
-	CGround* pGround = new CGround;
-	pGround->SetName(L"Ground");
-	pGround->SetPos(Vec2(640.f, 700.f));
-	pGround->SetScale(Vec2(80000.f, 60.f));
-
-	EnterAddObject(pGround, GROUP_TYPE::GROUND);
-
 	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::GROUND);
 
 	CCamera::GetInst()->SetTarget(pKirby);
@@ -143,15 +136,19 @@ void CScene_Stage::Load(const wstring& _strName)
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	str = szBuff;
+	FScanf(szBuff, pFile);
 
-	// BackGround
+	// BackGround Texture Name
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	str = szBuff;
+	FScanf(szBuff, pFile);
 
+	// BackGround Texture Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 
 	wstring wstr = wstring(str.begin(), str.end());
 	wstring wScenePath = wstring(ScenePath.begin(), ScenePath.end());
@@ -163,7 +160,9 @@ void CScene_Stage::Load(const wstring& _strName)
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 	m_tStageConf.BackGroundPath = wstring(ScenePath.begin(), ScenePath.end());
+
 
 	if (nullptr != m_tStageConf.BackGroundAnim)
 	{
@@ -174,14 +173,17 @@ void CScene_Stage::Load(const wstring& _strName)
 
 	m_tStageConf.BackGroundAnim->Load(m_tStageConf.BackGroundPath);
 
-	// ForeGround
+	// ForeGround Texture Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	str = szBuff;
+	FScanf(szBuff, pFile);
 
+	// ForeGround Texture Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 
 	wstr = wstring(str.begin(), str.end());
 	wScenePath = wstring(ScenePath.begin(), ScenePath.end());
@@ -189,10 +191,11 @@ void CScene_Stage::Load(const wstring& _strName)
 	// 텍스쳐 설정
 	m_tStageConf.TexForeGround = CResMgr::GetInst()->LoadTexture(wstr, wScenePath);
 
-	// BackGround Path 
+	// ForeGround Path
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 	ScenePath = szBuff;
+	FScanf(szBuff, pFile);
 	m_tStageConf.ForeGroundPath = wstring(ScenePath.begin(), ScenePath.end());
 
 	if (nullptr != m_tStageConf.ForeGroundAnim)
@@ -204,8 +207,63 @@ void CScene_Stage::Load(const wstring& _strName)
 
 	m_tStageConf.ForeGroundAnim->Load(m_tStageConf.ForeGroundPath);
 
+	// Scene Offset
 	FScanf(szBuff, pFile);
 	fscanf_s(pFile, "%f %f", &m_tStageConf.SceneOffset.x, &m_tStageConf.SceneOffset.y);
+	FScanf(szBuff, pFile);
+	FScanf(szBuff, pFile);
+
+	// ===========
+	// Ground 생성
+	// ===========
+
+	int TileCount = 0;
+
+	FScanf(szBuff, pFile);// [Tile Object Count]
+	fscanf_s(pFile, "%d", &TileCount);  // Tile Object Count 읽기
+	FScanf(szBuff, pFile);
+	FScanf(szBuff, pFile);
+
+	int Idx;
+	string strIdx;
+	wstring strName;
+	size_t skipPos;
+	Vec2 vVec;
+	CGround* pGround = nullptr;
+
+	// Generate Ground Object
+	for (int i = 0; i < TileCount; ++i)
+	{
+		// Ground Name
+		FScanf(szBuff, pFile); // [Tile Name] 
+		FScanf(szBuff, pFile); // Tile Name 읽기
+		str = szBuff;
+		skipPos = str.rfind('_'); // 이름중 Tile_ 생략
+		strIdx = str.substr(skipPos + 1);
+
+		strName = L"Ground_";
+		strName += wstring(strIdx.begin(), strIdx.end());
+		
+
+		pGround = new CGround;
+
+		pGround->SetName(strName);
+
+		// Ground Position
+		FScanf(szBuff, pFile);
+		fscanf_s(pFile, "%f %f", &vVec.x, &vVec.y);
+		FScanf(szBuff, pFile);
+		pGround->SetPos(vVec);
+
+		// Ground Scale
+		FScanf(szBuff, pFile);
+		fscanf_s(pFile, "%f %f", &vVec.x, &vVec.y);
+		pGround->SetScale(vVec);
+		FScanf(szBuff, pFile);
+		FScanf(szBuff, pFile);
+
+		EnterAddObject(pGround, GROUP_TYPE::GROUND);
+	}
 
 	fclose(pFile);	// 파일 스트림 종료
 }
