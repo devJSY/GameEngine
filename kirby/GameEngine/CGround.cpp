@@ -73,14 +73,18 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, 0.f)); // 땅에 닿아있는 상태라면 0속도를 0으로 셋팅
 			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
 
-			float diffPos = abs(vObjPos.y - vPos.y);
-			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
+			// 처음 땅에 닿은 순간만 들어간 차이값만큼 빼줌
+			if (!((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->IsGround())
+			{
+				float diffPos = abs(vObjPos.y - vPos.y);
+				float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
 
-			Vec2 vSetPos = pOtherObj->GetPos();
+				Vec2 vSetPos = pOtherObj->GetPos();
 
-			vSetPos.y += (diffScale - diffPos);
+				vSetPos.y += (diffScale - diffPos);
 
-			pOtherObj->SetPos(vSetPos);
+				pOtherObj->SetPos(vSetPos);
+			}
 		}
 		else if (ColDir.LEFT)
 		{
@@ -138,15 +142,6 @@ void CGround::OnCollision(CCollider* _pOther)
 			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
 
 			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
-
-			float diffPos = abs(vObjPos.y - vPos.y);
-			float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
-
-			Vec2 vSetPos = pOtherObj->GetPos();
-
-			vSetPos.y -= (diffScale - diffPos);
-
-			pOtherObj->SetPos(vSetPos);
 		}
 		else if (ColDir.LEFT)
 		{
@@ -180,7 +175,5 @@ void CGround::OnCollisionExit(CCollider* _pOther)
 	if (pOtherObj->GetName() == L"Kirby")
 	{
 		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(false);
-
-		Vec2 vPos = pOtherObj->GetPos();
 	}
 }

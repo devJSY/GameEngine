@@ -25,8 +25,7 @@ Kirby::Kirby()
 	// Collider Create
 	// ================ 
 	CreateComponents(Component_TYPE::Collider);
-	// = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"Texture\\Player1.bmp");
-	//m_pTex = CResMgr::GetInst()->LoadTexture(L"PlayerTex", L"texture\\link.0.bmp");
+	((CCollider*)GetComponents(Component_TYPE::Collider))->SetOffsetPos(Vec2(3.f, 12.f));
 
 
 	// ================

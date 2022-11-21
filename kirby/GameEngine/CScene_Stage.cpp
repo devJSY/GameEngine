@@ -262,7 +262,9 @@ void CScene_Stage::Load(const wstring& _strName)
 		FScanf(szBuff, pFile);
 		FScanf(szBuff, pFile);
 
-		EnterAddObject(pGround, GROUP_TYPE::GROUND);
+		pGround->start();
+
+		CreateObject(pGround, GROUP_TYPE::GROUND);
 	}
 
 	fclose(pFile);	// 파일 스트림 종료
