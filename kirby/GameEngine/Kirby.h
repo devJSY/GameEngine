@@ -51,6 +51,9 @@ public:
     void State_Execute();
     void State_Exit();
 
+public:
+    KIRBY_STATE GetCurStage() { return m_eCurState; }
+
     CLONE(Kirby);
 
 public:

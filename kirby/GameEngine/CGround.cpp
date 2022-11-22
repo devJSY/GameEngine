@@ -2,13 +2,13 @@
 #include "CGround.h"
 
 #include "CObject.h"
+#include "Kirby.h"
 #include "CComponent.h"
 #include "CCollider.h"
 #include "CGravity.h"
 #include "CRigidBody.h"
 
 #include "CColliderMgr.h"
-
 
 CGround::CGround()
 {
@@ -47,12 +47,10 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 
 	if (pOtherObj->GetName() == L"Kirby")
 	{
-		//Vec2 vObjPos = _pOther->GetFinalPos();
-		Vec2 vObjPos = pOtherObj->GetPos();
+		Vec2 vObjPos = _pOther->GetFinalPos();
 		Vec2 vObjScale = _pOther->GetScale();
 
-		//Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
-		Vec2 vPos = GetPos();
+		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
 		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
 		COLLIDER_DIR ColDir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)pOtherObj->GetComponents(Component_TYPE::Collider)), ((CCollider*)GetComponents(Component_TYPE::Collider)));
@@ -118,12 +116,10 @@ void CGround::OnCollision(CCollider* _pOther)
 
 	if (pOtherObj->GetName() == L"Kirby")
 	{
-		//Vec2 vObjPos = _pOther->GetFinalPos();
-		Vec2 vObjPos = pOtherObj->GetPos();
+		Vec2 vObjPos = _pOther->GetFinalPos();
 		Vec2 vObjScale = _pOther->GetScale();
 
-		//Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
-		Vec2 vPos = GetPos();
+		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
 		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
 		COLLIDER_DIR ColDir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)pOtherObj->GetComponents(Component_TYPE::Collider)), ((CCollider*)GetComponents(Component_TYPE::Collider)));
@@ -144,6 +140,20 @@ void CGround::OnCollision(CCollider* _pOther)
 			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
 
 			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
+
+			float fLen = abs(vObjPos.y - vPos.y);
+			float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
+
+			if (KIRBY_STATE::JUMP != ((Kirby*)pOtherObj)->GetCurStage())
+			{
+				if (0.f != fValue)
+				{
+					vObjPos = pOtherObj->GetPos();
+					vObjPos.y -= (fValue);
+
+					pOtherObj->SetPos(vObjPos);
+				}
+			}
 		}
 		else if (ColDir.LEFT)
 		{
