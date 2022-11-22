@@ -219,13 +219,14 @@ void Kirby::update_state()
 		if (pRigid->GetVelocity().y == 0.f && ((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround())
 		{
 			State_Exit();
-			m_eCurState = m_eStockState;
+			m_eCurState = KIRBY_STATE::IDLE;
 			State_Enter();
 		}
 
-		if (KEY_TAP(KEY::SPACE))
+		if (m_eStockState != KIRBY_STATE::DOUBLEJUMP && KEY_TAP(KEY::SPACE))
 		{
 			State_Exit();
+			m_eStockState = m_eCurState;
 			m_eCurState = KIRBY_STATE::DOUBLEJUMP;
 			State_Enter();
 		}
@@ -240,6 +241,14 @@ void Kirby::update_state()
 		{
 			State_Exit();
 			m_eCurState = m_eStockState;
+			State_Enter();
+		}
+
+		if (KEY_TAP(KEY::D))
+		{
+			State_Exit();
+			m_eStockState = m_eCurState;
+			m_eCurState = KIRBY_STATE::JUMP;
 			State_Enter();
 		}
 	}
@@ -475,7 +484,7 @@ void Kirby::State_Enter()
 	break;
 	case KIRBY_STATE::JUMP:
 	{
-		// 점프키를 누러 진입한 경우 추가 속도
+		// 점프키를 눌러 진입한 경우 추가 속도
 		if (KEY_TAP(KEY::SPACE))
 		{
 			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
@@ -484,7 +493,7 @@ void Kirby::State_Enter()
 	break;
 	case KIRBY_STATE::DOUBLEJUMP:
 	{
-		// 점프키를 누러 진입한 경우 추가 속도
+		// 점프키를 눌러 진입한 경우 추가 속도
 		if (KEY_TAP(KEY::SPACE))
 		{
 			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -300.f));

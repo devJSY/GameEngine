@@ -208,6 +208,8 @@ COLLIDER_DIR CColliderMgr::CollisionDIR(CCollider* _Check, CCollider* _Target)
 
 	// 충돌된 부위만큼의 위치값을 가져와서 절대값으로 비교
 	Vec2 vDiff = ((CheckScale + TargetScale) / 2.f) - (CheckPos - TargetPos).Vec2_abs();
+	Vec2 vDiff1 = ((CheckScale + TargetScale) / 2.f);
+	Vec2 vDiff2 = (CheckPos - TargetPos).Vec2_abs();
 
 	if (abs(vDiff.x) > abs(vDiff.y))
 	{

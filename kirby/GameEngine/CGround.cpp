@@ -47,10 +47,12 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 
 	if (pOtherObj->GetName() == L"Kirby")
 	{
-		Vec2 vObjPos = _pOther->GetFinalPos();
+		//Vec2 vObjPos = _pOther->GetFinalPos();
+		Vec2 vObjPos = pOtherObj->GetPos();
 		Vec2 vObjScale = _pOther->GetScale();
 
-		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+		//Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+		Vec2 vPos = GetPos();
 		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
 		COLLIDER_DIR ColDir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)pOtherObj->GetComponents(Component_TYPE::Collider)), ((CCollider*)GetComponents(Component_TYPE::Collider)));
@@ -67,23 +69,21 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 			pOtherObj->SetPos(vSetPos);
 		}
 		else if (ColDir.BOTTOM)
-		{	
+		{
 			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 충돌 시작시 그라운드 접촉 선언
 
 			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, 0.f)); // 땅에 닿아있는 상태라면 0속도를 0으로 셋팅
 			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
 
-			// 처음 땅에 닿은 순간만 들어간 차이값만큼 빼줌
-			if (!((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->IsGround())
+			float fLen = abs(vObjPos.y - vPos.y);
+			float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
+
+			if (0.f != fValue)
 			{
-				float diffPos = abs(vObjPos.y - vPos.y);
-				float diffScale = abs(vObjScale.y / 2.f + vScale.y / 2.f);
+				vObjPos = pOtherObj->GetPos();
+				vObjPos.y -= (fValue);
 
-				Vec2 vSetPos = pOtherObj->GetPos();
-
-				vSetPos.y += (diffScale - diffPos);
-
-				pOtherObj->SetPos(vSetPos);
+				pOtherObj->SetPos(vObjPos);
 			}
 		}
 		else if (ColDir.LEFT)
@@ -118,10 +118,12 @@ void CGround::OnCollision(CCollider* _pOther)
 
 	if (pOtherObj->GetName() == L"Kirby")
 	{
-		Vec2 vObjPos = _pOther->GetFinalPos();
+		//Vec2 vObjPos = _pOther->GetFinalPos();
+		Vec2 vObjPos = pOtherObj->GetPos();
 		Vec2 vObjScale = _pOther->GetScale();
 
-		Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+		//Vec2 vPos = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetFinalPos();
+		Vec2 vPos = GetPos();
 		Vec2 vScale = ((CCollider*)GetComponents(Component_TYPE::Collider))->GetScale();
 
 		COLLIDER_DIR ColDir = CColliderMgr::GetInst()->CollisionDIR(((CCollider*)pOtherObj->GetComponents(Component_TYPE::Collider)), ((CCollider*)GetComponents(Component_TYPE::Collider)));
