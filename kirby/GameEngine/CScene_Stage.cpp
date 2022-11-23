@@ -90,7 +90,7 @@ void CScene_Stage::render(HDC _dc)
 void CScene_Stage::Enter()
 {
 	// 텍스쳐 설정
-	Load(L"Stage_01");
+	Load(L"Stage_03");
 
 	CCore::GetInst()->DividMenu();
 
@@ -100,7 +100,7 @@ void CScene_Stage::Enter()
 	CObject* pKirby = new Kirby;
 	pKirby->SetName(L"Kirby");
 	pKirby->SetPos(Vec2(640.f, 384.f));
-	pKirby->SetScale(Vec2(100.f, 100.f));
+	pKirby->SetScale(Vec2(50.f, 50.f));
 
 	EnterAddObject(pKirby, GROUP_TYPE::PLAYER);
 

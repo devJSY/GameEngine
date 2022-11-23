@@ -216,11 +216,15 @@ COLLIDER_DIR CColliderMgr::CollisionDIR(CCollider* _Check, CCollider* _Target)
 		Check_Dir.LEFT = false;
 		Check_Dir.RIGHT = false;
 	}
-	else
+	else if (abs(vDiff.x) < abs(vDiff.y))
 	{
 		Check_Dir.TOP = false;
 		Check_Dir.BOTTOM = false;
-
+	}
+	else
+	{
+		// 葛辑府尝府 立盟茄 版快 面倒 X 贸府
+		Check_Dir = {};
 	}
 	
 	return Check_Dir;

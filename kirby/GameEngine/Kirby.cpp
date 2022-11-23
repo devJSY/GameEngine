@@ -484,20 +484,15 @@ void Kirby::State_Enter()
 	break;
 	case KIRBY_STATE::JUMP:
 	{
-		// 점프키를 눌러 진입한 경우 추가 속도
-		if (KEY_TAP(KEY::SPACE))
+		// 점프키로 진입한 경우 
+		if (KEY_TAP(KEY::SPACE) || KEY_HOLD(KEY::SPACE) || KEY_AWAY(KEY::SPACE))
 		{
 			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
-		}	
+		}		
 	}
 	break;
 	case KIRBY_STATE::DOUBLEJUMP:
 	{
-		// 점프키를 눌러 진입한 경우 추가 속도
-		if (KEY_TAP(KEY::SPACE))
-		{
-			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -300.f));
-		}
 	}
 	break;
 	case KIRBY_STATE::DEAD:
@@ -576,5 +571,5 @@ void Kirby::OnCollisionExit(CCollider* _pOther)
 void Kirby::start()
 {
 	CCollider* pCollider = ((CCollider*)GetComponents(Component_TYPE::Collider));
-	pCollider->SetScale(Vec2(50.f, 50.f));
+	pCollider->SetScale(GetScale());
 }

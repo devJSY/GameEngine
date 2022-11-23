@@ -19,11 +19,6 @@ CGround::~CGround()
 {
 }
 
-void CGround::start()
-{
-	((CCollider*)GetComponents(Component_TYPE::Collider))->SetScale(Vec2(GetScale()));
-}
-
 void CGround::update()
 {
 }
@@ -73,21 +68,21 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 		}
 		else if (ColDir.BOTTOM)
 		{
-			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 충돌 시작시 그라운드 접촉 선언
-
-			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, 0.f)); // 땅에 닿아있는 상태라면 0속도를 0으로 셋팅
-			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
-
 			float fLen = abs(vObjPos.y - vPos.y);
 			float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
 
-			if (0.f < fValue)
+ 			if (0.f < fValue)
 			{
 				vObjPos = pOtherObj->GetPos();
 				vObjPos.y -= (fValue);
 
 				pOtherObj->SetPos(vObjPos);
 			}
+
+			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true); // 충돌 시작시 그라운드 접촉 선언
+
+			pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, 0.f)); // 땅에 닿아있는 상태라면 0속도를 0으로 셋팅
+			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
 		}
 		else if (ColDir.LEFT)
 		{
@@ -151,10 +146,6 @@ void CGround::OnCollision(CCollider* _pOther)
 		}
 		else if (ColDir.BOTTOM)
 		{
-			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
-
-			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
-
 			float fLen = abs(vObjPos.y - vPos.y);
 			float fValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
 
@@ -168,6 +159,10 @@ void CGround::OnCollision(CCollider* _pOther)
 					pOtherObj->SetPos(vObjPos);
 				}
 			}
+
+			((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(true);
+
+			pRigid->SetAccelAlpha(Vec2(0.f, 0.f)); // 추가가속도 삭제
 		}
 		else if (ColDir.LEFT)
 		{
@@ -206,4 +201,9 @@ void CGround::OnCollisionExit(CCollider* _pOther)
 	{
 		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(false);
 	}
+}
+
+void CGround::start()
+{
+	((CCollider*)GetComponents(Component_TYPE::Collider))->SetScale(Vec2(GetScale()));
 }
