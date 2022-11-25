@@ -8,6 +8,7 @@
 #include "CGravity.h"
 #include "CRigidBody.h"
 
+#include "SelectGDI.h"
 #include "CColliderMgr.h"
 
 CGround::CGround()
@@ -27,6 +28,8 @@ void CGround::render(HDC _dc)
 {
 	Vec2 vRenderPos = CCamera::GetInst()->GetRenderPos(GetPos());
 	Vec2 vScale = GetScale();
+
+	SelectGDI b(_dc, BRUSH_TYPE::HOLLOW);
 
 	Rectangle(_dc
 		, int(vRenderPos.x - vScale.x / 2.f)

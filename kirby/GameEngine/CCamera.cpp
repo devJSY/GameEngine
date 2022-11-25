@@ -138,9 +138,9 @@ void CCamera::update()
 		else
 		{
 			// 카메라 위치를 타켓 오브젝트 위치로 설정
-			//m_vLookAt.x = m_pTargetObj->GetPos().x;
-			//m_vLookAt.y = 400.f;
-			m_vLookAt = m_pTargetObj->GetPos();
+			m_vLookAt.x = m_pTargetObj->GetPos().x;
+			m_vLookAt.y = 400.f;
+			//m_vLookAt = m_pTargetObj->GetPos();
 		}
 	}
 	
