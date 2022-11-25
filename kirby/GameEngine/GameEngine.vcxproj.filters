@@ -150,9 +150,6 @@
     <Filter Include="소스 파일\04. Object\Ground">
       <UniqueIdentifier>{548b2e31-da59-45db-9da6-7d29f7429e52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\05. Scene\Scene_Stage">
-      <UniqueIdentifier>{0eae0811-c3f2-4285-8e49-6a5a488bce1b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\05. Scene\Scene_SceneTool">
       <UniqueIdentifier>{19d7c717-256e-440c-86af-fae26d62699f}</UniqueIdentifier>
     </Filter>
@@ -161,6 +158,9 @@
     </Filter>
     <Filter Include="소스 파일\04. Object\Tile">
       <UniqueIdentifier>{23cced50-70e8-4a16-adc4-05b03da48ac0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\05. Scene\Scene_Stage">
+      <UniqueIdentifier>{0eae0811-c3f2-4285-8e49-6a5a488bce1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
