@@ -85,65 +85,117 @@ void CCamera::update()
 
 		if (nullptr != SceneTex)
 		{
-			tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetForeGroundAnim()->GetFrame(0);
+			// =========
+			// 이동 제한 
+			// =========
+			  
+			//tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetForeGroundAnim()->GetFrame(0);
 
-			UINT iWidth = (UINT)tAnim.vSlice.x;
-			UINT iHeight = (UINT)tAnim.vSlice.y;
+			//UINT iWidth = (UINT)tAnim.vSlice.x;
+			//UINT iHeight = (UINT)tAnim.vSlice.y;
 
-			Vec2 vResolution = CCore::GetInst()->GetResolution();
-			Vec2 vLT = m_vLookAt - vResolution / 2.f;
+			//Vec2 vResolution = CCore::GetInst()->GetResolution();
+			//Vec2 vLT = m_vLookAt - vResolution / 2.f;
 
-			// x Axis Left Move Limit
-			if (vLT.x > 0)
-			{
-				if (KEY_HOLD(KEY::A))
-					m_vLookAt.x -= m_fMoveSpeed * fDT;
-			}
+			//// x Axis Left Move Limit
+			//if (vLT.x > 0)
+			//{
+			//	if (KEY_HOLD(KEY::A))
+			//		m_vLookAt.x -= m_fMoveSpeed * fDT;
+			//}
 
-			// x Axis right Move Limit
-			if (vLT.x < (iWidth - vResolution.x))
-			{
-				if (KEY_HOLD(KEY::D))
-					m_vLookAt.x += m_fMoveSpeed * fDT;
-			}
+			//// x Axis right Move Limit
+			//if (vLT.x < (iWidth - vResolution.x))
+			//{
+			//	if (KEY_HOLD(KEY::D))
+			//		m_vLookAt.x += m_fMoveSpeed * fDT;
+			//}
 
-			// y Axis top Move Limit
-			if (vLT.y > 0)
-			{
-				if (KEY_HOLD(KEY::W))
-					m_vLookAt.y -= m_fMoveSpeed * fDT;
-			}
+			//// y Axis top Move Limit
+			//if (vLT.y > 0)
+			//{
+			//	if (KEY_HOLD(KEY::W))
+			//		m_vLookAt.y -= m_fMoveSpeed * fDT;
+			//}
 
-			// y Axis bottom Move Limit
-			if (vLT.y < (iHeight - vResolution.y))
-			{
-				if (KEY_HOLD(KEY::S))
-					m_vLookAt.y += m_fMoveSpeed * fDT;
-			}
+			//// y Axis bottom Move Limit
+			//if (vLT.y < (iHeight - vResolution.y))
+			//{
+			//	if (KEY_HOLD(KEY::S))
+			//		m_vLookAt.y += m_fMoveSpeed * fDT;
+			//}
+
+			if (KEY_HOLD(KEY::A))
+				m_vLookAt.x -= m_fMoveSpeed * fDT;
+			if (KEY_HOLD(KEY::D))
+				m_vLookAt.x += m_fMoveSpeed * fDT;
+			if (KEY_HOLD(KEY::W))
+				m_vLookAt.y -= m_fMoveSpeed * fDT;
+			if (KEY_HOLD(KEY::S))
+				m_vLookAt.y += m_fMoveSpeed * fDT;
 		}
 	}
-	else if (L"Stage_01" == pCurScene->GetName())
+	else if (L"StartScene" == pCurScene->GetName())
 	{
 	}
-
-
-
-	if (m_pTargetObj)
+	else 
 	{
-		if (m_pTargetObj->IsDead())
+		// Stage Scene 카메라 설정
+
+		Vec2 vResolution = CCore::GetInst()->GetResolution();
+
+		tAnimFrm tAnim = ((CScene_Stage*)pCurScene)->GetForeGroundAnim()->GetFrame(0);
+
+		UINT iWidth = (UINT)tAnim.vSlice.x;
+		UINT iHeight = (UINT)tAnim.vSlice.y;
+
+		if (m_pTargetObj)
 		{
-			// Dead 상태라면 타겟팅 해제
-			m_pTargetObj = nullptr;
+			if (m_pTargetObj->IsDead())
+			{
+				// Dead 상태라면 타겟팅 해제
+				m_pTargetObj = nullptr;
+			}
+			else
+			{
+				if (L"Stage_01" == pCurScene->GetName() || L"Stage_02" == pCurScene->GetName()
+					|| L"Stage_04" == pCurScene->GetName() || L"Stage_06" == pCurScene->GetName())
+				{
+					// 카메라 위치를 타켓 오브젝트 위치로 설정
+					m_vLookAt.x = m_pTargetObj->GetPos().x;
+					m_vLookAt.y = vResolution.y / 2.f;
+				}
+				else if (L"Stage_03" == pCurScene->GetName() || L"Stage_05" == pCurScene->GetName())
+				{
+					// 카메라 위치를 타켓 오브젝트 위치로 설정
+					m_vLookAt.x = vResolution.x / 2.f;
+					m_vLookAt.y = m_pTargetObj->GetPos().y;
+				}
+
+
+				// 카메라 이동 제한
+				if (m_vLookAt.x < vResolution.x / 2.f)
+				{
+					m_vLookAt.x = vResolution.x / 2.f;
+				}
+
+				if (m_vLookAt.y < vResolution.y / 2.f)
+				{
+					m_vLookAt.y = vResolution.y / 2.f;
+				}
+
+				if (m_vLookAt.x > iWidth - vResolution.x / 2.f)
+				{
+					m_vLookAt.x = iWidth - vResolution.x / 2.f;
+				}
+
+				if (m_vLookAt.y > iHeight - vResolution.y / 2.f)
+				{
+					m_vLookAt.y = iHeight - vResolution.y / 2.f;
+				}
+			}
 		}
-		else
-		{
-			// 카메라 위치를 타켓 오브젝트 위치로 설정
-			m_vLookAt.x = m_pTargetObj->GetPos().x;
-			m_vLookAt.y = 400.f;
-			//m_vLookAt = m_pTargetObj->GetPos();
-		}
-	}
-	
+	}	
 
 	// 현재 카메아 위치값 계산
 	CalDiff();

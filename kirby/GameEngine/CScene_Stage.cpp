@@ -90,7 +90,8 @@ void CScene_Stage::render(HDC _dc)
 void CScene_Stage::Enter()
 {
 	// 텍스쳐 설정
-	Load(L"Stage_04");
+	Load(L"1");
+	SetName(L"1");
 
 	CCore::GetInst()->DividMenu();
 

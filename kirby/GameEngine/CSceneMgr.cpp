@@ -41,7 +41,6 @@ void CSceneMgr::init()
 	m_arrScene[(UINT)SCENE_TYPE::Scene_Tool] = Scene_Tool;
 
 	CScene* Stage_01 = new CScene_Stage;
-	Stage_01->SetName(L"Stage_01");
 	m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = Stage_01;
 
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];

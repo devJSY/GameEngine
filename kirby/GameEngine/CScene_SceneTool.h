@@ -13,7 +13,6 @@ struct tStageConf
     wstring                 BackGroundPath;
     wstring                 ForeGroundPath;
     Vec2                    SceneOffset;
-    //vector<CObject*>        vecObj;
 };
 
 class CTile;
@@ -33,9 +32,6 @@ private:
     Vec2                    m_vAccPos;
     Vec2                    m_vCamDist;
     bool                    m_DragTrig;
-
-   
-
 
 public:
     virtual void update();
