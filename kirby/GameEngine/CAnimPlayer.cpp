@@ -4,6 +4,8 @@
 #include "CAnimator.h"
 #include "CCamera.h"
 
+#include "CTimeMgr.h"
+
 CAnimPlayer::CAnimPlayer()
 {
 	CreateComponents(Component_TYPE::Animator);
@@ -15,6 +17,7 @@ CAnimPlayer::~CAnimPlayer()
 
 void CAnimPlayer::start()
 {
+
 }
 
 void CAnimPlayer::SetAnimation(const wstring& _strRelativePath, const wstring& _strName, bool _bRepeat)

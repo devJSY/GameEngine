@@ -199,7 +199,28 @@ void CScene_AnimTool::render(HDC _dc)
 			, (int)vRB.y);
 	}
 
-	CScene::render(_dc);
+
+
+	CObject* PlayAnim = nullptr;
+
+	const vector<CObject*>& objvec = GetGroupObject(GROUP_TYPE::PLAYER);
+
+	for (size_t i = 0; i < objvec.size(); ++i)
+	{
+		if (L"PlayAnim" == objvec[i]->GetName())
+		{
+			PlayAnim = objvec[i];
+		}
+	}
+
+	if (PlayAnim != nullptr)
+	{
+		PlayAnim->render(_dc);
+
+		PlayAnim->Component_render(_dc);
+	}
+
+	//CScene::render(_dc);
 }
 
 void CScene_AnimTool::Enter()
