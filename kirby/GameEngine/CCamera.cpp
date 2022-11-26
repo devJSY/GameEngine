@@ -172,6 +172,20 @@ void CCamera::update()
 					m_vLookAt.y = m_pTargetObj->GetPos().y;
 				}
 
+				// 테스트 용 코드
+				if (L"Test1" == pCurScene->GetName())
+				{
+					// 카메라 위치를 타켓 오브젝트 위치로 설정
+					m_vLookAt.x = m_pTargetObj->GetPos().x;
+					m_vLookAt.y = vResolution.y / 2.f;
+				}
+				else if (L"Test2" == pCurScene->GetName())
+				{
+					// 카메라 위치를 타켓 오브젝트 위치로 설정
+					m_vLookAt.x = vResolution.x / 2.f;
+					m_vLookAt.y = m_pTargetObj->GetPos().y;
+				}
+
 
 				// 카메라 이동 제한
 				if (m_vLookAt.x < vResolution.x / 2.f)
