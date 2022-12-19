@@ -192,6 +192,8 @@ void CScene_SceneTool::Enter()
 
 	m_tStageConf.ForeGroundAnim->Load(m_tStageConf.ForeGroundPath);
 
+	// Offset ÃÊ±âÈ­
+	m_tStageConf.SceneOffset = Vec2(0.f, 0.f);
 
 	TileVecGenerate(m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.x, m_tStageConf.ForeGroundAnim->GetFrame(0).vSlice.y);
 }

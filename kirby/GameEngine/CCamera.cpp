@@ -89,50 +89,50 @@ void CCamera::update()
 			// 이동 제한 
 			// =========
 			  
-			//tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetForeGroundAnim()->GetFrame(0);
+			tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetForeGroundAnim()->GetFrame(0);
 
-			//UINT iWidth = (UINT)tAnim.vSlice.x;
-			//UINT iHeight = (UINT)tAnim.vSlice.y;
+			UINT iWidth = (UINT)tAnim.vSlice.x;
+			UINT iHeight = (UINT)tAnim.vSlice.y;
 
-			//Vec2 vResolution = CCore::GetInst()->GetResolution();
-			//Vec2 vLT = m_vLookAt - vResolution / 2.f;
+			Vec2 vResolution = CCore::GetInst()->GetResolution();
+			Vec2 vLT = m_vLookAt - vResolution / 2.f;
 
-			//// x Axis Left Move Limit
-			//if (vLT.x > 0)
-			//{
-			//	if (KEY_HOLD(KEY::A))
-			//		m_vLookAt.x -= m_fMoveSpeed * fDT;
-			//}
+			// x Axis Left Move Limit
+			if (vLT.x > 0)
+			{
+				if (KEY_HOLD(KEY::A))
+					m_vLookAt.x -= m_fMoveSpeed * fDT;
+			}
 
-			//// x Axis right Move Limit
-			//if (vLT.x < (iWidth - vResolution.x))
-			//{
-			//	if (KEY_HOLD(KEY::D))
-			//		m_vLookAt.x += m_fMoveSpeed * fDT;
-			//}
+			// x Axis right Move Limit
+			if (vLT.x < (iWidth - vResolution.x))
+			{
+				if (KEY_HOLD(KEY::D))
+					m_vLookAt.x += m_fMoveSpeed * fDT;
+			}
 
-			//// y Axis top Move Limit
-			//if (vLT.y > 0)
-			//{
-			//	if (KEY_HOLD(KEY::W))
-			//		m_vLookAt.y -= m_fMoveSpeed * fDT;
-			//}
+			// y Axis top Move Limit
+			if (vLT.y > 0)
+			{
+				if (KEY_HOLD(KEY::W))
+					m_vLookAt.y -= m_fMoveSpeed * fDT;
+			}
 
-			//// y Axis bottom Move Limit
-			//if (vLT.y < (iHeight - vResolution.y))
-			//{
-			//	if (KEY_HOLD(KEY::S))
-			//		m_vLookAt.y += m_fMoveSpeed * fDT;
-			//}
+			// y Axis bottom Move Limit
+			if (vLT.y < (iHeight - vResolution.y))
+			{
+				if (KEY_HOLD(KEY::S))
+					m_vLookAt.y += m_fMoveSpeed * fDT;
+			}
 
-			if (KEY_HOLD(KEY::A))
-				m_vLookAt.x -= m_fMoveSpeed * fDT;
-			if (KEY_HOLD(KEY::D))
-				m_vLookAt.x += m_fMoveSpeed * fDT;
-			if (KEY_HOLD(KEY::W))
-				m_vLookAt.y -= m_fMoveSpeed * fDT;
-			if (KEY_HOLD(KEY::S))
-				m_vLookAt.y += m_fMoveSpeed * fDT;
+			//if (KEY_HOLD(KEY::A))
+			//	m_vLookAt.x -= m_fMoveSpeed * fDT;
+			//if (KEY_HOLD(KEY::D))
+			//	m_vLookAt.x += m_fMoveSpeed * fDT;
+			//if (KEY_HOLD(KEY::W))
+			//	m_vLookAt.y -= m_fMoveSpeed * fDT;
+			//if (KEY_HOLD(KEY::S))
+			//	m_vLookAt.y += m_fMoveSpeed * fDT;
 		}
 	}
 	else if (L"StartScene" == pCurScene->GetName())
