@@ -62,6 +62,7 @@ enum class EVENT_TYPE
 	DELETE_OBJECT,
 	CHANGE_SCENE,
 	CHANGE_KIRBY_STATE,
+	CHANGE_AI_STATE,
 
 
 	END,
@@ -87,4 +88,14 @@ enum class BRUSH_TYPE
 	WHITE,
 
 	END,
+};
+
+enum class MON_STATE
+{
+	IDLE,
+	PATROL,
+	TRACE,
+	ATTACK,
+	RUN,
+	DEAD,
 };

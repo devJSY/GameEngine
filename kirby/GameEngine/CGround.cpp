@@ -43,7 +43,7 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 	CObject* pOtherObj = _pOther->GetOwner();
 	CRigidBody* pRigid = (CRigidBody*)pOtherObj->GetComponents(Component_TYPE::RigidBody);
 
-	if (pOtherObj->GetName() == L"Kirby")
+	if (pOtherObj->GetName() == L"Kirby" || pOtherObj->GetName() == L"Monster")
 	{
 		// Collider 의 FinalPos 로는 Ground 충돌이 2개이상 발생되었을때 Pos 변경이 다음 프레임에 발생됨으로 Pos 로 설정
 		Vec2 vObjPos = pOtherObj->GetPos();
@@ -121,7 +121,7 @@ void CGround::OnCollision(CCollider* _pOther)
 	CObject* pOtherObj = _pOther->GetOwner();
 	CRigidBody* pRigid = (CRigidBody*)pOtherObj->GetComponents(Component_TYPE::RigidBody);
 
-	if (pOtherObj->GetName() == L"Kirby")
+	if (pOtherObj->GetName() == L"Kirby" || pOtherObj->GetName() == L"Monster")
 	{
 		// Collider 의 FinalPos 로는 Ground 충돌이 2개이상 발생되었을때 Pos 변경이 다음 프레임에 발생됨으로 Pos 로 설정
 		Vec2 vObjPos = pOtherObj->GetPos();
@@ -200,7 +200,7 @@ void CGround::OnCollision(CCollider* _pOther)
 void CGround::OnCollisionExit(CCollider* _pOther)
 {
 	CObject* pOtherObj = _pOther->GetOwner();
-	if (pOtherObj->GetName() == L"Kirby")
+	if (pOtherObj->GetName() == L"Kirby" || pOtherObj->GetName() == L"Monster")
 	{
 		((CGravity*)pOtherObj->GetComponents(Component_TYPE::Gravity))->SetGround(false);
 	}

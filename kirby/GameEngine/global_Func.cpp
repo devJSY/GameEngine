@@ -7,8 +7,8 @@ void CreateObject(CObject* _pObj, GROUP_TYPE _eGroup)
 {
 	tEvent evn = {};
 	evn.eEven = EVENT_TYPE::CREATE_OBJECT;
-	evn.lParm = (DWORD_PTR)_pObj;
-	evn.wParm = (DWORD_PTR)_eGroup;
+	evn.lParam = (DWORD_PTR)_pObj;
+	evn.wParam = (DWORD_PTR)_eGroup;
 
 	CEventMgr::GetInst()->AddEvent(evn);
 }
@@ -17,7 +17,7 @@ void DeleteObject(CObject* _pObj)
 {
 	tEvent evn = {};
 	evn.eEven = EVENT_TYPE::DELETE_OBJECT;
-	evn.lParm = (DWORD_PTR)_pObj;
+	evn.lParam = (DWORD_PTR)_pObj;
 
 	CEventMgr::GetInst()->AddEvent(evn);
 
@@ -26,11 +26,21 @@ void ChangeScene(SCENE_TYPE _eNext)
 {
 	tEvent evn = {};
 	evn.eEven = EVENT_TYPE::CHANGE_SCENE;
-	evn.lParm = (DWORD_PTR)_eNext;
+	evn.lParam = (DWORD_PTR)_eNext;
 
 	CEventMgr::GetInst()->AddEvent(evn);
 }
 
+void ChangeAIState(AI* _pAI, MON_STATE _eNextState)
+{
+	tEvent evn = {};
+	evn.eEven = EVENT_TYPE::CHANGE_AI_STATE;
+	evn.lParam = (DWORD_PTR)_pAI;
+	evn.wParam = (DWORD_PTR)_eNextState;
+	
+
+	CEventMgr::GetInst()->AddEvent(evn);
+}
 void FScanf(char* _pOutBuff, FILE* _pFile)
 {
 	int i = 0;

@@ -162,6 +162,24 @@
     <Filter Include="소스 파일\05. Scene\Scene_Stage">
       <UniqueIdentifier>{0eae0811-c3f2-4285-8e49-6a5a488bce1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\07. Module\AI">
+      <UniqueIdentifier>{61815de1-647a-43ba-a84a-3c1c66207b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\07. Module\AI\State">
+      <UniqueIdentifier>{1a5af1f8-1346-4e9b-b98c-3bebe35bca74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\07. Module\AI\State\Attack">
+      <UniqueIdentifier>{a9c126be-82c0-4bd5-b281-08ce7466d943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\07. Module\AI\State\Dead">
+      <UniqueIdentifier>{65063115-620a-42bf-98b1-73e856cd8f6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\07. Module\AI\State\Idle">
+      <UniqueIdentifier>{f0d9d23c-0351-40bf-9487-a1192f45b8a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\07. Module\AI\State\Trace">
+      <UniqueIdentifier>{a3d2ad00-5108-4b27-bc62-14d81cca89a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -296,6 +314,24 @@
     <ClInclude Include="CTile.h">
       <Filter>소스 파일\04. Object\Tile</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>소스 파일\07. Module\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>소스 파일\07. Module\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CIdleState.h">
+      <Filter>소스 파일\07. Module\AI\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="CTraceState.h">
+      <Filter>소스 파일\07. Module\AI\State\Trace</Filter>
+    </ClInclude>
+    <ClInclude Include="CAttackState.h">
+      <Filter>소스 파일\07. Module\AI\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="CDeadState.h">
+      <Filter>소스 파일\07. Module\AI\State\Dead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine.cpp">
@@ -408,6 +444,24 @@
     </ClCompile>
     <ClCompile Include="CTile.cpp">
       <Filter>소스 파일\04. Object\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>소스 파일\07. Module\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>소스 파일\07. Module\AI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CIdleState.cpp">
+      <Filter>소스 파일\07. Module\AI\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CTraceState.cpp">
+      <Filter>소스 파일\07. Module\AI\State\Trace</Filter>
+    </ClCompile>
+    <ClCompile Include="CAttackState.cpp">
+      <Filter>소스 파일\07. Module\AI\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="CDeadState.cpp">
+      <Filter>소스 파일\07. Module\AI\State\Dead</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

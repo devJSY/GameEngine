@@ -49,8 +49,8 @@ void CEventMgr::Excute(const tEvent& _eve)
 	{
 		// lParm : Object Adsress
 		// wParm : Group Type
-		CObject* pNewObj = (CObject*)_eve.lParm;
-		GROUP_TYPE eType = (GROUP_TYPE)_eve.wParm;
+		CObject* pNewObj = (CObject*)_eve.lParam;
+		GROUP_TYPE eType = (GROUP_TYPE)_eve.wParam;
 
 		CSceneMgr::GetInst()->GetCurScene()->AddObject(pNewObj, eType);
 	}
@@ -59,7 +59,7 @@ void CEventMgr::Excute(const tEvent& _eve)
 	case EVENT_TYPE::DELETE_OBJECT:
 	{
 		// lParm : Object Adsress
-		CObject* pDeadObj = (CObject*)_eve.lParm;
+		CObject* pDeadObj = (CObject*)_eve.lParam;
 		pDeadObj->SetDead();
 		m_vecDead.push_back(pDeadObj);
 	}
@@ -68,7 +68,7 @@ void CEventMgr::Excute(const tEvent& _eve)
 	case EVENT_TYPE::CHANGE_SCENE:
 	{
 		// lParm : SCENE_TYPE
-		CSceneMgr::GetInst()->ChangeScene((SCENE_TYPE)_eve.lParm);
+		CSceneMgr::GetInst()->ChangeScene((SCENE_TYPE)_eve.lParam);
 		CUIMgr::GetInst()->SetFocusedUI(nullptr);
 	}
 	break;

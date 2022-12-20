@@ -1,10 +1,24 @@
 #pragma once
 #include "CObject.h"
 
+struct tMonInfo
+{
+    float   fSpeed;       // 속도    
+    float   fHP;          // 체력
+    float   fRecogRange;  // 인지 범위
+    float   fAttRange;    // 공격 범위
+    float   fAtt;         // 공격력
+};
+
+class AI;
+
 class CMonster :
     public CObject
 {
-    CTexture* m_pTex;
+private:
+    tMonInfo    m_tInfo;
+    AI*         m_pAI;
+
 
 public:
     virtual void update();

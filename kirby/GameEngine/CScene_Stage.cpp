@@ -3,6 +3,7 @@
 
 #include "CCore.h"
 #include "Kirby.h"
+#include "CMonster.h"
 #include "CGround.h"
 #include "CAnimation.h"
 #include "CTexture.h"
@@ -105,7 +106,15 @@ void CScene_Stage::Enter()
 
 	EnterAddObject(pKirby, GROUP_TYPE::PLAYER);
 
+	CObject* pMonster = new CMonster;
+	pMonster->SetName(L"Monster");
+	pMonster->SetPos(Vec2(1000.f, 384.f));
+	pMonster->SetScale(Vec2(50.f, 50.f));
+
+	EnterAddObject(pMonster, GROUP_TYPE::MONSTER);
+
 	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::GROUND);
+	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::MONSTER, GROUP_TYPE::GROUND);
 
 	CCamera::GetInst()->SetTarget(pKirby);
 

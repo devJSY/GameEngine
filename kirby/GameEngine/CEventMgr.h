@@ -3,8 +3,8 @@
 struct tEvent
 {
     EVENT_TYPE  eEven;
-    DWORD_PTR   lParm;
-    DWORD_PTR   wParm;
+    DWORD_PTR   lParam;
+    DWORD_PTR   wParam;
 };
 
 class CObject;
