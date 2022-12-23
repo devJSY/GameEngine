@@ -125,6 +125,15 @@ void CScene_Stage::Enter()
 
 	pMonster->SetAI(pAI);
 
+	tMonInfo MonInfo = {};
+	MonInfo.fAtt = 1.f;
+	MonInfo.fAttRange = 10.f;
+	MonInfo.fHP = 5.f;
+	MonInfo.fRecogRange = 50.f;
+	MonInfo.fSpeed = 100.f;
+
+	pMonster->SetMonInfo(MonInfo);
+
 	EnterAddObject(pMonster, GROUP_TYPE::MONSTER);
 
 	CColliderMgr::GetInst()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::GROUND);
@@ -248,7 +257,6 @@ void CScene_Stage::Load(const wstring& _strName)
 	FScanf(szBuff, pFile);
 	FScanf(szBuff, pFile);
 
-	int Idx;
 	string strIdx;
 	wstring strName;
 	size_t skipPos;

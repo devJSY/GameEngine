@@ -32,7 +32,8 @@ public:
 public:
     void SetAI(AI* _AI);
 
-private:
+    
+public: // private
     void SetMonInfo(const tMonInfo& _info) { m_tInfo = _info; }
 
     CLONE(CMonster);

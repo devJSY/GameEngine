@@ -8,6 +8,7 @@
 #include "CAnimation.h"
 #include "CAnimator.h"
 
+#include "SelectGDI.h"
 #include "CResMgr.h"
 
 CMonster::CMonster()
@@ -58,6 +59,13 @@ void CMonster::update()
 void CMonster::render(HDC _dc)
 {
 	Component_render(_dc);
+	
+	SelectGDI select(_dc, PEN_TYPE::RED);
+	SelectGDI select1(_dc, BRUSH_TYPE::RED);
+
+	Vec2 vPos = CCamera::GetInst()->GetRenderPos(GetPos());
+
+	Ellipse(_dc, (int)vPos.x - 3, (int)vPos.y - 3, (int)vPos.x + 3, (int)vPos.y + 3);
 }
 
 void CMonster::SetAI(AI* _AI)
