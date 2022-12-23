@@ -12,8 +12,3 @@ CState::CState(MON_STATE _eState)
 CState::~CState()
 {
 }
-
-CMonster* CState::GetMonster()
-{
-	return m_pAI->GetOwner();
-}

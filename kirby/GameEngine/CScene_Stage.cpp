@@ -7,6 +7,11 @@
 #include "CGround.h"
 #include "CAnimation.h"
 #include "CTexture.h"
+#include "AI.h"
+#include "CIdleState.h"
+#include "CAttackState.h"
+#include "CDeadState.h"
+#include "CTraceState.h"
 
 #include "CCamera.h"
 #include "CColliderMgr.h"
@@ -106,10 +111,19 @@ void CScene_Stage::Enter()
 
 	EnterAddObject(pKirby, GROUP_TYPE::PLAYER);
 
-	CObject* pMonster = new CMonster;
+	CMonster* pMonster = new CMonster;
 	pMonster->SetName(L"Monster");
 	pMonster->SetPos(Vec2(1000.f, 384.f));
-	pMonster->SetScale(Vec2(50.f, 50.f));
+	pMonster->SetScale(Vec2(100.f, 100.f));
+
+	AI* pAI = new AI;
+	pAI->AddState(new CIdleState);
+	pAI->AddState(new CAttackState);
+	pAI->AddState(new CDeadState);
+	pAI->AddState(new CTraceState);
+	pAI->SetCurState(MON_STATE::IDLE);
+
+	pMonster->SetAI(pAI);
 
 	EnterAddObject(pMonster, GROUP_TYPE::MONSTER);
 

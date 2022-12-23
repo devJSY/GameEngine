@@ -14,7 +14,7 @@ private:
 public:
 	AI* GetAI() { return m_pAI; }
 	MON_STATE GetType() { return m_eState; }
-	CMonster* GetMonster();
+	CMonster* GetMonster() { return m_pAI->GetOwner(); }
 
 
 public:

@@ -29,7 +29,7 @@ private:
     bool                m_bAlive; // Dead Check
 
 
-    Vec2            m_vPrevPos;
+    Vec2                 m_vPrevPos;
 
 
 public:

@@ -54,8 +54,6 @@ void CScene::render(HDC _dc)
 			if (!m_arrObj[i][j]->IsDead() && IsRenderArea(m_arrObj[i][j]))
 			{
 				m_arrObj[i][j]->render(_dc);
-				 
-				m_arrObj[i][j]->Component_render(_dc);
 			}			
 		}
 	}

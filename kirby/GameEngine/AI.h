@@ -29,5 +29,7 @@ public:
 public:
     AI();
     ~AI();
+
+    friend class CMonster;
 };
 

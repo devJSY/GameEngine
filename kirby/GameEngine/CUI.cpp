@@ -80,6 +80,8 @@ void CUI::render(HDC _dc)
 
 	// child ui render
 	render_child(_dc);
+
+	//Component_render(_dc);
 }
 
 void CUI::update_child()

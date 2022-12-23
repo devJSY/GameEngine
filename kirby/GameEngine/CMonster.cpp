@@ -5,6 +5,8 @@
 #include "CCollider.h"
 #include "CTexture.h"
 #include "AI.h"
+#include "CAnimation.h"
+#include "CAnimator.h"
 
 #include "CResMgr.h"
 
@@ -15,6 +17,19 @@ CMonster::CMonster()
 	// Collider Create
 	// ================ 
 	CreateComponents(Component_TYPE::Collider);
+	((CCollider*)GetComponents(Component_TYPE::Collider))->SetOffsetPos(Vec2(5.f, 30.f));
+
+	// ================
+	// Animator Create
+	// ================ 
+	CreateComponents(Component_TYPE::Animator);
+	CAnimator* pAnimator = (CAnimator*)GetComponents(Component_TYPE::Animator);
+	pAnimator->SetIgnoreRGB({ 0, 72, 80 });
+
+	pAnimator->LoadAnimation(L"animation\\Monster\\NormalMonster\\Grizzo\\RUN_Left.anim");
+	pAnimator->LoadAnimation(L"animation\\Monster\\NormalMonster\\Grizzo\\RUN_Right.anim");
+
+	pAnimator->Play(L"RUN_Right", true, false);
 
 	// ================
 	// Rigidbody Create
@@ -42,22 +57,14 @@ void CMonster::update()
 
 void CMonster::render(HDC _dc)
 {
-	//int iWidth = m_pTex->Width();
-	//int iHeight = m_pTex->Height();
-
-	//Vec2 vPos = CCamera::GetInst()->GetRenderPos(GetPos());
-
-	//TransparentBlt(_dc
-	//	, int(vPos.x - (float)(iWidth / 2))
-	//	, int(vPos.y - (float)(iHeight / 2))
-	//	, iWidth, iHeight
-	//	, m_pTex->GetDC()
-	//	, 0, 0, iWidth, iHeight
-	//	, RGB(255, 0, 255));
-
 	Component_render(_dc);
 }
 
+void CMonster::SetAI(AI* _AI)
+{
+	m_pAI = _AI;
+	m_pAI->m_pOwner = this;
+}
 
 void CMonster::start()
 {

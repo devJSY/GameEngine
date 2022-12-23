@@ -29,6 +29,12 @@ public:
     virtual void OnCollisionEnter(CCollider* _pOther) {};
     virtual void OnCollisionExit(CCollider* _pOther) {};
 
+public:
+    void SetAI(AI* _AI);
+
+private:
+    void SetMonInfo(const tMonInfo& _info) { m_tInfo = _info; }
+
     CLONE(CMonster);
 
 public:

@@ -36,6 +36,8 @@ void CGround::render(HDC _dc)
 		, int(vRenderPos.y - vScale.y / 2.f)
 		, int(vRenderPos.x + vScale.x / 2.f)
 		, int(vRenderPos.y + vScale.y / 2.f));
+
+	Component_render(_dc);
 }
 
 void CGround::OnCollisionEnter(CCollider* _pOther)

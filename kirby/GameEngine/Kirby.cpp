@@ -13,6 +13,7 @@
 #include "CTimeMgr.h"
 #include "CResMgr.h"
 #include "CColliderMgr.h"
+#include "SelectGDI.h"
 
 Kirby::Kirby()
 	: m_iDir(1)
@@ -84,22 +85,14 @@ void Kirby::update()
 
 void Kirby::render(HDC _dc)
 {
-	// 텍스쳐 렌더링
-	/*int iWidth = m_pTex->Width();
-	int iHeight = m_pTex->Height();
+	Component_render(_dc);
+
+	SelectGDI select(_dc, PEN_TYPE::RED);
+	SelectGDI select1(_dc, BRUSH_TYPE::RED);
 
 	Vec2 vPos = CCamera::GetInst()->GetRenderPos(GetPos());
 
-	
-	TransparentBlt(_dc
-		, int(vPos.x - (float)(iWidth / 2))
-		, int(vPos.y - (float)(iHeight / 2))
-		, iWidth, iHeight
-		, m_pTex->GetDC()
-		, 0, 0, iWidth, iHeight
-		, RGB(255, 0, 255));*/
-
-	Component_render(_dc);
+	Ellipse(_dc, vPos.x-3, vPos.y -3, vPos.x + 3, vPos.y + 3);	
 }
 
 void Kirby::update_state()
