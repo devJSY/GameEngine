@@ -473,11 +473,14 @@ void Kirby::State_Enter()
 		// 점프키로 진입한 경우 
 		if (KEY_TAP(KEY::SPACE) || KEY_HOLD(KEY::SPACE) || KEY_AWAY(KEY::SPACE))
 		{
+			CGravity* pGravity = ((CGravity*)GetComponents(Component_TYPE::Gravity));
+			pGravity->SetGround(false);
+			
 			// DoubleJump 상태에서 변경시 예외처리
-			if (((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround())
+			if (m_eStockState != KIRBY_STATE::DOUBLEJUMP)
 			{
 				pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
-			}			
+			}						
 		}		
 	}
 	break;

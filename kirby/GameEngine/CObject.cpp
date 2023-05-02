@@ -64,7 +64,6 @@ CObject::~CObject()
 void CObject::update()
 {
 	m_vPrevPos = vPos;
-	// 기본 업데이트 없음
 }
 
 void CObject::Component_update()
@@ -77,7 +76,7 @@ void CObject::Component_update()
 		}		
 	}
 
-	// 중점 활성화
+	// 오브젝트 중점 활성화
 	if (KEY_TAP(KEY::Q))
 	{
 		SetMidPoint();
