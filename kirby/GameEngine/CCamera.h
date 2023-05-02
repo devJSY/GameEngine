@@ -73,6 +73,8 @@ public:
         m_listCamEffect.push_back(ef);
     }
 
+    void MoveRestriction();
+
 private:
     void CalDiff();
 };

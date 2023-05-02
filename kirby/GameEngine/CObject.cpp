@@ -10,10 +10,12 @@
 
 #include "CKeyMgr.h"
 #include "CTimeMgr.h"
+#include "SelectGDI.h"
 
 CObject::CObject()
 	: m_bAlive(true)
 	, arr_Components{}
+	, m_MidPoint(false)
 {
 }
 
@@ -23,6 +25,7 @@ CObject::CObject(const CObject& _origin)
 	, m_strName(_origin.m_strName)
 	, arr_Components{}
 	, m_bAlive(true)
+	, m_MidPoint(false)
 {
 	CComponent* pComponent = nullptr;
 
@@ -73,11 +76,17 @@ void CObject::Component_update()
 			arr_Components[i]->Component_update();
 		}		
 	}
+
+	// 중점 활성화
+	if (KEY_TAP(KEY::Q))
+	{
+		SetMidPoint();
+	}
 }
 
 void CObject::render(HDC _dc)
 {
-	// 기본 렌더 없음
+	// 기본 렌더링 없음
 }
 
 void CObject::Component_render(HDC _dc)
@@ -88,6 +97,16 @@ void CObject::Component_render(HDC _dc)
 		{
 			arr_Components[i]->Component_render(_dc);
 		}
+	}
+
+	if (m_MidPoint)
+	{
+		SelectGDI select(_dc, PEN_TYPE::RED);
+		SelectGDI select1(_dc, BRUSH_TYPE::RED);
+
+		Vec2 vPos = CCamera::GetInst()->GetRenderPos(GetPos());
+
+		Ellipse(_dc, (int)vPos.x - 3, (int)vPos.y - 3, (int)vPos.x + 3, (int)vPos.y + 3);
 	}
 }
 

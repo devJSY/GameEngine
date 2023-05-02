@@ -86,13 +86,6 @@ void Kirby::update()
 void Kirby::render(HDC _dc)
 {
 	Component_render(_dc);
-
-	SelectGDI select(_dc, PEN_TYPE::RED);
-	SelectGDI select1(_dc, BRUSH_TYPE::RED);
-
-	Vec2 vPos = CCamera::GetInst()->GetRenderPos(GetPos());
-
-	Ellipse(_dc, (int)vPos.x-3, (int)vPos.y -3, (int)vPos.x + 3, (int)vPos.y + 3);
 }
 
 void Kirby::update_state()
@@ -480,7 +473,7 @@ void Kirby::State_Enter()
 		// 점프키로 진입한 경우 
 		if (KEY_TAP(KEY::SPACE) || KEY_HOLD(KEY::SPACE) || KEY_AWAY(KEY::SPACE))
 		{
-			// 공중에서 DoubleJump 상태에서 변경시 예외처리
+			// DoubleJump 상태에서 변경시 예외처리
 			if (((CGravity*)GetComponents(Component_TYPE::Gravity))->IsGround())
 			{
 				pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));

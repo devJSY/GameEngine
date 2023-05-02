@@ -31,6 +31,8 @@ private:
 
     Vec2                 m_vPrevPos;
 
+    bool                m_MidPoint;
+
 
 public:
     virtual void update();
@@ -68,6 +70,8 @@ public:
 
 private:
     void SetDead() { m_bAlive = false; }
+
+    void SetMidPoint() { m_MidPoint = !m_MidPoint; }
 
     friend class CEventMgr;
 

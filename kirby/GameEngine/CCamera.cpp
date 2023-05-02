@@ -36,15 +36,76 @@ void CCamera::init()
 
 void CCamera::update()
 {
+	// 씬, 스테이지별 카메라 이동 제한
+	MoveRestriction();
+
+	// 현재 카메라 위치값 계산
+	CalDiff();
+}
+
+void CCamera::render(HDC _dc)
+{
+	if (m_listCamEffect.empty())
+		return;
+
+	tCamEffect& effect = m_listCamEffect.front();
+
+	effect.fCurTime += fDT;
+
+	float fRatio = effect.fCurTime / effect.fDuration;
+
+	if (fRatio < 0.f)
+		fRatio = 0.f;
+	if (fRatio > 1.f)
+		fRatio = 1.f;
+
+	int iAlpha = 0;
+
+	// 이벤트에 따라 알파값 설정
+	if (effect.eEffect == CAM_EFFECT::FADE_OUT)
+	{
+		iAlpha = (int)(255.f * fRatio);
+	}
+	else if (effect.eEffect == CAM_EFFECT::FADE_IN)
+	{
+		iAlpha = (int)(255.f * (1.f - fRatio));
+	}
+
+	// AlphaBlend 셋팅값 설정
+	BLENDFUNCTION bf = {};
+	bf.BlendOp = AC_SRC_OVER; // 원본과 대상 이미지를 합친다는 의미
+	bf.BlendFlags = 0;
+	bf.AlphaFormat = 0;
+	bf.SourceConstantAlpha = iAlpha; // 고정 알파값 설정
+
+	AlphaBlend(_dc,
+		0, 0
+		, (int)m_pVeilTex->Width()
+		, (int)m_pVeilTex->Height()
+		, m_pVeilTex->GetDC()
+		, 0, 0
+		, (int)m_pVeilTex->Width()
+		, (int)m_pVeilTex->Height()
+		, bf);
+
+	if (effect.fCurTime > effect.fDuration)
+	{
+		effect.eEffect = CAM_EFFECT::NONE;
+		m_listCamEffect.pop_front();
+	}
+}
+
+void CCamera::MoveRestriction()
+{
 	// CScene_AnimTool 텍스쳐 이동 제한
 	CScene* pCurScene = CSceneMgr::GetInst()->GetCurScene();
 
-	if(L"Animation_Tool" == pCurScene->GetName())
+	if (L"Animation_Tool" == pCurScene->GetName())
 	{
-		CTexture* SceneTex = ((CScene_AnimTool*)pCurScene)->GetTexture();	
+		CTexture* SceneTex = ((CScene_AnimTool*)pCurScene)->GetTexture();
 		UINT TexWidth = SceneTex->Width();
 		UINT TexHeight = SceneTex->Height();
-	
+
 		if (nullptr != SceneTex)
 		{
 			Vec2 vResolution = CCore::GetInst()->GetResolution();
@@ -88,7 +149,7 @@ void CCamera::update()
 			// =========
 			// 이동 제한 
 			// =========
-			  
+
 			tAnimFrm tAnim = ((CScene_SceneTool*)pCurScene)->GetForeGroundAnim()->GetFrame(0);
 
 			UINT iWidth = (UINT)tAnim.vSlice.x;
@@ -138,7 +199,7 @@ void CCamera::update()
 	else if (L"StartScene" == pCurScene->GetName())
 	{
 	}
-	else 
+	else
 	{
 		// Stage Scene 카메라 설정
 
@@ -209,61 +270,6 @@ void CCamera::update()
 				}
 			}
 		}
-	}	
-
-	// 현재 카메아 위치값 계산
-	CalDiff();
-}
-
-void CCamera::render(HDC _dc)
-{
-	if (m_listCamEffect.empty())
-		return;
-
-	tCamEffect& effect = m_listCamEffect.front();
-
-	effect.fCurTime += fDT;
-
-	float fRatio = effect.fCurTime / effect.fDuration;
-
-	if (fRatio < 0.f)
-		fRatio = 0.f;
-	if (fRatio > 1.f)
-		fRatio = 1.f;
-
-	int iAlpha = 0;
-
-	// 이벤트에 따라 알파값 설정
-	if (effect.eEffect == CAM_EFFECT::FADE_OUT)
-	{
-		iAlpha = (int)(255.f * fRatio);
-	}
-	else if (effect.eEffect == CAM_EFFECT::FADE_IN)
-	{
-		iAlpha = (int)(255.f * (1.f - fRatio));
-	}
-
-	// AlphaBlend 셋팅값 설정
-	BLENDFUNCTION bf = {};
-	bf.BlendOp = AC_SRC_OVER; // 원본과 대상 이미지를 합친다는 의미
-	bf.BlendFlags = 0;
-	bf.AlphaFormat = 0;
-	bf.SourceConstantAlpha = iAlpha; // 고정 알파값 설정
-
-	AlphaBlend(_dc,
-		0, 0
-		, (int)m_pVeilTex->Width()
-		, (int)m_pVeilTex->Height()
-		, m_pVeilTex->GetDC()
-		, 0, 0
-		, (int)m_pVeilTex->Width()
-		, (int)m_pVeilTex->Height()
-		, bf);
-
-	if (effect.fCurTime > effect.fDuration)
-	{
-		effect.eEffect = CAM_EFFECT::NONE;
-		m_listCamEffect.pop_front();
 	}
 }
 
