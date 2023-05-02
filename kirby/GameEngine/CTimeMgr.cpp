@@ -43,11 +43,11 @@ void CTimeMgr::update()
 	m_llPrevCount = m_llCurCountl;
 
 
-//// 최대 60프레임 제한
-//#ifdef _DEBUG
-//	if (m_dDT > (1.f / 60.f))
-//		m_dDT = (1.f / 60.f);
-//#endif
+// 최대 60프레임 제한
+#ifdef _DEBUG
+	if (m_dDT > (1.f / 60.f))
+		m_dDT = (1.f / 60.f);
+#endif
 }
 
 void CTimeMgr::render(HDC _dc)

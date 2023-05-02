@@ -476,7 +476,7 @@ void Kirby::State_Enter()
 			CGravity* pGravity = ((CGravity*)GetComponents(Component_TYPE::Gravity));
 			pGravity->SetGround(false);
 			
-			// DoubleJump 상태에서 변경시 예외처리
+			// DoubleJump 상태에서 변경시 무시 그 외의 경우에만 점프 적용
 			if (m_eStockState != KIRBY_STATE::DOUBLEJUMP)
 			{
 				pRigid->SetVelocity(Vec2(pRigid->GetVelocity().x, -500.f));
